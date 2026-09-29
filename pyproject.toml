@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autheo-agent-environment"
+version = "0.1.0"
+description = "Local reference environment for agent mandates, simulated budgets, signed receipts and checkpoint handoffs"
+requires-python = ">=3.11"
+dependencies = ["PyJWT[crypto]>=2.10,<3", "pydantic>=2.7,<3"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+autheo-agent-demo = "autheo_agent_environment.demo:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]

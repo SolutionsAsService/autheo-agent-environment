@@ -1,0 +1,880 @@
+From b495526633623fecce78c07cbc0a87cf5d2517f1 Mon Sep 17 00:00:00 2001
+From: SolutionsAsService
+ <152567394+SolutionsAsService@users.noreply.github.com>
+Date: Tue, 29 Sep 2026 17:45:20 -0600
+Subject: [PATCH] feat: inspect signed agent trust snapshots without granting
+ authority
+
+---
+ .env.example                           |  10 ++
+ README.md                              |  26 +++-
+ docs/AGENT-TRUST.md                    |  74 ++++++++++++
+ frontend/README.md                     |   2 +-
+ frontend/catalog.json                  |  46 +++++++
+ frontend/index.html                    |  31 ++---
+ frontend/scripts/catalog.py            |   6 +-
+ frontend/tests/content.test.mjs        |   6 +-
+ frontend/tests/site.spec.js            |  12 +-
+ pyproject.toml                         |   4 +-
+ review/smoke_upgrade.py                |   3 +-
+ src/autheo_mcp/__init__.py             |   2 +-
+ src/autheo_mcp/server.py               |  40 ++++++
+ src/autheo_mcp/services/agent_trust.py | 161 +++++++++++++++++++++++++
+ src/autheo_mcp/services/config.py      |   8 ++
+ tests/test_agent_trust.py              | 130 ++++++++++++++++++++
+ tests/test_integration_contracts.py    |   2 +-
+ 17 files changed, 528 insertions(+), 35 deletions(-)
+ create mode 100644 docs/AGENT-TRUST.md
+ create mode 100644 src/autheo_mcp/services/agent_trust.py
+ create mode 100644 tests/test_agent_trust.py
+
+diff --git a/.env.example b/.env.example
+index 023e209..4fd56eb 100644
+--- a/.env.example
++++ b/.env.example
+@@ -19,3 +19,13 @@ AUTHEO_EVM_RPC_URL=
+ AUTHEO_PRICE_FEED_URL=
+ AUTHEO_ORACLE_URL=http://127.0.0.1:8786
+ AUTHEO_REQUEST_TIMEOUT=30
++
++# Optional signed agent-environment inspection (install .[trust]).
++# All six are required. Paths are operator configuration, never MCP tool arguments.
++# Export with the sibling autheo-agent-environment prototype. Snapshot expires in 120s.
++AUTHEO_AGENT_TRUST_SNAPSHOT=
++AUTHEO_AGENT_TRUST_PUBLIC_KEY=
++AUTHEO_AGENT_TRUST_ISSUER=
++AUTHEO_AGENT_TRUST_KEY_ID=
++AUTHEO_AGENT_TRUST_SUBJECT=
++AUTHEO_AGENT_TRUST_ENVIRONMENT=
+diff --git a/README.md b/README.md
+index 2328a7e..f33ffc9 100644
+--- a/README.md
++++ b/README.md
+@@ -1,12 +1,12 @@
+-# Autheo MCP 0.2
++# Autheo MCP — agent trust inspection prototype
+ 
+-Read-only MCP integration for Autheo DevHub and Marketplace. **39 tools / 4 resources**.
++Read-only MCP integration for Autheo DevHub and Marketplace. **44 tools / 5 resources**.
+ Built against the two source repositories pinned in [references/SOURCES.json](references/SOURCES.json).
+ 
+ ## Frontend website
+ 
+ The [`frontend/`](frontend/README.md) directory contains the deployable product
+-website: an introduction to Autheo MCP, a searchable catalog of all 39 tools,
++website: an introduction to Autheo MCP, a searchable catalog of all 44 tools,
+ illustrative workflows, and platform-specific setup instructions.
+ 
+ ```bash
+@@ -17,6 +17,22 @@ Open `http://127.0.0.1:4173`. See the [frontend guide](frontend/README.md) for
+ GitHub Pages and other static-host deployment options. The website does not host
+ the MCP server, request credentials, or execute Autheo operations.
+ 
++## Optional agent trust inspection
++
++This review branch extends v0.2 with **five read-only inspection tools** and
++`autheo://agent-trust`. The sibling **Autheo Agent Environment** owns the local
++prototype's identity, policy, simulated budgets, receipts and checkpoint handoffs.
++MCP only verifies a short-lived signed public summary using an operator-pinned key.
++
++```sh
++python -m pip install -e '.[dev,trust]'
++```
++
++No private key, wallet custody, payment, approval override, mandate issuance or
++live agent migration is exposed. No existing tool becomes policy-enforced simply
++by enabling snapshot inspection. See [the trust bridge guide](docs/AGENT-TRUST.md).
++This is a local prototype branch, not an activated production trust service.
++
+ ## What works
+ 
+ - **Marketplace:** public listings/details/capacity, authenticated buyer orders,
+@@ -121,8 +137,8 @@ python -m mypy src/autheo_mcp
+ python review/smoke_upgrade.py
+ ```
+ 
+-The protocol check launches both module and console entrypoints, calls all 39 tools
+-against localhost fixtures, reads all four resources, checks semantic results and
++The protocol check launches both module and console entrypoints, calls all 44 tools
++against localhost fixtures, reads all five resources, checks semantic results and
+ invalid input, and rejects any non-read HTTP operation except read JSON-RPC.
+ See [docs/INTEGRATION-CONTRACTS.md](docs/INTEGRATION-CONTRACTS.md) for route evidence,
+ and [docs/UPGRADE-RESULTS.md](docs/UPGRADE-RESULTS.md) for the verification summary.
+diff --git a/docs/AGENT-TRUST.md b/docs/AGENT-TRUST.md
+new file mode 100644
+index 0000000..0b03341
+--- /dev/null
++++ b/docs/AGENT-TRUST.md
+@@ -0,0 +1,74 @@
++# Agent trust inspection bridge (prototype)
++
++The five optional tools inspect data from a **separate local Agent Environment**:
++
++| Tool | What it returns |
++| --- | --- |
++| `autheo_agent_trust_guide` | Setup and authority boundaries; always available |
++| `autheo_agent_trust_status` | Verified snapshot status and issuer's audit summary |
++| `autheo_agent_get_passport` | Configured agent's issuer-asserted owner and key fingerprint |
++| `autheo_agent_get_mandate` | Scope, resource allowlist, expiry, revocation flag and DEMO budget |
++| `autheo_agent_list_receipts` | Last 1–20 receipt summaries from the signed snapshot |
++
++`autheo://agent-trust` exposes the same local integration documentation.
++All tools have read-only MCP annotations. None signs, grants, approves, purchases,
++transfers, allocates or deploys. Existing read tools are not retroactively governed
++by the snapshot. The public standalone website has not been changed or redeployed.
++
++## Setup
++
++1. Install this branch with `python -m pip install -e '.[dev,trust]'`.
++2. In the sibling Agent Environment project, run
++   `python -m autheo_agent_environment.demo --output demo-output`.
++3. Merge `demo-output/mcp-environment.json` into the environment passed to the MCP
++   server by your client. Do not put it into tool arguments or a public website.
++4. Launch the normal stdio entrypoint (`autheo-mcp` or `python -m autheo_mcp.server`).
++5. Inspect `autheo_agent_trust_status`, then passport, mandate and receipt tools.
++
++Required process environment values:
++
++- `AUTHEO_AGENT_TRUST_SNAPSHOT`: absolute path to signed `trust-snapshot.jwt`.
++- `AUTHEO_AGENT_TRUST_PUBLIC_KEY`: absolute path to operator-trusted Ed25519 **public** PEM.
++- `AUTHEO_AGENT_TRUST_ISSUER`: expected issuer, e.g. `autheo-demo-authority`.
++- `AUTHEO_AGENT_TRUST_KEY_ID`: expected key ID, e.g. `demo-v1`.
++- `AUTHEO_AGENT_TRUST_SUBJECT`: expected agent, e.g. `agent:research-01`.
++- `AUTHEO_AGENT_TRUST_ENVIRONMENT`: expected environment, e.g. `env:research`.
++
++The demo summary expires in **120 seconds**. Rerun the demo for another temporary
++identity/export; it does not preserve a production agent identity. `.env.example`
++remains documentation and is not automatically loaded.
++
++## Verification and error behavior
++
++MCP accepts only Ed25519 / EdDSA, the configured key ID, issuer, subject and environment,
++`autheo-trust-snapshot+jwt` type and `autheo-mcp-readonly` audience. It requires
++integer timestamps and a lifetime <=120 seconds, current passport/mandate expiries,
++strict public-summary schema and consistent DEMO budget arithmetic. Tokens and key
++files are size-bounded. Nothing in a token can supply its own trust anchor or URL.
++
++Failures return `unconfigured`, `unavailable` or `invalid_snapshot` with no raw token,
++PEM contents, file path or exception reflection. No fallback manufactures trusted
++identity. The guide remains usable without optional setup.
++
++**A verified snapshot is not execution authority.** Every result says
++`execution_authorized: false`. Ownership is only a configured issuer's assertion.
++MCP verifies the summary signature; it does not independently replay the underlying
++receipt chain or prove actions happened. Use the Environment's offline verifier
++with a separately trusted public key and head checkpoint for chain verification.
++A 120-second summary can lag revocation; never use it to authorize real actions.
++
++## Test
++
++```sh
++python -m pytest tests -q
++python -m ruff check src tests review/smoke_upgrade.py
++python -m mypy src/autheo_mcp
++python review/smoke_upgrade.py
++```
++
++The normal protocol smoke test checks **44 tools and 5 resources** through both
++entrypoints. Without snapshot configuration the new read tools report unconfigured.
++For configured end-to-end coverage, install both sibling projects in one test venv
++and run `python /path/to/autheo-agent-environment/review/smoke_mcp_bridge.py`.
++
++No production backend/agent/wallet access is needed for either test path.
+diff --git a/frontend/README.md b/frontend/README.md
+index 8da74a8..8fa44db 100644
+--- a/frontend/README.md
++++ b/frontend/README.md
+@@ -6,7 +6,7 @@ A responsive, static introduction to Autheo MCP v0.2, contributed by
+ ## What is here
+ 
+ - Product explanation and a CSS/SVG diagram of the AI → MCP → service connection.
+-- Searchable, filterable catalog of all 39 registered tools, with access and input details.
++- Searchable, filterable catalog of all 44 registered tools, with access and input details.
+ - Clearly labeled illustrative workflows (no fabricated live results).
+ - macOS/Linux, Windows PowerShell, and common MCP-client setup examples with copy controls.
+ - Accessible native controls, keyboard focus, reduced-motion support, and mobile layouts.
+diff --git a/frontend/catalog.json b/frontend/catalog.json
+index b6bffbe..603de88 100644
+--- a/frontend/catalog.json
++++ b/frontend/catalog.json
+@@ -587,5 +587,51 @@
+         "required": false
+       }
+     ]
++  },
++  {
++    "name": "autheo_agent_trust_guide",
++    "category": "Utilities",
++    "mode": "Read",
++    "description": "Explain agent trust setup and boundaries. Does not issue identity, authority, or wallet access.",
++    "access": "Local setup documentation; no credentials or snapshot required.",
++    "inputs": []
++  },
++  {
++    "name": "autheo_agent_trust_status",
++    "category": "Utilities",
++    "mode": "Read",
++    "description": "Inspect a pinned-issuer signed snapshot and audit summary. Never grants execution authority.",
++    "access": "Optional local agent-environment snapshot, pinned issuer/public key/agent/environment, and trust dependencies. Read-only; never authorizes execution.",
++    "inputs": []
++  },
++  {
++    "name": "autheo_agent_get_passport",
++    "category": "Utilities",
++    "mode": "Read",
++    "description": "Read the configured agent's issuer-asserted identity, not a proof of legal ownership.",
++    "access": "Optional local agent-environment snapshot, pinned issuer/public key/agent/environment, and trust dependencies. Read-only; never authorizes execution.",
++    "inputs": []
++  },
++  {
++    "name": "autheo_agent_get_mandate",
++    "category": "Utilities",
++    "mode": "Read",
++    "description": "Inspect scoped mandate and DEMO budget summary; no real wallet funds or approvals.",
++    "access": "Optional local agent-environment snapshot, pinned issuer/public key/agent/environment, and trust dependencies. Read-only; never authorizes execution.",
++    "inputs": []
++  },
++  {
++    "name": "autheo_agent_list_receipts",
++    "category": "Utilities",
++    "mode": "Read",
++    "description": "Read up to 20 signed-snapshot receipt summaries; not an independent action/chain proof.",
++    "access": "Optional local agent-environment snapshot, pinned issuer/public key/agent/environment, and trust dependencies. Read-only; never authorizes execution.",
++    "inputs": [
++      {
++        "name": "limit",
++        "type": "int",
++        "required": false
++      }
++    ]
+   }
+ ]
+diff --git a/frontend/index.html b/frontend/index.html
+index a31c6a0..4590f1a 100644
+--- a/frontend/index.html
++++ b/frontend/index.html
+@@ -6,12 +6,12 @@
+     <meta name="theme-color" content="#f3f3eb" />
+     <meta
+       name="description"
+-      content="Give your AI a clear view of Autheo. Explore 39 read-only and local simulation tools for the blockchain, Marketplace, and DevHub with Autheo MCP."
++      content="Give your AI a clear view of Autheo. Explore 44 read-only and local simulation tools for the blockchain, Marketplace, and DevHub with Autheo MCP."
+     />
+     <meta property="og:title" content="Autheo MCP — The network, in context." />
+     <meta
+       property="og:description"
+-      content="One connection. 39 tools. A clearer view of Autheo for your AI assistant."
++      content="One connection. 44 tools. A clearer view of Autheo for your AI assistant."
+     />
+     <meta property="og:type" content="website" />
+     <title>Autheo MCP — The network, in context.</title>
+@@ -41,7 +41,7 @@
+         <div class="hero-copy">
+           <p class="eyebrow">
+             <span class="dot"></span> THE AUTHEO CONTEXT LAYER
+-            <span class="version">v0.2</span>
++            <span class="version">trust preview</span>
+           </p>
+           <h1 id="hero-title">
+             The network,<br />in <span class="serif">context.</span>
+@@ -102,8 +102,8 @@
+         </div>
+       </section>
+       <div class="metrics wrap" aria-label="Server capabilities">
+-        <div><strong>39</strong><span>purpose-built tools</span></div>
+-        <div><strong>04</strong><span>context resources</span></div>
++        <div><strong>44</strong><span>purpose-built tools</span></div>
++        <div><strong>05</strong><span>context resources</span></div>
+         <div><strong>03</strong><span>connected domains</span></div>
+         <div class="metric-last">
+           <span class="metric-mark">↗</span
+@@ -240,9 +240,9 @@
+             </h2>
+           </div>
+           <p>
+-            Explore every registered tool in v0.2. Read the purpose, check its
+-            access requirements, then bring it into your own MCP-compatible
+-            assistant.
++            Explore every registered tool in trust preview. Read the purpose,
++            check its access requirements, then bring it into your own
++            MCP-compatible assistant.
+           </p>
+         </div>
+         <div class="catalog-controls">
+@@ -310,7 +310,7 @@
+           id="show-more"
+           hidden
+         >
+-          Show all 39 tools <span aria-hidden="true">↓</span></button
++          Show all 44 tools <span aria-hidden="true">↓</span></button
+         ><noscript
+           ><p>
+             The interactive catalog needs JavaScript.
+@@ -426,10 +426,11 @@
+           <div class="boundary-note">
+             <span aria-hidden="true">◇</span>
+             <p>
+-              <strong>Context, not custody.</strong> Autheo MCP v0.2 does not
+-              submit transactions, purchase resources, allocate capacity, or
+-              create deployments. Estimates are local calculations—not checkout
+-              quotes. Live access depends on your endpoints and permissions.
++              <strong>Context, not custody.</strong> Autheo MCP trust preview
++              does not submit transactions, purchase resources, allocate
++              capacity, or create deployments. Estimates are local
++              calculations—not checkout quotes. Live access depends on your
++              endpoints and permissions.
+             </p>
+           </div>
+         </div>
+@@ -460,7 +461,7 @@
+               >
+             </summary>
+             <p>
+-              Not with v0.2. Registered tools are read-only or local
++              Not with trust preview. Registered tools are read-only or local
+               simulations. Marketplace settlement records are inspected, not
+               payment-verified; DevHub deployments are inspected, not created.
+             </p>
+@@ -518,7 +519,7 @@
+     <footer class="footer wrap">
+       <a class="brand" href="#">autheo<span class="brand-tag">MCP</span></a>
+       <p>
+-        Frontend &amp; v0.2 integration by
++        Frontend &amp; trust preview integration by
+         <a href="https://github.com/SolutionsAsService"
+           >SolutionsAsService ↗</a
+         >
+diff --git a/frontend/scripts/catalog.py b/frontend/scripts/catalog.py
+index 021c529..a0227ef 100644
+--- a/frontend/scripts/catalog.py
++++ b/frontend/scripts/catalog.py
+@@ -29,7 +29,11 @@ def catalog():
+         if not any(isinstance(d, ast.Call) and isinstance(d.func, ast.Attribute) and isinstance(d.func.value, ast.Name) and d.func.value.id == "mcp" and d.func.attr == "tool" for d in item.decorator_list):
+             continue
+         name = item.name
+-        if name in CHAIN:
++        if name.startswith("autheo_agent_"):
++            category, access = "Utilities", "Optional local agent-environment snapshot, pinned issuer/public key/agent/environment, and trust dependencies. Read-only; never authorizes execution."
++            if name == "autheo_agent_trust_guide":
++                access = "Local setup documentation; no credentials or snapshot required."
++        elif name in CHAIN:
+             category, access = "Blockchain", "Configured CometBFT RPC or Cosmos REST endpoint. Network status also checks DevHub health."
+         elif name.startswith("autheo_devhub_") or name in LEGACY:
+             category, access = "DevHub", "Configured DevHub URL and Hive identity; scoped to the configured team."
+diff --git a/frontend/tests/content.test.mjs b/frontend/tests/content.test.mjs
+index cf49e86..8c6a1d4 100644
+--- a/frontend/tests/content.test.mjs
++++ b/frontend/tests/content.test.mjs
+@@ -6,8 +6,8 @@ const catalog = JSON.parse(
+   await readFile(new URL("../catalog.json", import.meta.url)),
+ );
+ test("catalog has unique names, complete metadata, and all supported domains", () => {
+-  assert.equal(catalog.length, 39);
+-  assert.equal(new Set(catalog.map((t) => t.name)).size, 39);
++  assert.equal(catalog.length, 44);
++  assert.equal(new Set(catalog.map((t) => t.name)).size, 44);
+   assert.deepEqual([...new Set(catalog.map((t) => t.category))].sort(), [
+     "Blockchain",
+     "DevHub",
+@@ -20,7 +20,7 @@ test("catalog has unique names, complete metadata, and all supported domains", (
+   }
+ });
+ test("search combines category and case-insensitive multiword queries", () => {
+-  assert.equal(filterTools(catalog, "All", "").length, 39);
++  assert.equal(filterTools(catalog, "All", "").length, 44);
+   assert.ok(
+     filterTools(catalog, "DevHub", "BUILD logs").some(
+       (t) => t.name === "autheo_devhub_get_build_logs",
+diff --git a/frontend/tests/site.spec.js b/frontend/tests/site.spec.js
+index 44eb558..dbaca70 100644
+--- a/frontend/tests/site.spec.js
++++ b/frontend/tests/site.spec.js
+@@ -4,9 +4,9 @@ test("catalog filtering, expansion, empty state and details work", async ({
+   page,
+ }) => {
+   await page.goto("./");
+-  await expect(page.locator("#tool-count")).toHaveText("39 tools · 6 shown");
+-  await page.getByRole("button", { name: "Show all 39 tools" }).click();
+-  await expect(page.locator(".tool-card")).toHaveCount(39);
++  await expect(page.locator("#tool-count")).toHaveText("44 tools · 6 shown");
++  await page.getByRole("button", { name: "Show all 44 tools" }).click();
++  await expect(page.locator(".tool-card")).toHaveCount(44);
+   await page.getByRole("button", { name: "DevHub", exact: true }).click();
+   await page.getByRole("searchbox").fill("build logs");
+   await expect(page.locator(".tool-card")).toHaveCount(1);
+@@ -18,7 +18,7 @@ test("catalog filtering, expansion, empty state and details work", async ({
+   await page.getByRole("searchbox").fill("nonexistent xyz");
+   await expect(page.locator("#empty-state")).toBeVisible();
+   await page.getByRole("button", { name: "Clear filters" }).click();
+-  await expect(page.locator("#tool-count")).toHaveText("39 tools · 6 shown");
++  await expect(page.locator("#tool-count")).toHaveText("44 tools · 6 shown");
+   await page.getByRole("link", { name: "Explore marketplace tools" }).click();
+   await expect(
+     page.getByRole("button", { name: "Marketplace", exact: true }),
+@@ -98,7 +98,7 @@ test("page is accessible, responsive, and makes no external service requests", a
+       external.push(request.url());
+   });
+   await page.goto("./");
+-  await expect(page.locator("#tool-count")).toHaveText("39 tools · 6 shown");
++  await expect(page.locator("#tool-count")).toHaveText("44 tools · 6 shown");
+   expect(
+     await page.evaluate(
+       () => document.documentElement.scrollWidth <= innerWidth,
+@@ -134,7 +134,7 @@ test("narrow screens and keyboard navigation remain usable", async ({
+ }) => {
+   await page.setViewportSize({ width: 320, height: 720 });
+   await page.goto("./");
+-  await expect(page.locator("#tool-count")).toHaveText("39 tools · 6 shown");
++  await expect(page.locator("#tool-count")).toHaveText("44 tools · 6 shown");
+   expect(
+     await page.evaluate(
+       () => document.documentElement.scrollWidth <= innerWidth,
+diff --git a/pyproject.toml b/pyproject.toml
+index 8711402..f108b7c 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
+ 
+ [project]
+ name = "autheo-mcp"
+-version = "0.2.0"
++version = "0.3.0a1"
+ description = "Model Context Protocol server for the Autheo blockchain, marketplace, DevHub, compute, storage, providers, nodes, and contracts."
+ readme = "README.md"
+ requires-python = ">=3.11"
+@@ -59,6 +59,8 @@ dependencies = [
+ 
+ [project.optional-dependencies]
+ 
++trust = ["PyJWT[crypto]>=2.10,<3"]
++
+ dev = [
+     "pytest>=8.0.0",
+     "pytest-asyncio>=0.23.0",
+diff --git a/review/smoke_upgrade.py b/review/smoke_upgrade.py
+index 4e77da0..cc7c7a6 100644
+--- a/review/smoke_upgrade.py
++++ b/review/smoke_upgrade.py
+@@ -130,7 +130,7 @@ async def main():
+                     await session.initialize()
+                     listing = await session.list_tools()
+                     names = {t.name for t in listing.tools}
+-                    assert len(names) == 39
++                    assert len(names) == 44
+                     data = {}
+                     for name in sorted(names):
+                         result = await session.call_tool(name, arguments.get(name, {}))
+@@ -146,6 +146,7 @@ async def main():
+                     invalid = await session.call_tool("autheo_marketplace_estimate_listing", {"listing_id": "l1", "quantity": 0})
+                     assert invalid.isError
+                     resources = await session.list_resources()
++                    assert len(resources.resources) == 5
+                     for resource in resources.resources:
+                         await session.read_resource(resource.uri)
+                     report["transports"][label] = {"tools": len(names), "successful_calls": len(data), "resources": len(resources.resources), "invalid_input_rejected": True}
+diff --git a/src/autheo_mcp/__init__.py b/src/autheo_mcp/__init__.py
+index 70e1870..7358379 100644
+--- a/src/autheo_mcp/__init__.py
++++ b/src/autheo_mcp/__init__.py
+@@ -4,4 +4,4 @@ Autheo MCP package.
+ 
+ from __future__ import annotations
+ 
+-__version__ = "0.2.0"
++__version__ = "0.3.0a1"
+diff --git a/src/autheo_mcp/server.py b/src/autheo_mcp/server.py
+index 45d1700..0cd6b33 100644
+--- a/src/autheo_mcp/server.py
++++ b/src/autheo_mcp/server.py
+@@ -24,6 +24,7 @@ from typing import Any
+ from mcp.server.fastmcp import FastMCP
+ from mcp.types import ToolAnnotations
+ 
++from autheo_mcp.services.agent_trust import AgentTrustReader, guide
+ from autheo_mcp.services.config import AutheoConfig
+ from autheo_mcp.services.devhub import DevHubClient, format_deployment, format_job, format_nodes
+ from autheo_mcp.services.marketplace import MarketplaceClient
+@@ -1101,6 +1102,45 @@ EXECUTE:
+ """.strip()
+ 
+ 
++@mcp.tool(annotations=READ_ONLY)
++async def autheo_agent_trust_guide() -> dict[str, Any]:
++    """Explain agent trust setup and boundaries. Does not issue identity, authority, or wallet access."""
++    return guide()
++
++
++@mcp.tool(annotations=READ_ONLY)
++async def autheo_agent_trust_status() -> dict[str, Any]:
++    """Inspect a pinned-issuer signed snapshot and audit summary. Never grants execution authority."""
++    return AgentTrustReader(_cfg).section("audit")
++
++
++@mcp.tool(annotations=READ_ONLY)
++async def autheo_agent_get_passport() -> dict[str, Any]:
++    """Read the configured agent's issuer-asserted identity, not a proof of legal ownership."""
++    return AgentTrustReader(_cfg).section("passport")
++
++
++@mcp.tool(annotations=READ_ONLY)
++async def autheo_agent_get_mandate() -> dict[str, Any]:
++    """Inspect scoped mandate and DEMO budget summary; no real wallet funds or approvals."""
++    return AgentTrustReader(_cfg).section("mandate")
++
++
++@mcp.tool(annotations=READ_ONLY)
++async def autheo_agent_list_receipts(limit: int = 20) -> dict[str, Any]:
++    """Read up to 20 signed-snapshot receipt summaries; not an independent action/chain proof."""
++    if type(limit) is not int or not 1 <= limit <= 20:
++        raise ValueError("Receipt limit must be between 1 and 20.")
++    return AgentTrustReader(_cfg).section("receipts", limit)
++
++
++@mcp.resource("autheo://agent-trust")
++async def autheo_agent_trust_resource() -> str:
++    """Local documentation of the external agent environment's trust boundary."""
++    import json
++    return json.dumps(guide(), indent=2)
++
++
+ # ============================================================================
+ # Entry Point
+ # ============================================================================
+diff --git a/src/autheo_mcp/services/agent_trust.py b/src/autheo_mcp/services/agent_trust.py
+new file mode 100644
+index 0000000..2c6db6f
+--- /dev/null
++++ b/src/autheo_mcp/services/agent_trust.py
+@@ -0,0 +1,161 @@
++"""Read-only bridge for externally signed local trust summaries, never authority issuance."""
++from __future__ import annotations
++
++import time
++from pathlib import Path
++from typing import Annotated, Any, Literal
++
++from pydantic import BaseModel, ConfigDict, Field
++
++from .config import AutheoConfig
++
++MAX_BYTES = 131072
++Identifier = Annotated[str, Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$")]
++Hash = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
++Amount = Annotated[int, Field(ge=0, le=10**15)]
++
++
++class StrictModel(BaseModel):
++    model_config = ConfigDict(extra="forbid", strict=True)
++
++
++class PassportSummary(StrictModel):
++    owner_id: Identifier
++    key_fingerprint: Hash
++    expires_at: int
++    ownership: Literal["configured_issuer_assertion"]
++
++
++class MandateSummary(StrictModel):
++    id: str = Field(min_length=1, max_length=64)
++    scopes: list[Identifier] = Field(min_length=1, max_length=5)
++    resources: list[Identifier] = Field(min_length=1, max_length=50)
++    asset: Literal["DEMO"]
++    per_action_minor: Amount
++    total_budget_minor: Amount
++    spent_minor: Amount
++    remaining_minor: Amount
++    expires_at: int
++    revoked: bool
++
++
++class AuditSummary(StrictModel):
++    head: Hash
++    count: int = Field(ge=0)
++    tamper_evident: Literal[True]
++    immutable: Literal[False]
++    externally_anchored: Literal[False]
++
++
++class ReceiptSummary(StrictModel):
++    sequence: int = Field(ge=1)
++    request_id: str = Field(min_length=1, max_length=128)
++    kind: Literal["simulation", "handoff_export", "handoff_import"]
++    decision: Literal["allow", "block", "escalate", "checkpoint_only"]
++    reasons: list[Identifier] = Field(min_length=1, max_length=10)
++    amount_minor: Amount
++    hash: Hash
++    previous_hash: Hash
++    executed: Literal[False]
++
++
++class Snapshot(StrictModel):
++    version: Literal[1]
++    mode: Literal["simulation_only"]
++    environment_id: Identifier
++    agent_id: Identifier
++    execution_authorized: Literal[False]
++    passport: PassportSummary
++    mandate: MandateSummary
++    audit: AuditSummary
++    receipts: list[ReceiptSummary] = Field(max_length=20)
++
++
++def guide() -> dict[str, Any]:
++    return {
++        "mode": "read_only_inspection", "execution_authorized": False,
++        "mcp_owns": ["signature/freshness verification of a pinned issuer's snapshot",
++                     "passport, mandate, simulated budget, and receipt summary inspection"],
++        "environment_owns": ["identity issuance and revocation", "policy evaluation and atomic budget accounting",
++                             "signed audit ledger", "one-time checkpoint handoffs"],
++        "not_implemented": ["wallet custody", "real payments", "live runtime migration", "immutable ledger",
++                            "real-world ownership verification", "cross-environment revocation service"],
++        "transport": "local signed snapshot file; no private key or access token passed through MCP",
++        "required_environment": ["AUTHEO_AGENT_TRUST_SNAPSHOT", "AUTHEO_AGENT_TRUST_PUBLIC_KEY",
++                                 "AUTHEO_AGENT_TRUST_ISSUER", "AUTHEO_AGENT_TRUST_KEY_ID",
++                                 "AUTHEO_AGENT_TRUST_SUBJECT", "AUTHEO_AGENT_TRUST_ENVIRONMENT"],
++        "installation": "python -m pip install -e '.[trust]'",
++        "audience": "autheo-mcp-readonly", "snapshot_max_age_seconds": 120,
++        "authority_note": "Signature verifies the configured issuer's assertion, not legal identity or permission to execute.",
++    }
++
++
++class AgentTrustReader:
++    def __init__(self, config: AutheoConfig):
++        self.config = config
++
++    @staticmethod
++    def bounded_file(path: str, maximum: int) -> bytes:
++        with Path(path).open("rb") as stream:
++            value = stream.read(maximum + 1)
++        if len(value) > maximum:
++            raise ValueError("File exceeds size limit")
++        return value
++
++    def read(self) -> dict[str, Any]:
++        cfg = self.config
++        if not all((cfg.agent_trust_snapshot, cfg.agent_trust_public_key, cfg.agent_trust_issuer,
++                    cfg.agent_trust_key_id, cfg.agent_trust_subject, cfg.agent_trust_environment)):
++            return {"status": "unconfigured", "execution_authorized": False,
++                    "detail": "Configure the external environment snapshot and pinned public trust anchor."}
++        try:
++            import jwt
++            from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
++            from cryptography.hazmat.primitives.serialization import load_pem_public_key
++        except ImportError:
++            return {"status": "unavailable", "execution_authorized": False,
++                    "detail": "Install the optional trust dependency group."}
++        try:
++            token = self.bounded_file(cfg.agent_trust_snapshot, MAX_BYTES).decode("ascii").strip()
++            key = load_pem_public_key(self.bounded_file(cfg.agent_trust_public_key, 4096))
++            if not isinstance(key, Ed25519PublicKey):
++                raise ValueError("Wrong key algorithm")
++            header = jwt.get_unverified_header(token)
++            if (header.get("typ") != "autheo-trust-snapshot+jwt"
++                    or header.get("kid") != cfg.agent_trust_key_id or header.get("crit")):
++                raise ValueError("Wrong token type or key")
++            claims = jwt.decode(token, key, algorithms=["EdDSA"], issuer=cfg.agent_trust_issuer,
++                                audience="autheo-mcp-readonly", subject=cfg.agent_trust_subject,
++                                options={"require": ["iss", "sub", "aud", "iat", "nbf", "exp", "jti", "body"],
++                                         "strict_aud": True})
++            now = int(time.time())
++            if (any(type(claims[k]) is not int for k in ("iat", "nbf", "exp"))
++                    or not 0 < claims["exp"] - claims["iat"] <= 120
++                    or claims["nbf"] != claims["iat"] or now - claims["iat"] > 120
++                    or not isinstance(claims["jti"], str) or not claims["jti"]):
++                raise ValueError("Invalid snapshot lifetime")
++            model = Snapshot.model_validate(claims["body"])
++            if (model.agent_id != cfg.agent_trust_subject or model.environment_id != cfg.agent_trust_environment
++                    or model.passport.expires_at <= now or model.mandate.expires_at <= now
++                    or model.mandate.remaining_minor != model.mandate.total_budget_minor - model.mandate.spent_minor
++                    or model.mandate.per_action_minor > model.mandate.total_budget_minor):
++                raise ValueError("Invalid snapshot identity, budget, or validity")
++            return {"status": "verified_snapshot", "execution_authorized": False,
++                    "issuer": cfg.agent_trust_issuer, "issued_at": claims["iat"], "expires_at": claims["exp"],
++                    "verification_scope": "snapshot signature and schema; receipt chain verified by external issuer, not independently by MCP",
++                    "data": model.model_dump()}
++        except Exception:
++            # No file paths, raw tokens, PEM contents, or exception bodies in tool output.
++            return {"status": "invalid_snapshot", "execution_authorized": False,
++                    "detail": "Snapshot unreadable, stale, mismatched, or not verifiable against the pinned trust anchor."}
++
++    def section(self, section: str, limit: int = 20) -> dict[str, Any]:
++        result = self.read()
++        if result["status"] != "verified_snapshot":
++            return result
++        data = result.pop("data")
++        result["agent_id"] = data["agent_id"]
++        result["environment_id"] = data["environment_id"]
++        result["mode"] = data["mode"]
++        result[section] = data[section][-limit:] if section == "receipts" else data[section]
++        return result
+diff --git a/src/autheo_mcp/services/config.py b/src/autheo_mcp/services/config.py
+index 0291e88..0bac846 100644
+--- a/src/autheo_mcp/services/config.py
++++ b/src/autheo_mcp/services/config.py
+@@ -74,6 +74,14 @@ class AutheoConfig:
+             "AUTHEO_MARKETPLACE_HMAC_SECRET", ""
+         )
+ 
++        # Read-only external agent-environment inspection. No private signing material.
++        self.agent_trust_snapshot = _env("AUTHEO_AGENT_TRUST_SNAPSHOT")
++        self.agent_trust_public_key = _env("AUTHEO_AGENT_TRUST_PUBLIC_KEY")
++        self.agent_trust_issuer = _env("AUTHEO_AGENT_TRUST_ISSUER")
++        self.agent_trust_key_id = _env("AUTHEO_AGENT_TRUST_KEY_ID")
++        self.agent_trust_subject = _env("AUTHEO_AGENT_TRUST_SUBJECT")
++        self.agent_trust_environment = _env("AUTHEO_AGENT_TRUST_ENVIRONMENT")
++
+         # Request timeouts.
+         self.timeout: float = float(_env("AUTHEO_REQUEST_TIMEOUT", "30"))
+ 
+diff --git a/tests/test_agent_trust.py b/tests/test_agent_trust.py
+new file mode 100644
+index 0000000..146d9ca
+--- /dev/null
++++ b/tests/test_agent_trust.py
+@@ -0,0 +1,130 @@
++import json
++import time
++from types import SimpleNamespace
++
++import jwt
++import pytest
++from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
++from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
++
++from autheo_mcp.services.agent_trust import AgentTrustReader
++
++
++@pytest.fixture
++def snapshot(tmp_path):
++    key = Ed25519PrivateKey.generate()
++    cfg = SimpleNamespace(agent_trust_snapshot=str(tmp_path / "snapshot.jwt"),
++                          agent_trust_public_key=str(tmp_path / "public.pem"), agent_trust_issuer="test-issuer",
++                          agent_trust_key_id="test-key", agent_trust_subject="agent:test",
++                          agent_trust_environment="env:test")
++    (tmp_path / "public.pem").write_bytes(key.public_key().public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo))
++    now = int(time.time())
++    body = {"version": 1, "mode": "simulation_only", "environment_id": "env:test", "agent_id": "agent:test",
++            "execution_authorized": False,
++            "passport": {"owner_id": "owner:test", "key_fingerprint": "1" * 64, "expires_at": now + 600,
++                         "ownership": "configured_issuer_assertion"},
++            "mandate": {"id": "mandate:test", "scopes": ["marketplace.read"], "resources": ["listing:test"],
++                        "asset": "DEMO", "per_action_minor": 50, "total_budget_minor": 100,
++                        "spent_minor": 40, "remaining_minor": 60, "expires_at": now + 600, "revoked": False},
++            "audit": {"head": "2" * 64, "count": 1, "tamper_evident": True, "immutable": False,
++                      "externally_anchored": False},
++            "receipts": [{"sequence": 1, "request_id": "request:test", "kind": "simulation", "decision": "allow",
++                          "reasons": ["within_demo_policy"], "amount_minor": 40, "hash": "2" * 64,
++                          "previous_hash": "0" * 64, "executed": False}]}
++    claims = dict(iss="test-issuer", sub="agent:test", aud="autheo-mcp-readonly", iat=now, nbf=now,
++                  exp=now + 120, jti="snapshot:test", body=body)
++    headers = {"typ": "autheo-trust-snapshot+jwt", "kid": "test-key"}
++    def write(claims_override=None, headers_override=None, signing_key=None):
++        token = jwt.encode(claims_override or claims, signing_key or key, algorithm="EdDSA",
++                           headers=headers_override or headers)
++        (tmp_path / "snapshot.jwt").write_text(token)
++    write()
++    return cfg, claims, headers, write
++
++
++def test_valid_readonly_snapshot(snapshot):
++    cfg, _, _, _ = snapshot
++    reader = AgentTrustReader(cfg)
++    result = reader.section("mandate")
++    assert result["status"] == "verified_snapshot"
++    assert result["mandate"]["remaining_minor"] == 60
++    assert result["execution_authorized"] is False
++    assert "receipt chain verified by external issuer" in result["verification_scope"]
++    assert "data" not in result and "trust-snapshot" not in json.dumps(result)
++
++
++@pytest.mark.parametrize("field,value", [("iss", "attacker"), ("aud", "wallet"), ("sub", "agent:other"),
++                                         ("exp", 1), ("nbf", 9999999999), ("iat", True), ("jti", "")])
++def test_reject_claim_confusion(snapshot, field, value):
++    cfg, claims, _, write = snapshot
++    claims[field] = value
++    write()
++    assert AgentTrustReader(cfg).read()["status"] == "invalid_snapshot"
++
++
++@pytest.mark.parametrize("field,value", [("typ", "autheo-mandate+jwt"), ("kid", "not-pinned"), ("crit", ["x"])] )
++def test_reject_wrong_header(snapshot, field, value):
++    cfg, _, headers, write = snapshot
++    headers[field] = value
++    write()
++    assert AgentTrustReader(cfg).read()["status"] == "invalid_snapshot"
++
++
++def test_foreign_signature_and_oversized_file(snapshot):
++    cfg, _, _, write = snapshot
++    write(signing_key=Ed25519PrivateKey.generate())
++    assert AgentTrustReader(cfg).read()["status"] == "invalid_snapshot"
++    with open(cfg.agent_trust_snapshot, "w") as stream:
++        stream.write("x" * 131073)
++    assert AgentTrustReader(cfg).read()["status"] == "invalid_snapshot"
++
++
++@pytest.mark.parametrize("change", ["authority", "environment", "balance", "extra_secret", "expired_mandate", "real_asset", "long_lifetime"])
++def test_reject_invalid_payload(snapshot, change):
++    cfg, claims, _, write = snapshot
++    if change == "authority":
++        claims["body"]["execution_authorized"] = True
++    elif change == "environment":
++        claims["body"]["environment_id"] = "env:other"
++    elif change == "balance":
++        claims["body"]["mandate"]["remaining_minor"] = 999
++    elif change == "extra_secret":
++        claims["body"]["private_key"] = "must-not-leak"
++    elif change == "expired_mandate":
++        claims["body"]["mandate"]["expires_at"] = 1
++    elif change == "real_asset":
++        claims["body"]["mandate"]["asset"] = "THEO"
++    else:
++        claims["exp"] = claims["iat"] + 121
++    write()
++    result = AgentTrustReader(cfg).read()
++    assert result["status"] == "invalid_snapshot"
++    assert "must-not-leak" not in json.dumps(result) and cfg.agent_trust_snapshot not in json.dumps(result)
++
++
++def test_revoked_status_is_inspectable_not_authority(snapshot):
++    cfg, claims, _, write = snapshot
++    claims["body"]["mandate"]["revoked"] = True
++    write()
++    result = AgentTrustReader(cfg).section("mandate")
++    assert result["mandate"]["revoked"] is True and result["execution_authorized"] is False
++
++
++def test_unconfigured(snapshot):
++    cfg, _, _, _ = snapshot
++    cfg.agent_trust_subject = ""
++    assert AgentTrustReader(cfg).read()["status"] == "unconfigured"
++
++
++@pytest.mark.asyncio
++async def test_tools_use_only_operator_context_and_validate_limits(snapshot, monkeypatch):
++    from autheo_mcp import server
++    cfg, _, _, _ = snapshot
++    monkeypatch.setattr(server, "_cfg", cfg)
++    assert (await server.autheo_agent_trust_status())["status"] == "verified_snapshot"
++    assert (await server.autheo_agent_get_passport())["passport"]["owner_id"] == "owner:test"
++    assert (await server.autheo_agent_get_mandate())["mandate"]["asset"] == "DEMO"
++    assert len((await server.autheo_agent_list_receipts(1))["receipts"]) == 1
++    for limit in (0, 21, True):
++        with pytest.raises(ValueError):
++            await server.autheo_agent_list_receipts(limit)
+diff --git a/tests/test_integration_contracts.py b/tests/test_integration_contracts.py
+index a60cac2..40b07ac 100644
+--- a/tests/test_integration_contracts.py
++++ b/tests/test_integration_contracts.py
+@@ -234,7 +234,7 @@ def test_config_redacts_url_secrets(cfg):
+ async def test_mcp_surface_has_annotations_and_no_mutations():
+     tools = await server.mcp.list_tools()
+     names = {tool.name for tool in tools}
+-    assert len(names) == 39
++    assert len(names) == 44
+     assert "autheo_marketplace_list_listings" in names
+     assert not any("create_payment" in name or "submit_allocation" in name for name in names)
+     assert all(tool.annotations.readOnlyHint for tool in tools)
+-- 
+2.43.0
+

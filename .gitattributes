@@ -1,0 +1,2 @@
+# Patch context lines and the mail signature separator contain meaningful spaces.
+integrations/*.patch -whitespace
