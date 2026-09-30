@@ -65,11 +65,12 @@ checks signatures and links, not current token authorization or real-world actio
 
 ## Connect to the MCP prototype
 
-Use the sibling MCP checkout/patch on branch `feat/agent-trust-inspection`.
+Use current `main` from [ThothDivision/autheo-mcp](https://github.com/ThothDivision/autheo-mcp), which includes the trust inspection tools.
 This is **not** an automatically installed OpenClaw connector or a live service.
 
 ```sh
-python -m pip install -e /path/to/autheo-mcp-agent-trust'[dev,trust]'
+git clone https://github.com/ThothDivision/autheo-mcp.git ../autheo-mcp
+python -m pip install -e '../autheo-mcp[dev,trust]'
 python review/smoke_mcp_bridge.py
 ```
 
@@ -104,3 +105,12 @@ Dependencies reuse PyJWT/cryptography for standard JWS/Ed25519 and Pydantic for
 strict schemas. The small in-process policy evaluator is an inspectable reference
 model; use a governed policy engine and separately isolated issuer/signer in a
 production control plane. No custom cryptographic algorithm is implemented.
+
+## Dev Portal / Layer 0
+
+See the [integration design and acceptance gates](docs/DEV-PORTAL-LAYER0.md).
+The target integration is planned; this release is still a local reference prototype.
+
+- [Source repository](https://github.com/SolutionsAsService/autheo-agent-environment)
+- [Explanatory website source](https://github.com/SolutionsAsService/autheo-agent-environment-site)
+- [Autheo MCP](https://github.com/ThothDivision/autheo-mcp)
