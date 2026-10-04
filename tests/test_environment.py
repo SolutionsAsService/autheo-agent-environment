@@ -186,6 +186,50 @@ def test_expiry_and_future_validity(setup):
             s["source"].simulate(s["passport"], expired, token)
 
 
+def test_small_clock_skew_is_tolerated_but_expiry_remains_strict(setup):
+    session = setup
+    original = jwt.decode(session["mandate"], options={"verify_signature": False})
+    now = int(time.time())
+    original.update(iat=now + 2, nbf=now + 2, exp=now + 3602)
+    token = jwt.encode(
+        original,
+        session["authority"].key,
+        algorithm="EdDSA",
+        headers=jwt.get_unverified_header(session["mandate"]),
+    )
+    assert verify(
+        token, "mandate", session["authority"].public_key, "issuer:demo", "env:one"
+    )["iat"] == now + 2
+
+    original.update(iat=now + 10, nbf=now + 10, exp=now + 3610)
+    future_token = jwt.encode(
+        original,
+        session["authority"].key,
+        algorithm="EdDSA",
+        headers=jwt.get_unverified_header(session["mandate"]),
+    )
+    with pytest.raises(jwt.ImmatureSignatureError):
+        verify(
+            future_token,
+            "mandate",
+            session["authority"].public_key,
+            "issuer:demo",
+            "env:one",
+        )
+
+    expired_token = resign(
+        session, session["mandate"], iat=now - 4000, nbf=now - 4000, exp=now - 1
+    )
+    with pytest.raises(jwt.ExpiredSignatureError):
+        verify(
+            expired_token,
+            "mandate",
+            session["authority"].public_key,
+            "issuer:demo",
+            "env:one",
+        )
+
+
 def test_foreign_key_cannot_impersonate_agent(setup):
     s = setup
     other = Signer.generate(s["agent"].issuer)

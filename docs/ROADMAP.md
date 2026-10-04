@@ -6,9 +6,9 @@ service contracts, risk register, owner questions, and phase details are in
 
 ## Phase 0 — reference simulation (implemented)
 
-Signed local demo passport → scoped mandate → signed request → simulated
-allow/escalate/block → integer `DEMO` budget → signed receipt → checkpoint
-reference → read-only MCP snapshot.
+CLI and loopback browser walkthrough over a signed local demo passport → scoped
+mandate → signed request → simulated allow/escalate/block → integer `DEMO` budget
+→ signed receipt → checkpoint reference → read-only MCP snapshot.
 
 Gate: tamper, context, expiry, replay, budget, concurrency, audit, and checkpoint
 tests pass. No live identity, execution, money, runtime, or migration claim.

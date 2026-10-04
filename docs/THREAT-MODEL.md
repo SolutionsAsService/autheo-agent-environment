@@ -9,6 +9,8 @@ or its key material and expect this library to contain it.
 
 - Foreign agent keys, unknown issuer/key ID, wrong subject/audience/environment,
   wrong token type/algorithm, future validity, expiry and overlong validity fail.
+- `iat` / `nbf` claims allow at most two seconds of positive clock skew; expiry
+  validation remains strict. Issuer and verifier clocks still need synchronization.
 - Request signatures bind the proposed action to the passport's agent key.
 - Strict integer DEMO budgets reject negative amounts, floats, booleans and strings.
 - Scope/resource denial, cumulative cap, per-action cap, review threshold, local

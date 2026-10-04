@@ -17,9 +17,13 @@ dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.scripts]
 autheo-agent-demo = "autheo_agent_environment.demo:main"
+autheo-agent-web-demo = "autheo_agent_environment.webapp:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+autheo_agent_environment = ["web/*.html", "web/*.css", "web/*.js"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

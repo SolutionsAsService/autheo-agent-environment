@@ -18,7 +18,20 @@ python -m pytest -q
 ```
 
 Run those Python commands inside the activated environment, or use its executable
-path explicitly. Python 3.11+ is required. The demo makes **no network calls**.
+path explicitly. Python 3.11+ is required. The CLI demo makes **no network
+calls**; the browser walkthrough serves its UI locally over loopback only.
+
+Start the interactive browser walkthrough with:
+
+```sh
+python -m autheo_agent_environment.webapp
+```
+
+Open `http://127.0.0.1:8765/`. The web demo binds only to loopback, creates
+ephemeral identities and a temporary local ledger, and clears its state when the
+server stops. It uses the same policy simulator as the CLI; it does not create a
+DID, connect to Autheo, approve an escalation, or execute a tool, workload, or
+transaction. To choose another local port, use `--port 8766`.
 
 The demo:
 

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="__AUTHEO_DEMO_TOKEN__">
+    <meta name="theme-color" content="#0a1119">
+    <title>Autheo Agent Trust · Local Demo</title>
+    <link rel="stylesheet" href="/assets/app.css">
+    <script src="/assets/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-frame">
+      <header class="topbar">
+        <a class="wordmark" href="/" aria-label="Autheo Agent Trust home">
+          <span class="mark" aria-hidden="true">A</span>
+          <span>AUTHEO <span class="wordmark-light">/ TRUST</span></span>
+        </a>
+        <div class="topbar-meta">
+          <span class="local-indicator"><span class="live-dot"></span> LOCAL DEMO</span>
+          <span class="separator" aria-hidden="true"></span>
+          <span class="environment">env:research</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">AGENT TRUST LAYER <span>·</span> REFERENCE WORKSPACE</p>
+            <h1 id="page-title">Authority you can inspect.</h1>
+            <p class="intro-copy">Walk a signed demo request through identity, mandate, deterministic policy, budget, and an auditable decision.</p>
+          </div>
+          <div class="execution-badge">
+            <span class="badge-icon" aria-hidden="true">Ⅱ</span>
+            <span><strong>SIMULATION ONLY</strong><small>No action executes</small></span>
+          </div>
+        </section>
+
+        <section class="flow-card" aria-labelledby="flow-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">TRUST FLOW</p>
+              <h2 id="flow-title">From identity to proof</h2>
+            </div>
+            <span class="flow-caption">A request is not an execution</span>
+          </div>
+          <ol class="trust-flow">
+            <li class="flow-step is-complete"><span class="step-index">01</span><strong>Identity</strong><small>demo issuer</small></li>
+            <li class="flow-step is-complete"><span class="step-index">02</span><strong>Authority</strong><small>scoped mandate</small></li>
+            <li class="flow-step"><span class="step-index">03</span><strong>Budget</strong><small>DEMO units</small></li>
+            <li class="flow-step"><span class="step-index">04</span><strong>Policy</strong><small>allow / review / block</small></li>
+            <li class="flow-step"><span class="step-index">05</span><strong>Simulate</strong><small>no dispatch</small></li>
+            <li class="flow-step"><span class="step-index">06</span><strong>Prove</strong><small>signed receipt</small></li>
+          </ol>
+        </section>
+
+        <section class="identity-grid" aria-label="Demo principals and mandate">
+          <article class="data-card principal-card">
+            <div class="card-topline"><span class="eyebrow">ACCOUNTABLE OWNER</span><span class="tag">ISSUER ASSERTION</span></div>
+            <h2 id="owner-id" class="mono">Loading…</h2>
+            <p>Local demo principal <span class="subtle">· not a verified human identity</span></p>
+          </article>
+          <article class="data-card principal-card">
+            <div class="card-topline"><span class="eyebrow">AGENT SUBJECT</span><span class="tag">EPHEMERAL KEY</span></div>
+            <h2 id="agent-id" class="mono">Loading…</h2>
+            <p>Signed request proof <span class="subtle">· not a DID</span></p>
+          </article>
+          <article class="data-card mandate-card">
+            <div class="card-topline"><span class="eyebrow">DEMO MANDATE</span><span class="tag tag-teal">ACTIVE · LOCAL</span></div>
+            <div class="mandate-data">
+              <div><span class="label">PER ACTION</span><strong id="per-action">—</strong></div>
+              <div><span class="label">TOTAL CAP</span><strong id="total-cap">—</strong></div>
+              <div><span class="label">REVIEW ABOVE</span><strong>50</strong></div>
+            </div>
+            <div class="budget-row"><span>Simulated budget used</span><span id="budget-label">—</span></div>
+            <progress class="budget-track" id="budget-progress" value="0" max="100" aria-label="Simulated budget used">0%</progress>
+          </article>
+        </section>
+
+        <section class="workspace-grid">
+          <article class="data-card request-card">
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">REQUEST CONSOLE</p><h2>Try a policy decision</h2></div>
+              <span class="request-number">01 / 01</span>
+            </div>
+            <p class="card-description">The server signs this request with the ephemeral demo agent key, then submits it to the existing policy simulator.</p>
+            <form id="request-form">
+              <label for="action">Requested capability</label>
+              <select id="action" name="action">
+                <option value="compute.simulate">compute.simulate</option>
+                <option value="marketplace.read">marketplace.read</option>
+                <option value="chain.read">chain.read · outside mandate</option>
+              </select>
+              <label for="resource">Target resource</label>
+              <select id="resource" name="resource">
+                <option value="listing:demo-01">listing:demo-01 · in mandate</option>
+                <option value="listing:outside-scope">listing:outside-scope · outside mandate</option>
+              </select>
+              <div class="amount-label"><label for="amount">Requested budget units</label><span>Integer · DEMO only</span></div>
+              <input id="amount" name="amount_minor" type="number" min="0" max="1000" step="1" value="40" required>
+              <button class="primary-button" type="submit"><span>Evaluate request</span><span aria-hidden="true">↗</span></button>
+              <button class="secondary-button" id="sample-sequence" type="button">Run allow → review → block sample</button>
+              <p class="form-note">This interface cannot approve an escalated request or execute an external action.</p>
+            </form>
+          </article>
+
+          <article class="data-card decision-card" aria-live="polite" aria-atomic="true">
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">LATEST POLICY RESULT</p><h2 id="decision-title">Awaiting request</h2></div>
+              <span id="decision-state" class="decision-state state-idle">IDLE</span>
+            </div>
+            <p id="decision-summary" class="decision-summary">Choose a request to see the decision and its recorded reasons.</p>
+            <dl id="result-details" class="result-details">
+              <div><dt>Request</dt><dd>—</dd></div>
+              <div><dt>Budget</dt><dd>—</dd></div>
+              <div><dt>Execution</dt><dd>Not authorized</dd></div>
+            </dl>
+            <div class="decision-boundary"><span class="boundary-icon" aria-hidden="true">!</span><span><strong>Simulation boundary</strong><small>An “allow” reserves demo budget only. It does not call a tool, submit a transaction, or run a workload.</small></span></div>
+          </article>
+        </section>
+
+        <section class="data-card receipt-card" aria-labelledby="receipts-title">
+          <div class="section-heading compact-heading">
+            <div><p class="eyebrow">EVIDENCE LEDGER</p><h2 id="receipts-title">Signed decision receipts</h2></div>
+            <span id="receipt-count" class="receipt-count">0 RECORDS</span>
+          </div>
+          <p class="card-description">Hash-linked records from this temporary session. Local and tamper-evident, but not immutable or externally anchored.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>SEQ</th><th>REQUEST</th><th>DECISION</th><th>DEMO UNITS</th><th>EXECUTED</th><th>RECEIPT HASH</th></tr></thead>
+              <tbody id="receipt-rows"><tr class="empty-row"><td colspan="6">No requests recorded in this session.</td></tr></tbody>
+            </table>
+          </div>
+          <div class="ledger-foot"><span><span class="mini-dot"></span> SIGNED · HASH-LINKED</span><span id="audit-head" class="mono">HEAD —</span></div>
+        </section>
+
+        <section class="security-strip" aria-label="Security boundary notes">
+          <div><span class="security-number">A</span><span><strong>Identity is not authority</strong><small>DIDs and real credential resolution are not implemented here.</small></span></div>
+          <div><span class="security-number">B</span><span><strong>Policy is not execution</strong><small>This single-host prototype has no executor or production security boundary.</small></span></div>
+          <div><span class="security-number">C</span><span><strong>Controls are layered</strong><small>No single guardrail guarantees prevention, detection, or recovery.</small></span></div>
+        </section>
+      </main>
+      <footer><span>AUTHEO AGENT ENVIRONMENT</span><span>REFERENCE SIMULATOR · DATA CLEARS WHEN SERVER STOPS</span></footer>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </div>
+  </body>
+</html>

@@ -44,6 +44,11 @@ The current `0.1` code is a useful **single-host Python reference simulation**:
 - The optional Autheo MCP branch exposes five read/local-inspection tools and
   one resource from a short-lived signed snapshot. It does not authorize or
   intercept other MCP operations.
+- A loopback-only browser workspace lets a user submit a typed request to the
+  same local simulator and inspect the decision, demo budget, and signed
+  hash-linked receipt. Ephemeral keys/tokens remain server-side; session data is
+  temporary. The browser surface does not create DIDs, collect human approval,
+  or dispatch actions.
 - Automated checks exercise the local simulator and MCP bridge; see
   `docs/VERIFICATION.md` for the recorded evidence and limits.
 

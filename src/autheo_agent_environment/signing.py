@@ -13,6 +13,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 
 MAX_TOKEN_BYTES = 131072
+CLOCK_SKEW_SECONDS = 2
 MAX_TTL = {
     "passport": 86400,
     "mandate": 3600,
@@ -99,12 +100,17 @@ def verify(
         audience=audience,
         options={
             "require": ["iss", "sub", "aud", "iat", "nbf", "exp", "jti", "body"],
+            "verify_iat": False,
+            "verify_nbf": False,
             "verify_exp": not historical,
             "strict_aud": True,
         },
     )
     if any(type(claims[k]) is not int for k in ("iat", "nbf", "exp")):
         raise ValueError("Timestamps must be integer seconds")
+    now = int(time.time())
+    if claims["iat"] > now + CLOCK_SKEW_SECONDS or claims["nbf"] > now + CLOCK_SKEW_SECONDS:
+        raise jwt.ImmatureSignatureError("Token validity starts too far in the future")
     if not 0 < claims["exp"] - claims["iat"] <= MAX_TTL[kind] or claims["nbf"] != claims["iat"]:
         raise ValueError("Invalid token validity window")
     if not isinstance(claims["body"], dict) or not isinstance(claims["jti"], str) or not claims["jti"]:
