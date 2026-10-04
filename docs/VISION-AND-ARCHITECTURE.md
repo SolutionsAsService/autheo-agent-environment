@@ -1,5 +1,10 @@
 # From the vision to a product architecture
 
+This file documents the original reference flow. The expanded, repo-grounded
+plan and product boundaries are now in [PRODUCT-PLAN.md](PRODUCT-PLAN.md), with
+the [north-star SVG](AUTHEO-AGENT-TRUST-ARCHITECTURE.svg). Neither describes a
+live Autheo integration.
+
 Goal: give an agent a bounded, inspectable way to represent who authorized its work,
 what it may attempt, what it simulated, and which checkpoint can cross environments.
 

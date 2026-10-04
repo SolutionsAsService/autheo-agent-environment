@@ -1,72 +1,92 @@
 # Roadmap with verification gates
 
-## Phase 0 — demonstrated locally
+This is the concise delivery sequence. The full product scope, boundaries,
+service contracts, risk register, owner questions, and phase details are in
+[PRODUCT-PLAN.md](PRODUCT-PLAN.md).
 
-Signed agent passport → scoped mandate → signed request → allow/escalate/block →
-DEMO budget accounting → signed receipt → checkpoint handoff → read-only MCP view.
+## Phase 0 — reference simulation (implemented)
 
-Gate: tamper/context/expiry/replay/budget/concurrency tests plus real stdio checks
-through both MCP launch methods. No live Autheo or wallet claim is permitted.
+Signed local demo passport → scoped mandate → signed request → simulated
+allow/escalate/block → integer `DEMO` budget → signed receipt → checkpoint
+reference → read-only MCP snapshot.
 
-## Phase 1 — organizational identity and consent
+Gate: tamper, context, expiry, replay, budget, concurrency, audit, and checkpoint
+tests pass. No live identity, execution, money, runtime, or migration claim.
 
-Integrate OIDC owner authentication and workload identity (SPIFFE/SPIRE where
-appropriate); separate issuer and runtime roles. A reviewed structured mandate
-records owner, agent key, exact resources, allowed actions, environment, expiry,
-policy version, risk threshold and revocation reference. Build a review queue with
-human decisions bound to one immutable request digest and expiry.
+## Phase A — contracts and product decisions
 
-Gate: an agent cannot enroll its own owner, extend scope or self-approve. Revocation
-and key rotation are proven across two independent runtimes and restarted services.
+Confirm actual Autheo identity/credential, Dev Portal, Marketplace, Layer 1,
+compute runtime/attestation, privacy and operational contracts. Define the first
+action class, owner, threat model, risk tiers, API schemas, degraded modes and
+service owners.
 
-## Phase 2 — real environment admission / transition
+Gate: responsible platform owners approve versioned contracts; unknowns remain
+explicit and no endpoints or DID semantics are guessed.
 
-Implement runtime adapters for the actual agent host (OpenClaw, container worker,
-or another chosen runtime). Bind checkpoints to artifact digests and environment
-capabilities. Reauthenticate at the destination; fetch fresh local secrets from a
-credential broker. Fence/suspend the source before resuming the destination.
+## Phase B — human, organization, and agent identity
 
-Gate: crash/retry tests prove no double resume or duplicated side effect; wrong
-image, untrusted artifact, expired grant and unreachable revocation service fail
-closed. No secrets cross in a checkpoint bundle.
+Add pluggable identity and credential adapters, distinct human/org/agent
+principals, key binding and lifecycle, operator-controlled trust roots, consent,
+tenant boundaries, rotation, revocation and audit. Retain the current local demo
+as a separate adapter.
 
-## Phase 3 — governed Autheo read execution
+Gate: adversarial tests cover issuer/controller/key confusion, stale/revoked
+credentials, tenant crossing, key rotation, privacy minimization and issuer
+rollover. Identity alone grants no authority.
 
-Route selected DevHub/Marketplace reads through a real policy enforcement point,
-using service-specific credentials. Adopt OPA/Cedar-like policy evaluation behind
-a versioned interface rather than growing the demo evaluator into a general engine.
+## Phase C — mandates and enforcing guardrails
 
-Gate: tool bypass cannot evade enforcement; subject, resource, tenant, team and
-credential audiences are checked at the actual service boundary. Existing MCP
-read-only behavior remains available without the optional trust integration.
+Version the Agent Guardrail Interface; add request-digest-bound human approvals,
+deterministic policy, atomic reservations, budgets, rate/concurrency limits,
+policy rollout and revocation checks. Enforce at each consequential executor,
+immediately before dispatch.
 
-## Phase 4 — wallet and payments (separate signer)
+Gate: no alternate-route bypass, self-approval, delegated privilege expansion,
+overspend, stale approval replay or silent allow when authority is unavailable.
 
-Use an operator-approved Autheo-compatible signer, governed key custody, explicit
-asset/network/recipient allowlists, exact base units, max fees, budget reservation,
-idempotency, commit/release and reconciliation. Identity Ed25519 keys here are
-**not** Autheo transaction-signing keys. Integrate only against documented live
-settlement contracts and testnet endpoints first.
+## Phase D — runtime, detection, containment, and recovery
 
-Gate: tests cover key isolation, cap enforcement under concurrency, wrong chain,
-wrong asset, fee growth, replayed transaction intents, failed/uncertain submission,
-reorg/finality and refunds. A human approves real-funds activation separately.
+Integrate one confirmed runtime through a narrow adapter with workload
+attestation, isolation, secret brokerage, short-lived credentials, correlated
+monitoring, owner/on-call, kill switch, evidence preservation, rollback and
+reconciliation.
 
-## Phase 5 — externally verifiable assurance
+Gate: fault injection and incident exercises prove safe behavior for compromised
+runtime, authority outage, restart, duplicate/partial execution, stale policy,
+uncertain outcome and containment without agent cooperation.
 
-Export signed receipt digests to a privacy-reviewed transparency service or
-append-only store; optionally anchor batches on-chain. Retain execution evidence
-from the real executor and link its digest to the mandate and final receipt.
+## Phase E — Hyperliquid external venue sandbox
 
-Gate: independent verifier detects modified events, missing tails, rollback and
-conflicting heads. Evidence distinguishes requested, authorized, submitted,
-executed, settled and reversed states. Only then consider stronger audit claims.
+Implement separate venue and funding adapter contracts using verified official
+interfaces. Start dry-run/sandbox/testnet only; isolate signing; constrain venue,
+instrument, asset, size, exposure, fee, slippage, rate and time. Reconcile order,
+fill, cancel, balance, position and uncertain outcomes. Hyperliquid is external to
+Autheo; trading authority does not imply transfer/funding authority.
 
-## Phase 6 — agent-to-agent economy
+Gate: reproducible end-to-end sandbox tests cover approval/denial, duplicate
+intent, timeout, partial fill, cancellation race, outage and reconciliation. No
+live funds are enabled.
 
-Add authenticated agent discovery, task negotiation and narrow delegated grants.
-MCP supplies tools/context; an A2A-style protocol handles cross-agent task lifecycle.
-Wallet/payment adapters remain optional and separately governed.
+## Phase F — production readiness and bounded activation
 
-Gate: delegation can only attenuate; unknown agents and cross-tenant requests are
-isolated; retries and disputes have attributable, independently checkable receipts.
+Complete independent security, custody, privacy/legal, operational, supply-chain,
+penetration, monitoring, disaster-recovery and incident-response reviews. Verify
+Autheo-supported test network behavior, contract finality, replay and audit
+privacy. Require staged caps and separate activation approvals.
+
+Gate: reproducible evidence, named risk owners, tested rollback, and explicit
+security/product/custody approvals. Testnet success is not launch approval.
+
+## Phase G — expand adapters and delegation
+
+Add further compute, Marketplace, MCP, AI provider, chain and venue adapters only
+with typed contracts, threat review, least privilege, lifecycle/reconciliation
+tests, and an accountable owner. Consider cross-agent delegation only after core
+identity, enforcement and recovery are proven; delegated scope can only narrow.
+
+## Always-on rule
+
+`Prevent → Control → Detect → Contain → Recover → Learn` is continuous across all
+phases. Controls reduce likelihood and impact; they do not promise that every
+attack is stopped or detected. A named human owner remains accountable for each
+production agent and its authority.

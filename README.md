@@ -96,10 +96,17 @@ Snapshot inspection does **not** enforce policy on existing read-only MCP tools.
 
 ## Architecture and next steps
 
+- [Product plan, current-state audit, DID model, security layers, Hyperliquid flow, and phased acceptance gates](docs/PRODUCT-PLAN.md)
+- [Autheo Agent Trust north-star architecture diagram](docs/AUTHEO-AGENT-TRUST-ARCHITECTURE.svg)
 - [Vision mapped into components](docs/VISION-AND-ARCHITECTURE.md)
 - [Threat model and honest limits](docs/THREAT-MODEL.md)
 - [Implementation phases and acceptance gates](docs/ROADMAP.md)
 - [Existing open-source building blocks](docs/EXISTING-SOLUTIONS.md)
+
+The next proposed work is contract discovery with Autheo identity, Dev Portal,
+Marketplace, Layer 1, and compute-mesh owners. The roadmap intentionally does not
+assume a DID method, chain interface, Hyperliquid endpoint, or production executor
+that has not been confirmed.
 
 Dependencies reuse PyJWT/cryptography for standard JWS/Ed25519 and Pydantic for
 strict schemas. The small in-process policy evaluator is an inspectable reference
