@@ -152,9 +152,9 @@ anchor stored independently of the ledger host (`ledger anchor` /
 
 * Body documents carry `schema_version` (e.g. `autheo.receipt/v1`); `$id` values
   are URNs (`urn:autheo:schema:receipt:v1`) — there is no hosted schema registry.
-* Within v1, new **optional** fields may be added; consumers SHOULD ignore
-  nothing silently: schemas set `additionalProperties: false`, so a verifier on
-  an older v1 schema rejects unknown fields rather than misreading them.
+* Within v1, new **optional** fields may be added. Schemas set
+  `additionalProperties: false`, so a verifier on an older v1 schema rejects
+  unknown fields rather than silently misreading them; upgrade the schema first.
 * Removing/renaming a field, changing a meaning, adding a scope to the enumerated
   vocabulary in a way that widens authority, or changing canonicalization/
   signature rules requires v2 with new `typ`/`schema_version` values.

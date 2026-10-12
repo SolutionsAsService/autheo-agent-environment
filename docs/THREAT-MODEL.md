@@ -47,6 +47,36 @@ or its key material and expect this library to contain it.
 - **Production scale:** chain verification is linear in ledger length. Budget,
   revocation and checkpoint APIs are trusted local Python APIs, not a multi-tenant service.
 
+## 0.2 service surfaces
+
+Enforced and tested:
+
+- The HTTP API binds loopback by default and refuses other addresses without an
+  explicit `--allow-remote`; it checks a bearer token in constant time, requires a
+  loopback Host header with the bound port (DNS rebinding) and same-origin
+  `Origin`, sends no CORS headers, limits bodies to 64 KiB and rejects unknown fields.
+- Policies come only from operator files and can only narrow mandates; tools must
+  be exactly listed in a mandate; deny lists win; block > escalate > allow.
+- Revocations, grants, identity issuance, decisions and outcome reports are signed
+  receipts; ledger verification localises edited, reordered or deleted rows and
+  detects truncation when given an independently stored anchor head.
+- Agent-signed requests/outcomes must use the passport key's fingerprint as `kid`.
+
+Not solved:
+
+- **Token and key files:** `api-token`, `issuer-key.pem` and `agents/*.pem` are
+  plaintext files protected only by filesystem permissions (best effort on
+  Windows). Anyone who can read them can act as the operator or issuer.
+- **Service-held agent keys** (`--generate-key`) remove proof-of-possession: the
+  service signs on the agent's behalf. Use agent-held keys for real integrations.
+- **Append-only triggers** only stop accidental edits; a local admin can drop them.
+- **No TLS or per-caller authorization:** one token grants every API operation,
+  including mandate grants. Do not expose the API to agents that must not grant
+  themselves authority; give agents a separate path that can only evaluate.
+- **Outcome receipts** record what an executor claims; they do not prove execution.
+- **Policy reload, rollout and rollback** are manual (restart); receipts record the
+  policy digest so changes stay auditable.
+
 ## Safe deployment boundary for later work
 
 Use separate identities for the owner issuer, runtime attestor, policy decision

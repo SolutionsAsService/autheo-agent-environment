@@ -13,6 +13,25 @@ mandate → signed request → simulated allow/escalate/block → integer `DEMO`
 Gate: tamper, context, expiry, replay, budget, concurrency, audit, and checkpoint
 tests pass. No live identity, execution, money, runtime, or migration claim.
 
+## Phase 0.2 — local trust service (implemented)
+
+Versioned JSON Schemas and a byte-level signature/canonicalization/chain spec
+with cross-language vectors (Python + dependency-free Node verifier/signer);
+declarative `autheo.policy/v1` policies with explanations; persistent
+append-only, hash-chained SQLite ledgers with a verify/anchor command; a
+loopback HTTP API with bearer auth and OpenAPI; a CLI; the web demo on the API;
+JARVIS/Paperclip integration notes.
+
+Gate: `python -m pytest -q` (tamper detection, revoked mandates, budget
+exhaustion, signature failures, API auth/host/origin guards), schema/vector/
+OpenAPI drift checks and the JS vector check pass in CI. Still no DID, wallet,
+payment, approval workflow, TLS, production custody or live integration.
+
+Next increments that stay local-first: an approval object bound to one request
+digest (so `escalate` can be resolved without a new mandate), key rotation and
+issuer rollover in the state directory, signed ledger anchors exported to a
+second store, and conformance tests inside the JARVIS repository.
+
 ## Phase A — contracts and product decisions
 
 Confirm actual Autheo identity/credential, Dev Portal, Marketplace, Layer 1,

@@ -52,6 +52,12 @@ The current `0.1` code is a useful **single-host Python reference simulation**:
 - Automated checks exercise the local simulator and MCP bridge; see
   `docs/VERIFICATION.md` for the recorded evidence and limits.
 
+**0.2 update:** the reference now also has versioned schemas and a
+cross-language signature spec, declarative policies with explanations,
+persistent append-only ledgers with verification, a loopback HTTP API and a CLI
+(see [IMPLEMENTATION-STATUS.md](IMPLEMENTATION-STATUS.md)). These remain local
+reference components, not the production services described below.
+
 Not present: production human or agent DID enrollment; a consent or mandate
 approval interface; an organizational identity provider integration; external
 policy enforcement; a live workload runtime; credential brokerage; isolated

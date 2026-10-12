@@ -119,3 +119,33 @@ def test_javascript_reference_verifier_agrees():
     )
     assert result.returncode == 0, result.stderr
     assert result.stdout.startswith("OK ")
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
+def test_request_signed_in_javascript_is_accepted_by_python(tmp_path):
+    from autheo_agent_environment.environment import Environment
+    from autheo_agent_environment.models import Mandate, Passport, Request
+    from autheo_agent_environment.signing import Signer, private_pem, public_pem
+
+    authority, agent = Signer.generate("issuer:js"), Signer.generate("agent:js")
+    passport = Passport(agent_id="agent:js", owner_id="owner:js", public_key=public_pem(agent.public_key),
+                        environments=["env:one"])
+    mandate = Mandate(agent_id="agent:js", owner_id="owner:js", environment="env:one", scopes=["tool.invoke"],
+                      resources=["repo:one"], tools=["git.status"], per_action_minor=5, total_budget_minor=5,
+                      approval_threshold_minor=5)
+    environment = Environment(tmp_path / "l.db", "env:one", authority)
+    pt = authority.issue("passport", "agent:js", "autheo-agent-environment", passport.model_dump(), ttl=600)
+    mt = authority.issue("mandate", "agent:js", "env:one", mandate.model_dump(), ttl=600)
+    body = Request(request_id="req:js", agent_id="agent:js", environment="env:one",
+                   mandate_id=environment.owner_document(mt, "mandate", "env:one")["jti"], action="tool.invoke",
+                   resource="repo:one", tool="git.status", amount_minor=5).model_dump()
+    payload = {"privateKeyPem": private_pem(agent.key), "agentId": "agent:js", "environment": "env:one",
+               "body": body}
+    result = subprocess.run(["node", str(ROOT / "interop" / "js" / "autheo-sign.mjs")], input=json.dumps(payload),
+                            capture_output=True, text=True, timeout=60)
+    assert result.returncode == 0, result.stderr
+    decision = environment.evaluate(pt, mt, result.stdout)
+    assert decision["decision"].decision == "allow"
+    tampered = result.stdout[:-3] + ("AAA" if not result.stdout.endswith("AAA") else "BBB")
+    with pytest.raises(jwt.InvalidTokenError):
+        environment.evaluate(pt, mt, tampered)

@@ -7,3 +7,7 @@ Use current main of [ThothDivision/autheo-mcp](https://github.com/ThothDivision/
 `autheo-mcp-agent-trust.patch` records the original implementation against upstream base `374546e662b953e1fd918456253195f635559fa4`. It is an archival review artifact, not an update to apply on current main (which already includes these changes). It does not include later publication documentation or CI updates.
 
 The separate Agent Environment owns issuer and policy logic; MCP consumes a bounded signed summary for read-only inspection.
+
+## JARVIS and Paperclip
+
+See [docs/INTEGRATIONS.md](../docs/INTEGRATIONS.md) for the enforcement-point pattern, concept mappings and the reference JavaScript signer/verifier in `interop/js/`. Those are design notes and tested reference code here, not changes to either project.

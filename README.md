@@ -48,6 +48,33 @@ The demo:
 there is no agent-callable approval override. `block` consumes no demo budget.
 **No action is actually executed, even when the policy outcome is allow.**
 
+## Local trust service (0.2)
+
+The same engine now runs as a persistent, local-first trust layer for agent
+runtimes such as JARVIS and Paperclip. It is still a reference implementation:
+file-based dev keys, DEMO units, no DID/wallet/payment, and nothing is executed.
+
+```sh
+A="python -m autheo_agent_environment --state-dir .autheo-state"
+$A init                                   # dev issuer key, API token, policy.yaml, ledgers
+$A identity issue --agent-id agent:jarvis-1 --owner-id human:operator \
+   --environment env:research --public-key-file agent-public.pem
+$A mandate grant --agent-id agent:jarvis-1 --environment env:research \
+   --scope tool.invoke --resource repo:jarvis --tool git.status \
+   --per-action 50 --total 100 --threshold 40
+$A evaluate --request-token-file request.jwt   # agent-signed; prints decision + explanation + receipt
+$A ledger verify --environment env:research    # exit 1 on tampering
+$A serve                                       # loopback API on 127.0.0.1:8780 (bearer token)
+```
+
+- [API and CLI reference](docs/API-AND-CLI.md) · [OpenAPI 3.1](docs/openapi.json)
+- [Declarative policy](docs/POLICY.md): scopes, tools, resources, budgets, rate
+  limits, time windows, escalation, explanations
+- [Signature, canonical JSON and receipt-chain spec](docs/SPEC-SIGNATURES.md),
+  [JSON Schemas](schemas/), [cross-language vectors](tests/vectors/autheo-v1-vectors.json),
+  [JavaScript verifier/signer](interop/js/)
+- [JARVIS and Paperclip integration notes](docs/INTEGRATIONS.md)
+
 ## Outputs
 
 | File in `demo-output/` | Purpose |
@@ -115,6 +142,7 @@ Snapshot inspection does **not** enforce policy on existing read-only MCP tools.
 - [Threat model and honest limits](docs/THREAT-MODEL.md)
 - [Implementation phases and acceptance gates](docs/ROADMAP.md)
 - [Existing open-source building blocks](docs/EXISTING-SOLUTIONS.md)
+- [Current claim ceiling](docs/IMPLEMENTATION-STATUS.md) and [verification record](docs/VERIFICATION.md)
 
 The next proposed work is contract discovery with Autheo identity, Dev Portal,
 Marketplace, Layer 1, and compute-mesh owners. The roadmap intentionally does not

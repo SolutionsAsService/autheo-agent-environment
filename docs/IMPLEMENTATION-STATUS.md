@@ -1,17 +1,45 @@
 # Delivery / claim ceiling
 
-- Implemented: local signed identity and request proof, finite mandates, strict
-  DEMO accounting, allow/escalate/block, idempotency, local revocation, signed
-  hash-linked receipts, offline receipt verifier, destination-bound one-time
-  checkpoint import, short-lived read-only MCP snapshot export, loopback-only
-  browser demo for signed policy simulation and receipt inspection.
-- MCP branch: five new read/local-inspection tools and one documentation resource;
-  no custody, payment, mandate issuance, approval or live execution tool.
+## Implemented in 0.2 (local reference, tested)
+
+- **Contracts:** versioned JSON Schemas (`schemas/*.v1.schema.json`) generated from
+  the strict models with drift checks; precise signature/canonicalization/chain
+  specification ([SPEC-SIGNATURES.md](SPEC-SIGNATURES.md)); deterministic
+  cross-language vectors; dependency-free JavaScript verifier and signer that
+  pytest runs against the Python implementation.
+- **Policy:** declarative `autheo.policy/v1` (YAML/JSON) — scope/tool/resource
+  allow+deny globs, windowed and lifetime budgets, rate limits, time windows,
+  escalation rules, per-check explanations, policy digest on every receipt.
+  The default policy reproduces 0.1 outcomes and reason codes
+  ([POLICY.md](POLICY.md)).
+- **Ledger:** per-environment SQLite ledgers of signed, hash-chained receipts;
+  persistent mode adds append-only triggers; a non-raising verifier reports the
+  first bad row and checks an externally stored anchor head; receipts for
+  decisions, executor-reported outcomes, revocations, identity issuance,
+  mandate grants and handoffs.
+- **Service surfaces:** persistent state directory (local-dev file keys), local
+  HTTP API on loopback with bearer-token auth and OpenAPI 3.1, full CLI
+  (`python -m autheo_agent_environment`), and the browser demo rebuilt on the API
+  ([API-AND-CLI.md](API-AND-CLI.md)).
+- Still present from 0.1: signed passports/mandates/requests, strict DEMO
+  accounting, idempotency, concurrency-safe reservations, destination-bound
+  checkpoint import, short-lived read-only MCP snapshot export.
+
+## Not implemented (do not claim)
+
+- No DID method, verifiable credential, wallet, payment, THEO transfer, chain
+  anchoring, or connection to any Autheo platform service.
+- No production key custody: issuer and server-held agent keys are unencrypted
+  local files. No HSM/KMS, rotation or issuer rollover.
+- No human approval workflow: `escalate` stays pending.
+- No TLS, multi-tenant isolation, hosted deployment, replication or HA.
+- No executor: Autheo never runs an action; outcome receipts are executor claims.
+- JARVIS and Paperclip: integration notes and tested reference JS code only; no
+  changes or end-to-end runs in those projects ([INTEGRATIONS.md](INTEGRATIONS.md)).
+- MCP branch: unchanged five read-only inspection tools; snapshot format unchanged.
 - Existing website: unchanged; it must not advertise this prototype as deployed.
-- External deployment: none. No issuer, runtime, wallet or chain service installed.
-- Repository: public source prepared for independent review; public availability
-  is not a production deployment, security audit, or live integration.
-- Verification results are recorded in VERIFICATION.md after final checks.
+
+Verification results are recorded in [VERIFICATION.md](VERIFICATION.md).
 
 ## Planned direction
 

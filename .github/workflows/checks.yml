@@ -13,8 +13,26 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - run: python -m pip install -e '.[dev]'
       - run: python -m ruff check src tests review
       - run: python -m pytest -q
+      - name: Contract artefacts are up to date
+        run: |
+          python -m autheo_agent_environment schema check schemas
+          python -m autheo_agent_environment vectors check tests/vectors/autheo-v1-vectors.json
+          python -m autheo_agent_environment openapi check docs/openapi.json
+      - run: node interop/js/verify-vectors.mjs
       - run: python -m autheo_agent_environment.demo --output demo-output
       - run: python -m autheo_agent_environment.audit demo-output/source-audit.json --public-key demo-output/issuer-public.pem --issuer autheo-demo-authority --environment env:research
+      - name: Persistent CLI smoke test
+        run: |
+          set -euo pipefail
+          A="python -m autheo_agent_environment --state-dir ci-state"
+          $A init
+          $A identity issue --agent-id agent:ci --owner-id human:ci --environment env:research --generate-key
+          M=$($A mandate grant --agent-id agent:ci --environment env:research --scope tool.invoke --resource repo:ci --tool git.status --per-action 10 --total 10 --threshold 10 | python -c "import json,sys; print(json.load(sys.stdin)['mandate_id'])")
+          $A evaluate --agent-id agent:ci --mandate-id "$M" --action tool.invoke --resource repo:ci --tool git.status --amount 5
+          $A ledger verify --environment env:research
