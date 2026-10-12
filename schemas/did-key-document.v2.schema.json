@@ -1,0 +1,124 @@
+{
+  "$defs": {
+    "VerificationMethod": {
+      "additionalProperties": false,
+      "properties": {
+        "controller": {
+          "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+          "title": "Controller",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "publicKeyMultibase": {
+          "pattern": "^z[1-9A-HJ-NP-Za-km-z]{40,60}$",
+          "title": "Publickeymultibase",
+          "type": "string"
+        },
+        "type": {
+          "const": "Multikey",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "controller",
+        "publicKeyMultibase"
+      ],
+      "title": "VerificationMethod",
+      "type": "object"
+    }
+  },
+  "$id": "urn:autheo:schema:did-key-document:v2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "DID document generated for a did:key (Multikey form)",
+  "properties": {
+    "@context": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "@Context",
+      "type": "array"
+    },
+    "assertionMethod": {
+      "items": {
+        "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+        "type": "string"
+      },
+      "title": "Assertionmethod",
+      "type": "array"
+    },
+    "authentication": {
+      "items": {
+        "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+        "type": "string"
+      },
+      "title": "Authentication",
+      "type": "array"
+    },
+    "capabilityDelegation": {
+      "items": {
+        "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+        "type": "string"
+      },
+      "title": "Capabilitydelegation",
+      "type": "array"
+    },
+    "capabilityInvocation": {
+      "items": {
+        "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+        "type": "string"
+      },
+      "title": "Capabilityinvocation",
+      "type": "array"
+    },
+    "id": {
+      "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "keyAgreement": {
+      "anyOf": [
+        {
+          "items": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Keyagreement"
+    },
+    "verificationMethod": {
+      "items": {
+        "$ref": "#/$defs/VerificationMethod"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Verificationmethod",
+      "type": "array"
+    }
+  },
+  "required": [
+    "@context",
+    "id",
+    "verificationMethod",
+    "authentication",
+    "assertionMethod",
+    "capabilityDelegation",
+    "capabilityInvocation"
+  ],
+  "title": "DidKeyDocument",
+  "type": "object"
+}

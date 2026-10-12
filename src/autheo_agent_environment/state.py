@@ -228,3 +228,54 @@ class StateDir:
                     "SELECT * FROM mandates WHERE agent_id=? ORDER BY granted_at", (agent_id,)
                 ).fetchall()
         return [dict(row) for row in rows]
+
+    # ------------------------------------------------------------------ v2: DIDs and trusted roots
+    def _write_config(self) -> None:
+        pending = self.root / "config.json.tmp"
+        pending.write_text(json.dumps(self.config, indent=2) + "\n", encoding="utf-8")
+        os.replace(pending, self.root / "config.json")
+
+    def trusted_roots(self, environment: str) -> list[str]:
+        """Root DIDs whose delegation chains this environment accepts (operator configuration)."""
+        return list(self.config.get("trusted_roots", {}).get(environment, []))
+
+    def set_trusted_root(self, environment: str, did: str, trusted: bool = True) -> list[str]:
+        if environment not in self.environments:
+            raise ValueError(f"Environment {environment!r} is not configured")
+        roots = self.config.setdefault("trusted_roots", {}).setdefault(environment, [])
+        if trusted and did not in roots:
+            roots.append(did)
+        elif not trusted and did in roots:
+            roots.remove(did)
+        self._write_config()
+        return list(roots)
+
+    @property
+    def did_web_cache(self) -> Path:
+        return self.root / "did-web-cache"
+
+    @property
+    def did_web_network(self) -> bool:
+        """did:web network resolution is OFF unless the operator sets "did_web_network": true."""
+        return self.config.get("did_web_network") is True
+
+    def _did_path(self, did: str) -> Path:
+        import hashlib
+
+        return self.root / "dids" / (hashlib.sha256(did.encode()).hexdigest()[:40] + ".json")
+
+    def store_did_key(self, key) -> None:
+        """Local-dev custody of a did:key private key (the demo/API convenience path)."""
+        _private_write(self._did_path(key.did), json.dumps(key.to_file_json(), indent=2) + "\n")
+
+    def did_key(self, did: str):
+        from .did import DidKey
+
+        path = self._did_path(did)
+        return DidKey.load(path) if path.is_file() else None
+
+    def list_dids(self) -> list[str]:
+        directory = self.root / "dids"
+        if not directory.is_dir():
+            return []
+        return sorted(json.loads(p.read_text(encoding="utf-8"))["did"] for p in directory.glob("*.json"))

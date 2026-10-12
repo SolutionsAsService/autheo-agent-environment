@@ -321,6 +321,284 @@
         "title": "BudgetState",
         "type": "object"
       },
+      "Bundle": {
+        "additionalProperties": false,
+        "description": "Everything an offline verifier needs: receipt, invocation (with chain) and known revocations.",
+        "properties": {
+          "invocation": {
+            "$ref": "#/components/schemas/Invocation"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/ReceiptV2"
+          },
+          "revocations": {
+            "items": {
+              "$ref": "#/components/schemas/Revocation"
+            },
+            "maxItems": 1000,
+            "title": "Revocations",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "autheo.bundle/v2",
+            "default": "autheo.bundle/v2",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "receipt",
+          "invocation"
+        ],
+        "title": "Bundle",
+        "type": "object"
+      },
+      "BundleVerifyInput": {
+        "additionalProperties": false,
+        "properties": {
+          "any_root": {
+            "default": false,
+            "title": "Any Root",
+            "type": "boolean"
+          },
+          "bundle": {
+            "additionalProperties": true,
+            "title": "Bundle",
+            "type": "object"
+          },
+          "environment_did": {
+            "anyOf": [
+              {
+                "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Environment Did"
+          },
+          "revocations": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 1000,
+            "title": "Revocations",
+            "type": "array"
+          },
+          "trusted_roots": {
+            "items": {
+              "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Trusted Roots",
+            "type": "array"
+          }
+        },
+        "required": [
+          "bundle"
+        ],
+        "title": "BundleVerifyInput",
+        "type": "object"
+      },
+      "Capability": {
+        "additionalProperties": false,
+        "description": "What a delegation grants. A child delegation may only narrow every field of its parent.",
+        "properties": {
+          "approval_threshold_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Approval Threshold Minor",
+            "type": "integer"
+          },
+          "asset": {
+            "const": "DEMO",
+            "default": "DEMO",
+            "title": "Asset",
+            "type": "string"
+          },
+          "environments": {
+            "items": {
+              "pattern": "^(\\*|[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}\\*?)$",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Environments",
+            "type": "array"
+          },
+          "max_delegation_depth": {
+            "default": 0,
+            "maximum": 8,
+            "minimum": 0,
+            "title": "Max Delegation Depth",
+            "type": "integer"
+          },
+          "per_action_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Per Action Minor",
+            "type": "integer"
+          },
+          "resources": {
+            "items": {
+              "pattern": "^(\\*|[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}\\*?)$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "minItems": 1,
+            "title": "Resources",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "autheo.capability/v2",
+            "default": "autheo.capability/v2",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "scopes": {
+            "items": {
+              "enum": [
+                "marketplace.read",
+                "devhub.read",
+                "chain.read",
+                "compute.simulate",
+                "environment.handoff",
+                "tool.invoke",
+                "model.invoke",
+                "file.read",
+                "file.write",
+                "network.fetch",
+                "message.send",
+                "task.checkpoint"
+              ],
+              "type": "string"
+            },
+            "maxItems": 12,
+            "minItems": 1,
+            "title": "Scopes",
+            "type": "array"
+          },
+          "tools": {
+            "items": {
+              "pattern": "^(\\*|[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}\\*?)$",
+              "type": "string"
+            },
+            "maxItems": 100,
+            "title": "Tools",
+            "type": "array"
+          },
+          "total_budget_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Total Budget Minor",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "environments",
+          "scopes",
+          "resources",
+          "per_action_minor",
+          "total_budget_minor",
+          "approval_threshold_minor"
+        ],
+        "title": "Capability",
+        "type": "object"
+      },
+      "ChainLink": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "issuer": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Issuer",
+            "type": "string"
+          },
+          "subject": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Subject",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "digest",
+          "issuer",
+          "subject"
+        ],
+        "title": "ChainLink",
+        "type": "object"
+      },
+      "ChainVerifyInput": {
+        "additionalProperties": false,
+        "properties": {
+          "any_root": {
+            "default": false,
+            "title": "Any Root",
+            "type": "boolean"
+          },
+          "at": {
+            "anyOf": [
+              {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "At"
+          },
+          "chain": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Chain",
+            "type": "array"
+          },
+          "revocations": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 1000,
+            "title": "Revocations",
+            "type": "array"
+          },
+          "trusted_roots": {
+            "items": {
+              "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Trusted Roots",
+            "type": "array"
+          }
+        },
+        "required": [
+          "chain"
+        ],
+        "title": "ChainVerifyInput",
+        "type": "object"
+      },
       "Checkpoint": {
         "additionalProperties": false,
         "properties": {
@@ -405,6 +683,73 @@
           "checkpoint"
         ],
         "title": "CheckpointInput",
+        "type": "object"
+      },
+      "DataIntegrityProof": {
+        "additionalProperties": false,
+        "description": "Autheo profile of a W3C Data Integrity proof (eddsa-jcs-2022, single proof).",
+        "properties": {
+          "@context": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 8,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "@Context"
+          },
+          "created": {
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+            "title": "Created",
+            "type": "string"
+          },
+          "cryptosuite": {
+            "const": "eddsa-jcs-2022",
+            "title": "Cryptosuite",
+            "type": "string"
+          },
+          "proofPurpose": {
+            "enum": [
+              "assertionMethod",
+              "authentication",
+              "capabilityDelegation",
+              "capabilityInvocation"
+            ],
+            "title": "Proofpurpose",
+            "type": "string"
+          },
+          "proofValue": {
+            "pattern": "^z[1-9A-HJ-NP-Za-km-z]{80,96}$",
+            "title": "Proofvalue",
+            "type": "string"
+          },
+          "type": {
+            "const": "DataIntegrityProof",
+            "title": "Type",
+            "type": "string"
+          },
+          "verificationMethod": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+            "title": "Verificationmethod",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "cryptosuite",
+          "created",
+          "verificationMethod",
+          "proofPurpose",
+          "proofValue"
+        ],
+        "title": "DataIntegrityProof",
         "type": "object"
       },
       "Decision": {
@@ -562,6 +907,178 @@
           "evaluated_at"
         ],
         "title": "Decision",
+        "type": "object"
+      },
+      "DelegateInput": {
+        "additionalProperties": false,
+        "description": "Sign a delegation with a key held by this local service (demo / local-dev custody only).",
+        "properties": {
+          "capability": {
+            "$ref": "#/components/schemas/Capability"
+          },
+          "issuer": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Issuer",
+            "type": "string"
+          },
+          "parent_chain": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 9,
+            "title": "Parent Chain",
+            "type": "array"
+          },
+          "subject": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Subject",
+            "type": "string"
+          },
+          "ttl_seconds": {
+            "default": 3600,
+            "maximum": 2592000,
+            "minimum": 10,
+            "title": "Ttl Seconds",
+            "type": "integer"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Valid From"
+          }
+        },
+        "required": [
+          "issuer",
+          "subject",
+          "capability"
+        ],
+        "title": "DelegateInput",
+        "type": "object"
+      },
+      "Delegation": {
+        "additionalProperties": false,
+        "description": "A W3C VC 2.0 credential by which issuer (a DID) delegates a capability to credentialSubject.id.",
+        "properties": {
+          "@context": {
+            "items": {
+              "const": "https://www.w3.org/ns/credentials/v2",
+              "type": "string"
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "title": "@Context",
+            "type": "array"
+          },
+          "credentialSubject": {
+            "$ref": "#/components/schemas/DelegationSubject"
+          },
+          "id": {
+            "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "issuer": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Issuer",
+            "type": "string"
+          },
+          "proof": {
+            "$ref": "#/components/schemas/DataIntegrityProof"
+          },
+          "type": {
+            "items": {
+              "enum": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "type": "string"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Type",
+            "type": "array"
+          },
+          "validFrom": {
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+            "title": "Validfrom",
+            "type": "string"
+          },
+          "validUntil": {
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+            "title": "Validuntil",
+            "type": "string"
+          }
+        },
+        "required": [
+          "@context",
+          "type",
+          "id",
+          "issuer",
+          "validFrom",
+          "validUntil",
+          "credentialSubject",
+          "proof"
+        ],
+        "title": "Delegation",
+        "type": "object"
+      },
+      "DelegationSubject": {
+        "additionalProperties": false,
+        "properties": {
+          "capability": {
+            "$ref": "#/components/schemas/Capability"
+          },
+          "id": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "parent": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParentRef"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "schema_version": {
+            "const": "autheo.delegation/v2",
+            "default": "autheo.delegation/v2",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "capability"
+        ],
+        "title": "DelegationSubject",
+        "type": "object"
+      },
+      "DidCreateInput": {
+        "additionalProperties": false,
+        "properties": {
+          "custody": {
+            "default": "local_dev_custody",
+            "pattern": "^local_dev_custody$",
+            "title": "Custody",
+            "type": "string"
+          }
+        },
+        "title": "DidCreateInput",
         "type": "object"
       },
       "EscalationRule": {
@@ -780,6 +1297,252 @@
         "title": "IdentityIssueInput",
         "type": "object"
       },
+      "Invocation": {
+        "additionalProperties": false,
+        "description": "Invoker-signed request to use the capability at the end of the embedded delegation chain.",
+        "properties": {
+          "action": {
+            "enum": [
+              "marketplace.read",
+              "devhub.read",
+              "chain.read",
+              "compute.simulate",
+              "environment.handoff",
+              "tool.invoke",
+              "model.invoke",
+              "file.read",
+              "file.write",
+              "network.fetch",
+              "message.send",
+              "task.checkpoint"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "amount_minor": {
+            "default": 0,
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "asset": {
+            "const": "DEMO",
+            "default": "DEMO",
+            "title": "Asset",
+            "type": "string"
+          },
+          "capability": {
+            "items": {
+              "$ref": "#/components/schemas/Delegation"
+            },
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Capability",
+            "type": "array"
+          },
+          "created": {
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+            "title": "Created",
+            "type": "string"
+          },
+          "environment": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Environment",
+            "type": "string"
+          },
+          "expires": {
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+            "title": "Expires",
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "invoker": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Invoker",
+            "type": "string"
+          },
+          "proof": {
+            "$ref": "#/components/schemas/DataIntegrityProof"
+          },
+          "resource": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Resource",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "autheo.invocation/v2",
+            "default": "autheo.invocation/v2",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "tool": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool"
+          },
+          "type": {
+            "const": "AutheoInvocation",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "invoker",
+          "environment",
+          "action",
+          "resource",
+          "created",
+          "expires",
+          "capability",
+          "proof"
+        ],
+        "title": "Invocation",
+        "type": "object"
+      },
+      "InvocationEvaluateInput": {
+        "additionalProperties": false,
+        "properties": {
+          "invocation": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Invocation"
+          },
+          "request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InvokeInput"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "title": "InvocationEvaluateInput",
+        "type": "object"
+      },
+      "InvokeInput": {
+        "additionalProperties": false,
+        "description": "Unsigned invocation fields; only usable when the invoker's key is held by this local service.",
+        "properties": {
+          "action": {
+            "enum": [
+              "marketplace.read",
+              "devhub.read",
+              "chain.read",
+              "compute.simulate",
+              "environment.handoff",
+              "tool.invoke",
+              "model.invoke",
+              "file.read",
+              "file.write",
+              "network.fetch",
+              "message.send",
+              "task.checkpoint"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "amount_minor": {
+            "default": 0,
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "chain": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Chain",
+            "type": "array"
+          },
+          "environment": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Environment",
+            "type": "string"
+          },
+          "invoker": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Invoker",
+            "type": "string"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Request Id"
+          },
+          "resource": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Resource",
+            "type": "string"
+          },
+          "tool": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool"
+          },
+          "ttl_seconds": {
+            "default": 60,
+            "maximum": 300,
+            "minimum": 1,
+            "title": "Ttl Seconds",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "invoker",
+          "chain",
+          "environment",
+          "action",
+          "resource"
+        ],
+        "title": "InvokeInput",
+        "type": "object"
+      },
       "LedgerVerifyInput": {
         "additionalProperties": false,
         "properties": {
@@ -991,6 +1754,27 @@
           "status"
         ],
         "title": "OutcomeInput",
+        "type": "object"
+      },
+      "ParentRef": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "digest"
+        ],
+        "title": "ParentRef",
         "type": "object"
       },
       "PolicyDocument": {
@@ -1365,6 +2149,438 @@
         "title": "ReceiptBody",
         "type": "object"
       },
+      "ReceiptV2": {
+        "additionalProperties": false,
+        "description": "Environment-signed, hash-linked record of a decision or an accepted revocation.",
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "enum": [
+                  "marketplace.read",
+                  "devhub.read",
+                  "chain.read",
+                  "compute.simulate",
+                  "environment.handoff",
+                  "tool.invoke",
+                  "model.invoke",
+                  "file.read",
+                  "file.write",
+                  "network.fetch",
+                  "message.send",
+                  "task.checkpoint"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Action"
+          },
+          "amount_minor": {
+            "default": 0,
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "chain": {
+            "items": {
+              "$ref": "#/components/schemas/ChainLink"
+            },
+            "maxItems": 10,
+            "title": "Chain",
+            "type": "array"
+          },
+          "decision": {
+            "enum": [
+              "allow",
+              "escalate",
+              "block",
+              "recorded"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "document_digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Document Digest",
+            "type": "string"
+          },
+          "environment": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Environment",
+            "type": "string"
+          },
+          "executed": {
+            "const": false,
+            "default": false,
+            "title": "Executed",
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "invoker": {
+            "anyOf": [
+              {
+                "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Invoker"
+          },
+          "issuer": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Issuer",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "decision",
+              "revocation"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "policy_digest": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Policy Digest"
+          },
+          "policy_id": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Policy Id"
+          },
+          "previous_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Previous Hash",
+            "type": "string"
+          },
+          "proof": {
+            "$ref": "#/components/schemas/DataIntegrityProof"
+          },
+          "reasons": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]*(:[A-Za-z0-9:._-]{1,96})?$",
+              "type": "string"
+            },
+            "maxItems": 64,
+            "title": "Reasons",
+            "type": "array"
+          },
+          "recorded_at": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "title": "Recorded At",
+            "type": "integer"
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reference"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Request Id"
+          },
+          "resource": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Resource"
+          },
+          "root": {
+            "anyOf": [
+              {
+                "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Root"
+          },
+          "schema_version": {
+            "const": "autheo.receipt/v2",
+            "default": "autheo.receipt/v2",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "sequence": {
+            "maximum": 9007199254740991,
+            "minimum": 1,
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "simulation_only": {
+            "const": true,
+            "default": true,
+            "title": "Simulation Only",
+            "type": "boolean"
+          },
+          "tool": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool"
+          },
+          "type": {
+            "const": "AutheoReceipt",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "issuer",
+          "environment",
+          "sequence",
+          "previous_hash",
+          "recorded_at",
+          "kind",
+          "decision",
+          "reasons",
+          "document_digest",
+          "proof"
+        ],
+        "title": "ReceiptV2",
+        "type": "object"
+      },
+      "Revocation": {
+        "additionalProperties": false,
+        "description": "Signed statement that a delegation (and everything below it) is revoked from revoked_at on.",
+        "properties": {
+          "id": {
+            "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "issuer": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Issuer",
+            "type": "string"
+          },
+          "proof": {
+            "$ref": "#/components/schemas/DataIntegrityProof"
+          },
+          "reason": {
+            "default": "revoked",
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Reason",
+            "type": "string"
+          },
+          "revoked_at": {
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+            "title": "Revoked At",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "autheo.revocation/v2",
+            "default": "autheo.revocation/v2",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "target": {
+            "$ref": "#/components/schemas/RevocationTarget"
+          },
+          "type": {
+            "const": "AutheoRevocation",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "issuer",
+          "target",
+          "revoked_at",
+          "proof"
+        ],
+        "title": "Revocation",
+        "type": "object"
+      },
+      "RevocationInput": {
+        "additionalProperties": false,
+        "description": "Record a signed revocation, or sign one with a service-held key (issuer + chain [+ index]).",
+        "properties": {
+          "chain": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 10,
+            "title": "Chain",
+            "type": "array"
+          },
+          "index": {
+            "anyOf": [
+              {
+                "exclusiveMaximum": 10,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Index"
+          },
+          "issuer": {
+            "anyOf": [
+              {
+                "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Issuer"
+          },
+          "reason": {
+            "default": "revoked",
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Reason",
+            "type": "string"
+          },
+          "revocation": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Revocation"
+          }
+        },
+        "title": "RevocationInput",
+        "type": "object"
+      },
+      "RevocationList": {
+        "additionalProperties": false,
+        "description": "Unsigned container: every record is independently signed, so anyone may relay a list.",
+        "properties": {
+          "generated_at": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "title": "Generated At",
+            "type": "integer"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/Revocation"
+            },
+            "maxItems": 10000,
+            "title": "Records",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "autheo.revocation-list/v2",
+            "default": "autheo.revocation-list/v2",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source": {
+            "default": "",
+            "maxLength": 128,
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "generated_at"
+        ],
+        "title": "RevocationList",
+        "type": "object"
+      },
+      "RevocationTarget": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Digest",
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "digest"
+        ],
+        "title": "RevocationTarget",
+        "type": "object"
+      },
       "RevokeInput": {
         "additionalProperties": false,
         "properties": {
@@ -1456,6 +2672,32 @@
         "title": "TimeWindow",
         "type": "object"
       },
+      "TrustRootInput": {
+        "additionalProperties": false,
+        "properties": {
+          "did": {
+            "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+            "title": "Did",
+            "type": "string"
+          },
+          "environment": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Environment",
+            "type": "string"
+          },
+          "trusted": {
+            "default": true,
+            "title": "Trusted",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "environment",
+          "did"
+        ],
+        "title": "TrustRootInput",
+        "type": "object"
+      },
       "VerifyReceiptInput": {
         "additionalProperties": false,
         "properties": {
@@ -1482,7 +2724,7 @@
     }
   },
   "info": {
-    "description": "Loopback-only local reference API. Decisions are simulations recorded as signed, hash-chained receipts; nothing is executed and no DID, wallet or payment is involved. Signature and canonicalization rules: docs/SPEC-SIGNATURES.md.",
+    "description": "Loopback-only local reference API. Decisions are simulations recorded as signed, hash-chained receipts; nothing is executed and no wallet or payment is involved. v1 signature rules: docs/SPEC-SIGNATURES.md. v2 DID identities, delegation chains, revocation and offline verification: docs/SPEC-DID.md.",
     "license": {
       "name": "MIT"
     },
@@ -1491,6 +2733,54 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/v1/bundles/verify": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BundleVerifyInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Verify a decision bundle back to a root DID (pure; offline verifier)"
+      }
+    },
     "/v1/checkpoints": {
       "post": {
         "requestBody": {
@@ -1537,6 +2827,216 @@
           }
         },
         "summary": "Export a destination-bound signed checkpoint (handoff)"
+      }
+    },
+    "/v1/delegations": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DelegateInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Sign an attenuated delegation with a service-held key (local dev)"
+      }
+    },
+    "/v1/delegations/verify": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChainVerifyInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Verify a delegation chain (pure; same as the offline verifier)"
+      }
+    },
+    "/v1/dids": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "DIDs whose keys this local service holds (local-dev custody)"
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DidCreateInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Generate a did:key with local-dev custody (no registration anywhere)"
+      }
+    },
+    "/v1/dids/{did}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "did",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Resolve a DID document (did:key offline; did:web from cache unless enabled)"
       }
     },
     "/v1/evaluate": {
@@ -1897,6 +3397,54 @@
         "summary": "Issuer, key id, public key, environments and active policy digest"
       }
     },
+    "/v1/invocations/evaluate": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvocationEvaluateInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Verify an invocation and its delegation chain, apply policy, record a v2 receipt; returns an offline-verifiable bundle. Never executes."
+      }
+    },
     "/v1/ledger/receipts": {
       "get": {
         "parameters": [
@@ -1952,6 +3500,45 @@
           }
         },
         "summary": "List recent receipts with tokens"
+      }
+    },
+    "/v1/ledger/v2": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "environment",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Export the v2 (DID) receipt chain for offline verification"
       }
     },
     "/v1/ledger/verify": {
@@ -2397,6 +3984,91 @@
         "summary": "Verify a receipt signature and its ledger membership"
       }
     },
+    "/v1/revocations": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "environment",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevocationList"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Revocation list (every record independently signed)"
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevocationInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Record a signed revocation (or sign one with a service-held key)"
+      }
+    },
     "/v1/schemas": {
       "get": {
         "responses": {
@@ -2450,6 +4122,54 @@
         },
         "security": [],
         "summary": "One JSON Schema (draft 2020-12)"
+      }
+    },
+    "/v1/trust-roots": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrustRootInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Add/remove a root DID whose delegation chains an environment accepts"
       }
     }
   },

@@ -16,6 +16,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from pydantic import Field
 
 from .canonical import digest
+from .did import did_key_from_pem
 from .environment import Environment
 from .errors import ConflictError, NotFoundError
 from .models import (
@@ -31,6 +32,7 @@ from .models import (
     StrictModel,
     ToolName,
 )
+from .service_did import DidServiceMixin
 from .signing import MAX_TTL, key_fingerprint, public_pem, read_public, unverified_claims, verify
 from .state import StateDir
 
@@ -112,7 +114,7 @@ class LedgerVerifyInput(StrictModel):
 
 
 # ---------------------------------------------------------------------- service
-class TrustService:
+class TrustService(DidServiceMixin):
     def __init__(self, state: StateDir):
         self.state = state
         self.authority = state.authority
@@ -213,7 +215,10 @@ class TrustService:
             "expires_at": claims["exp"],
             "custody": custody,
             "key_fingerprint": key_fingerprint(read_public(public_key)),
+            "did": did_key_from_pem(public_key),
             "identifier_type": "local identifiers asserted by a configured issuer; not DIDs",
+            "did_note": "v1 passports keep local agent ids; 'did' is the did:key of the same agent key, "
+                        "usable for v2 delegation chains",
             "receipts": receipts,
         }
 
@@ -231,6 +236,7 @@ class TrustService:
             "passport_token": identity["passport_token"],
             "custody": identity["custody"],
             "key_fingerprint": key_fingerprint(read_public(identity["public_key"])),
+            "did": did_key_from_pem(identity["public_key"]),
             "expires_at": identity["expires_at"],
             "expired": identity["expires_at"] <= int(time.time()),
             "revoked": revoked,
@@ -374,7 +380,11 @@ class TrustService:
         environment = self.environment(data.environment)
         if not environment.path.exists():
             raise NotFoundError("Ledger does not exist yet")
-        return environment.verify_ledger(data.expected_head)
+        report = environment.verify_ledger(data.expected_head)
+        v2 = self.delegation_ledger(data.environment).verify()
+        report["v2"] = v2
+        report["valid"] = report["valid"] and v2["valid"]
+        return report
 
     def receipts(self, environment_id: str, limit: int = 50, agent_id: str | None = None) -> dict:
         environment = self.environment(environment_id)
@@ -422,6 +432,11 @@ class TrustService:
             "custody": "local_development_file_key",
             "executes_actions": False,
             "production_did_wallet_or_payments": False,
+            "authority_did": self.delegation_ledger(self.state.environments[0]).did,
+            "trusted_roots": {e: self.state.trusted_roots(e) for e in self.state.environments},
+            "did_methods": {"did:key": "offline", "did:web": "network" if self.state.did_web_network
+                            else "cache_only"},
+            "delegation_format": "autheo.delegation/v2 (W3C VC 2.0 + Data Integrity eddsa-jcs-2022)",
         }
 
     def policy_document(self) -> dict:

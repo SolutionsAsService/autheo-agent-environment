@@ -24,6 +24,18 @@ from .models import (
     Request,
     StrictModel,
 )
+from .models_v2 import (
+    Bundle,
+    Capability,
+    DataIntegrityProof,
+    Delegation,
+    DidKeyDocument,
+    Invocation,
+    LedgerExportV2,
+    ReceiptV2,
+    Revocation,
+    RevocationList,
+)
 from .policy import PolicyDocument
 
 SCHEMA_DIALECT = "https://json-schema.org/draft/2020-12/schema"
@@ -74,22 +86,43 @@ SCHEMAS = {
 }
 
 
-def schema_id(name: str) -> str:
+SCHEMAS_V2 = {
+    "proof": (DataIntegrityProof, "Autheo profile of a W3C Data Integrity proof (eddsa-jcs-2022, single proof)"),
+    "capability": (Capability, "What a delegation grants; children may only narrow it"),
+    "delegation": (Delegation, "W3C VC 2.0 delegation credential from one DID to another (proof: capabilityDelegation)"),
+    "invocation": (Invocation, "Invoker-signed request embedding its delegation chain (proof: capabilityInvocation)"),
+    "revocation": (Revocation, "Signed revocation of a delegation and everything below it"),
+    "revocation-list": (RevocationList, "Unsigned list of independently signed revocation records"),
+    "receipt": (ReceiptV2, "Environment-signed, hash-linked v2 decision/revocation receipt"),
+    "bundle": (Bundle, "Offline verification bundle: receipt + invocation (with chain) + revocations"),
+    "ledger-export": (LedgerExportV2, "Export of an environment's v2 receipt chain"),
+    "did-key-document": (DidKeyDocument, "DID document generated for a did:key (Multikey form)"),
+}
+
+
+def schema_id(name: str, version: int = 1) -> str:
     # A URN, deliberately not a URL: no hosted schema registry exists.
-    return f"urn:autheo:schema:{name}:v1"
+    return f"urn:autheo:schema:{name}:v{version}"
 
 
-def build_schema(name: str) -> dict:
-    model, description = SCHEMAS[name]
-    schema = model.model_json_schema(mode="validation")
+def build_schema(name: str, version: int = 1) -> dict:
+    model, description = (SCHEMAS if version == 1 else SCHEMAS_V2)[name]
+    schema = model.model_json_schema(mode="validation", by_alias=True)
     schema.pop("description", None)
     return {
         "$schema": SCHEMA_DIALECT,
-        "$id": schema_id(name),
-        "title": f"autheo.{name}/v1",
+        "$id": schema_id(name, version),
+        "title": f"autheo.{name}/v{version}",
         "description": description,
         **schema,
     }
+
+
+def _files():
+    for name in SCHEMAS:
+        yield name, 1, f"{name}.v1.schema.json"
+    for name in SCHEMAS_V2:
+        yield name, 2, f"{name}.v2.schema.json"
 
 
 def render(schema: dict) -> str:
@@ -100,9 +133,9 @@ def export(directory: Path) -> list[Path]:
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     written = []
-    for name in SCHEMAS:
-        path = directory / f"{name}.v1.schema.json"
-        path.write_text(render(build_schema(name)), encoding="utf-8")
+    for name, version, file_name in _files():
+        path = directory / file_name
+        path.write_text(render(build_schema(name, version)), encoding="utf-8")
         written.append(path)
     return written
 
@@ -111,8 +144,8 @@ def check(directory: Path) -> list[str]:
     """Return the names of schema files that are missing or differ from the models."""
     directory = Path(directory)
     stale = []
-    for name in SCHEMAS:
-        path = directory / f"{name}.v1.schema.json"
-        if not path.is_file() or path.read_text(encoding="utf-8") != render(build_schema(name)):
+    for name, version, file_name in _files():
+        path = directory / file_name
+        if not path.is_file() or path.read_text(encoding="utf-8") != render(build_schema(name, version)):
             stale.append(path.name)
     return stale

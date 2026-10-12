@@ -1,0 +1,404 @@
+{
+  "$defs": {
+    "ChainLink": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Digest",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "issuer": {
+          "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+          "title": "Issuer",
+          "type": "string"
+        },
+        "subject": {
+          "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+          "title": "Subject",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "digest",
+        "issuer",
+        "subject"
+      ],
+      "title": "ChainLink",
+      "type": "object"
+    },
+    "DataIntegrityProof": {
+      "additionalProperties": false,
+      "description": "Autheo profile of a W3C Data Integrity proof (eddsa-jcs-2022, single proof).",
+      "properties": {
+        "@context": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 8,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "@Context"
+        },
+        "created": {
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+          "title": "Created",
+          "type": "string"
+        },
+        "cryptosuite": {
+          "const": "eddsa-jcs-2022",
+          "title": "Cryptosuite",
+          "type": "string"
+        },
+        "proofPurpose": {
+          "enum": [
+            "assertionMethod",
+            "authentication",
+            "capabilityDelegation",
+            "capabilityInvocation"
+          ],
+          "title": "Proofpurpose",
+          "type": "string"
+        },
+        "proofValue": {
+          "pattern": "^z[1-9A-HJ-NP-Za-km-z]{80,96}$",
+          "title": "Proofvalue",
+          "type": "string"
+        },
+        "type": {
+          "const": "DataIntegrityProof",
+          "title": "Type",
+          "type": "string"
+        },
+        "verificationMethod": {
+          "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+          "title": "Verificationmethod",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "cryptosuite",
+        "created",
+        "verificationMethod",
+        "proofPurpose",
+        "proofValue"
+      ],
+      "title": "DataIntegrityProof",
+      "type": "object"
+    },
+    "ReceiptV2": {
+      "additionalProperties": false,
+      "description": "Environment-signed, hash-linked record of a decision or an accepted revocation.",
+      "properties": {
+        "action": {
+          "anyOf": [
+            {
+              "enum": [
+                "marketplace.read",
+                "devhub.read",
+                "chain.read",
+                "compute.simulate",
+                "environment.handoff",
+                "tool.invoke",
+                "model.invoke",
+                "file.read",
+                "file.write",
+                "network.fetch",
+                "message.send",
+                "task.checkpoint"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action"
+        },
+        "amount_minor": {
+          "default": 0,
+          "maximum": 1000000000000000,
+          "minimum": 0,
+          "title": "Amount Minor",
+          "type": "integer"
+        },
+        "chain": {
+          "items": {
+            "$ref": "#/$defs/ChainLink"
+          },
+          "maxItems": 10,
+          "title": "Chain",
+          "type": "array"
+        },
+        "decision": {
+          "enum": [
+            "allow",
+            "escalate",
+            "block",
+            "recorded"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "document_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Document Digest",
+          "type": "string"
+        },
+        "environment": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "title": "Environment",
+          "type": "string"
+        },
+        "executed": {
+          "const": false,
+          "default": false,
+          "title": "Executed",
+          "type": "boolean"
+        },
+        "id": {
+          "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "invoker": {
+          "anyOf": [
+            {
+              "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invoker"
+        },
+        "issuer": {
+          "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+          "title": "Issuer",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "decision",
+            "revocation"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "policy_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Policy Digest"
+        },
+        "policy_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Policy Id"
+        },
+        "previous_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Previous Hash",
+          "type": "string"
+        },
+        "proof": {
+          "$ref": "#/$defs/DataIntegrityProof"
+        },
+        "reasons": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]*(:[A-Za-z0-9:._-]{1,96})?$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Reasons",
+          "type": "array"
+        },
+        "recorded_at": {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Recorded At",
+          "type": "integer"
+        },
+        "reference": {
+          "anyOf": [
+            {
+              "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "resource": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resource"
+        },
+        "root": {
+          "anyOf": [
+            {
+              "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Root"
+        },
+        "schema_version": {
+          "const": "autheo.receipt/v2",
+          "default": "autheo.receipt/v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sequence": {
+          "maximum": 9007199254740991,
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "simulation_only": {
+          "const": true,
+          "default": true,
+          "title": "Simulation Only",
+          "type": "boolean"
+        },
+        "tool": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tool"
+        },
+        "type": {
+          "const": "AutheoReceipt",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "issuer",
+        "environment",
+        "sequence",
+        "previous_hash",
+        "recorded_at",
+        "kind",
+        "decision",
+        "reasons",
+        "document_digest",
+        "proof"
+      ],
+      "title": "ReceiptV2",
+      "type": "object"
+    }
+  },
+  "$id": "urn:autheo:schema:ledger-export:v2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Export of an environment's v2 receipt chain",
+  "properties": {
+    "environment": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Environment",
+      "type": "string"
+    },
+    "head": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Head",
+      "type": "string"
+    },
+    "issuer": {
+      "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+      "title": "Issuer",
+      "type": "string"
+    },
+    "receipts": {
+      "items": {
+        "$ref": "#/$defs/ReceiptV2"
+      },
+      "maxItems": 100000,
+      "title": "Receipts",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "autheo.ledger-export/v2",
+      "default": "autheo.ledger-export/v2",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "environment",
+    "issuer",
+    "head",
+    "receipts"
+  ],
+  "title": "LedgerExportV2",
+  "type": "object"
+}

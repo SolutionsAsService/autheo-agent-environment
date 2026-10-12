@@ -26,8 +26,10 @@ import jwt
 from pydantic import BaseModel, ValidationError
 
 from . import __version__
+from .data_integrity import ProofError
+from .did import DidError
 from .errors import ConflictError, NotFoundError
-from .schemas import SCHEMAS, build_schema
+from .schemas import SCHEMAS, SCHEMAS_V2, build_schema
 from .service import (
     CheckpointInput,
     EvaluateInput,
@@ -39,6 +41,15 @@ from .service import (
     RevokeInput,
     TrustService,
     VerifyReceiptInput,
+)
+from .service_did import (
+    BundleVerifyInput,
+    ChainVerifyInput,
+    DelegateInput,
+    DidCreateInput,
+    InvocationEvaluateInput,
+    RevocationInput,
+    TrustRootInput,
 )
 
 MAX_BODY_BYTES = 65536
@@ -96,6 +107,13 @@ class ApiRouter:
             return 409, {"error": "conflict", "detail": str(error)[:300]}
         except ValidationError:
             return 400, {"error": "schema_validation_failed"}
+        except ProofError as error:
+            payload = {"error": "proof_invalid", "code": error.code, "detail": str(error)[:300]}
+            if getattr(error, "errors", None):
+                payload["errors"] = error.errors[:20]
+            return 400, payload
+        except DidError as error:
+            return 400, {"error": "did_invalid", "code": error.code, "detail": str(error)[:300]}
         except jwt.InvalidSignatureError:
             return 400, {"error": "signature_invalid"}
         except jwt.ExpiredSignatureError:
@@ -129,7 +147,12 @@ class ApiRouter:
 
             return build_openapi()
         if path == "/v1/schemas" and method == "GET":
-            return {"schemas": {name: f"/v1/schemas/{name}" for name in SCHEMAS}}
+            return {"schemas": {name: f"/v1/schemas/{name}" for name in SCHEMAS},
+                    "schemas_v2": {name: f"/v1/schemas/v2/{name}" for name in SCHEMAS_V2}}
+        if len(segments) == 4 and segments[:3] == ["v1", "schemas", "v2"] and method == "GET":
+            if segments[3] not in SCHEMAS_V2:
+                raise ApiError(404, "not_found")
+            return build_schema(segments[3], 2)
         if len(segments) == 3 and segments[:2] == ["v1", "schemas"] and method == "GET":
             if segments[2] not in SCHEMAS:
                 raise ApiError(404, "not_found")
@@ -153,6 +176,14 @@ class ApiRouter:
                 environment = query.get("environment", [""])[0]
                 agent = query.get("agent_id", [None])[0]
                 return service.receipts(environment, _limit(query), agent)
+            if path == "/v1/dids":
+                return service.list_dids()
+            if len(segments) == 3 and segments[1] == "dids":
+                return service.resolve_did(segments[2])
+            if path == "/v1/revocations":
+                return service.revocation_list(query.get("environment", [""])[0])
+            if path == "/v1/ledger/v2":
+                return service.v2_ledger(query.get("environment", [""])[0])
             if path == "/v1/ledger/verify":
                 payload = {"environment": query.get("environment", [""])[0]}
                 if "expected_head" in query:
@@ -183,6 +214,20 @@ class ApiRouter:
             return service.checkpoint(_validate(CheckpointInput, payload))
         if path == "/v1/handoffs/accept":
             return service.accept_handoff(_validate(HandoffAcceptInput, payload))
+        if path == "/v1/dids":
+            return service.create_did(_validate(DidCreateInput, payload))
+        if path == "/v1/trust-roots":
+            return service.set_trusted_root(_validate(TrustRootInput, payload))
+        if path == "/v1/delegations":
+            return service.delegate(_validate(DelegateInput, payload))
+        if path == "/v1/delegations/verify":
+            return service.verify_delegation_chain(_validate(ChainVerifyInput, payload))
+        if path == "/v1/revocations":
+            return service.revoke_delegation(_validate(RevocationInput, payload))
+        if path == "/v1/invocations/evaluate":
+            return service.evaluate_invocation(_validate(InvocationEvaluateInput, payload))
+        if path == "/v1/bundles/verify":
+            return service.verify_bundle(_validate(BundleVerifyInput, payload))
         raise ApiError(404, "not_found")
 
 

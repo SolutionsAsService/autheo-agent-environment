@@ -12,6 +12,7 @@ from pydantic.json_schema import models_json_schema
 
 from . import __version__
 from .models import Decision, ReceiptBody
+from .models_v2 import Bundle, Delegation, Invocation, ReceiptV2, Revocation, RevocationList
 from .policy import PolicyDocument
 from .service import (
     CheckpointInput,
@@ -23,6 +24,15 @@ from .service import (
     OutcomeInput,
     RevokeInput,
     VerifyReceiptInput,
+)
+from .service_did import (
+    BundleVerifyInput,
+    ChainVerifyInput,
+    DelegateInput,
+    DidCreateInput,
+    InvocationEvaluateInput,
+    RevocationInput,
+    TrustRootInput,
 )
 
 COMPONENT_MODELS = [
@@ -38,6 +48,19 @@ COMPONENT_MODELS = [
     Decision,
     ReceiptBody,
     PolicyDocument,
+    DidCreateInput,
+    TrustRootInput,
+    DelegateInput,
+    RevocationInput,
+    InvocationEvaluateInput,
+    ChainVerifyInput,
+    BundleVerifyInput,
+    Delegation,
+    Invocation,
+    Revocation,
+    RevocationList,
+    ReceiptV2,
+    Bundle,
 ]
 
 
@@ -168,6 +191,32 @@ def build_openapi() -> dict:
         "/v1/handoffs/accept": {"post": _op("Admit a checkpoint at its destination; grants no authority",
                                             body="HandoffAcceptInput", response=_receipt_envelope(),
                                             errors=write_errors)},
+        "/v1/dids": {
+            "get": _op("DIDs whose keys this local service holds (local-dev custody)"),
+            "post": _op("Generate a did:key with local-dev custody (no registration anywhere)", body="DidCreateInput",
+                        errors=write_errors),
+        },
+        "/v1/dids/{did}": {"get": _op("Resolve a DID document (did:key offline; did:web from cache unless enabled)",
+                                      params=[_path_param("did")])},
+        "/v1/trust-roots": {"post": _op("Add/remove a root DID whose delegation chains an environment accepts",
+                                        body="TrustRootInput", errors=write_errors)},
+        "/v1/delegations": {"post": _op("Sign an attenuated delegation with a service-held key (local dev)",
+                                        body="DelegateInput", errors=write_errors)},
+        "/v1/delegations/verify": {"post": _op("Verify a delegation chain (pure; same as the offline verifier)",
+                                               body="ChainVerifyInput", errors=write_errors)},
+        "/v1/revocations": {
+            "get": _op("Revocation list (every record independently signed)", params=[_query("environment", True)],
+                       response=_ref("RevocationList")),
+            "post": _op("Record a signed revocation (or sign one with a service-held key)", body="RevocationInput",
+                        errors=write_errors),
+        },
+        "/v1/invocations/evaluate": {"post": _op(
+            "Verify an invocation and its delegation chain, apply policy, record a v2 receipt; returns an "
+            "offline-verifiable bundle. Never executes.", body="InvocationEvaluateInput", errors=write_errors)},
+        "/v1/bundles/verify": {"post": _op("Verify a decision bundle back to a root DID (pure; offline verifier)",
+                                           body="BundleVerifyInput", errors=write_errors)},
+        "/v1/ledger/v2": {"get": _op("Export the v2 (DID) receipt chain for offline verification",
+                                     params=[_query("environment", True)])},
     }
     for path, item in paths.items():
         if path != "/v1/health" and path.startswith("/v1/"):
@@ -180,8 +229,9 @@ def build_openapi() -> dict:
             "version": __version__,
             "description": (
                 "Loopback-only local reference API. Decisions are simulations recorded as signed, "
-                "hash-chained receipts; nothing is executed and no DID, wallet or payment is involved. "
-                "Signature and canonicalization rules: docs/SPEC-SIGNATURES.md."
+                "hash-chained receipts; nothing is executed and no wallet or payment is involved. "
+                "v1 signature rules: docs/SPEC-SIGNATURES.md. v2 DID identities, delegation chains, "
+                "revocation and offline verification: docs/SPEC-DID.md."
             ),
             "license": {"name": "MIT"},
         },

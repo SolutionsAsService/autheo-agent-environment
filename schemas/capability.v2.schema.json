@@ -1,0 +1,107 @@
+{
+  "$id": "urn:autheo:schema:capability:v2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "What a delegation grants; children may only narrow it",
+  "properties": {
+    "approval_threshold_minor": {
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Approval Threshold Minor",
+      "type": "integer"
+    },
+    "asset": {
+      "const": "DEMO",
+      "default": "DEMO",
+      "title": "Asset",
+      "type": "string"
+    },
+    "environments": {
+      "items": {
+        "pattern": "^(\\*|[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}\\*?)$",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Environments",
+      "type": "array"
+    },
+    "max_delegation_depth": {
+      "default": 0,
+      "maximum": 8,
+      "minimum": 0,
+      "title": "Max Delegation Depth",
+      "type": "integer"
+    },
+    "per_action_minor": {
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Per Action Minor",
+      "type": "integer"
+    },
+    "resources": {
+      "items": {
+        "pattern": "^(\\*|[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}\\*?)$",
+        "type": "string"
+      },
+      "maxItems": 50,
+      "minItems": 1,
+      "title": "Resources",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "autheo.capability/v2",
+      "default": "autheo.capability/v2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scopes": {
+      "items": {
+        "enum": [
+          "marketplace.read",
+          "devhub.read",
+          "chain.read",
+          "compute.simulate",
+          "environment.handoff",
+          "tool.invoke",
+          "model.invoke",
+          "file.read",
+          "file.write",
+          "network.fetch",
+          "message.send",
+          "task.checkpoint"
+        ],
+        "type": "string"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Scopes",
+      "type": "array"
+    },
+    "tools": {
+      "items": {
+        "pattern": "^(\\*|[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}\\*?)$",
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Tools",
+      "type": "array"
+    },
+    "total_budget_minor": {
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Total Budget Minor",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "environments",
+    "scopes",
+    "resources",
+    "per_action_minor",
+    "total_budget_minor",
+    "approval_threshold_minor"
+  ],
+  "title": "Capability",
+  "type": "object"
+}

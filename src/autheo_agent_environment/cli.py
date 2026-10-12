@@ -17,6 +17,9 @@ from pathlib import Path
 import jwt
 from pydantic import ValidationError
 
+from .cli_did import add_did_parser, run_did
+from .data_integrity import ProofError
+from .did import DidError
 from .errors import ConflictError, NotFoundError
 from .models import SCOPES
 
@@ -150,6 +153,8 @@ def build_parser() -> argparse.ArgumentParser:
                          ).add_argument("path", type=Path)
         group.add_parser("check").add_argument("path", type=Path)
 
+    add_did_parser(commands)
+
     serve = commands.add_parser("serve", help="run the loopback HTTP API")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8780)
@@ -166,6 +171,8 @@ def run(args) -> int:  # noqa: C901 - flat command dispatch is clearer than indi
     from . import service as svc
 
     command, action = args.command, getattr(args, "action", None)
+    if command == "did":
+        return run_did(args, lambda: _service(args), _print)
     if command == "init":
         from .state import StateDir
 
@@ -324,6 +331,10 @@ def main(argv=None) -> int:
     except ValidationError as error:
         code = "schema_validation_failed"
         message = ", ".join(sorted({".".join(str(p) for p in e["loc"]) or e["msg"] for e in error.errors()}))
+    except ProofError as error:
+        code, message = "proof_invalid", str(error)
+    except DidError as error:
+        code, message = "did_invalid", str(error)
     except jwt.InvalidTokenError as error:
         code, message = "token_invalid", type(error).__name__
     except ValueError as error:

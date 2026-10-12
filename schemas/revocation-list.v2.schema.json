@@ -1,0 +1,183 @@
+{
+  "$defs": {
+    "DataIntegrityProof": {
+      "additionalProperties": false,
+      "description": "Autheo profile of a W3C Data Integrity proof (eddsa-jcs-2022, single proof).",
+      "properties": {
+        "@context": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 8,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "@Context"
+        },
+        "created": {
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+          "title": "Created",
+          "type": "string"
+        },
+        "cryptosuite": {
+          "const": "eddsa-jcs-2022",
+          "title": "Cryptosuite",
+          "type": "string"
+        },
+        "proofPurpose": {
+          "enum": [
+            "assertionMethod",
+            "authentication",
+            "capabilityDelegation",
+            "capabilityInvocation"
+          ],
+          "title": "Proofpurpose",
+          "type": "string"
+        },
+        "proofValue": {
+          "pattern": "^z[1-9A-HJ-NP-Za-km-z]{80,96}$",
+          "title": "Proofvalue",
+          "type": "string"
+        },
+        "type": {
+          "const": "DataIntegrityProof",
+          "title": "Type",
+          "type": "string"
+        },
+        "verificationMethod": {
+          "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}#[A-Za-z0-9._~:-]{1,128}$",
+          "title": "Verificationmethod",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "cryptosuite",
+        "created",
+        "verificationMethod",
+        "proofPurpose",
+        "proofValue"
+      ],
+      "title": "DataIntegrityProof",
+      "type": "object"
+    },
+    "Revocation": {
+      "additionalProperties": false,
+      "description": "Signed statement that a delegation (and everything below it) is revoked from revoked_at on.",
+      "properties": {
+        "id": {
+          "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "issuer": {
+          "pattern": "^did:(key|web):[A-Za-z0-9._:-]{1,88}$",
+          "title": "Issuer",
+          "type": "string"
+        },
+        "proof": {
+          "$ref": "#/$defs/DataIntegrityProof"
+        },
+        "reason": {
+          "default": "revoked",
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Reason",
+          "type": "string"
+        },
+        "revoked_at": {
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+          "title": "Revoked At",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "autheo.revocation/v2",
+          "default": "autheo.revocation/v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/RevocationTarget"
+        },
+        "type": {
+          "const": "AutheoRevocation",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "issuer",
+        "target",
+        "revoked_at",
+        "proof"
+      ],
+      "title": "Revocation",
+      "type": "object"
+    },
+    "RevocationTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Digest",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "digest"
+      ],
+      "title": "RevocationTarget",
+      "type": "object"
+    }
+  },
+  "$id": "urn:autheo:schema:revocation-list:v2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Unsigned list of independently signed revocation records",
+  "properties": {
+    "generated_at": {
+      "maximum": 9007199254740991,
+      "minimum": 0,
+      "title": "Generated At",
+      "type": "integer"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/Revocation"
+      },
+      "maxItems": 10000,
+      "title": "Records",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "autheo.revocation-list/v2",
+      "default": "autheo.revocation-list/v2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "default": "",
+      "maxLength": 128,
+      "title": "Source",
+      "type": "string"
+    }
+  },
+  "required": [
+    "generated_at"
+  ],
+  "title": "RevocationList",
+  "type": "object"
+}
