@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "Checkpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Artifact Sha256",
+          "type": "string"
+        },
+        "step": {
+          "enum": [
+            "planned",
+            "inspected",
+            "awaiting_review"
+          ],
+          "title": "Step",
+          "type": "string"
+        },
+        "task_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "step",
+        "artifact_sha256"
+      ],
+      "title": "Checkpoint",
+      "type": "object"
+    }
+  },
+  "$id": "urn:autheo:schema:handoff:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Body of autheo-handoff+jwt: destination-bound checkpoint envelope",
+  "properties": {
+    "activation_requires_new_mandate": {
+      "const": true,
+      "default": true,
+      "title": "Activation Requires New Mandate",
+      "type": "boolean"
+    },
+    "agent_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "budget_transferred_minor": {
+      "const": 0,
+      "default": 0,
+      "title": "Budget Transferred Minor",
+      "type": "integer"
+    },
+    "checkpoint": {
+      "$ref": "#/$defs/Checkpoint"
+    },
+    "destination_environment": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Destination Environment",
+      "type": "string"
+    },
+    "owner_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Owner Id",
+      "type": "string"
+    },
+    "passport_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Passport Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "autheo.handoff/v1",
+      "default": "autheo.handoff/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scopes": {
+      "items": {
+        "enum": [
+          "marketplace.read",
+          "devhub.read",
+          "chain.read",
+          "compute.simulate",
+          "environment.handoff",
+          "tool.invoke",
+          "model.invoke",
+          "file.read",
+          "file.write",
+          "network.fetch",
+          "message.send",
+          "task.checkpoint"
+        ],
+        "type": "string"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Scopes",
+      "type": "array"
+    },
+    "source_audit_head": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Audit Head",
+      "type": "string"
+    },
+    "source_environment": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Source Environment",
+      "type": "string"
+    },
+    "source_mandate_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Source Mandate Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "agent_id",
+    "owner_id",
+    "source_environment",
+    "destination_environment",
+    "source_mandate_id",
+    "passport_digest",
+    "scopes",
+    "checkpoint",
+    "source_audit_head"
+  ],
+  "title": "Handoff",
+  "type": "object"
+}

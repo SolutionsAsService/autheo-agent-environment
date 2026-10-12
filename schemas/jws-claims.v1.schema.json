@@ -1,0 +1,64 @@
+{
+  "$id": "urn:autheo:schema:jws-claims:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Claim set shared by all Autheo signed documents",
+  "properties": {
+    "aud": {
+      "maxLength": 96,
+      "minLength": 1,
+      "title": "Aud",
+      "type": "string"
+    },
+    "body": {
+      "additionalProperties": true,
+      "title": "Body",
+      "type": "object"
+    },
+    "exp": {
+      "minimum": 1,
+      "title": "Exp",
+      "type": "integer"
+    },
+    "iat": {
+      "minimum": 0,
+      "title": "Iat",
+      "type": "integer"
+    },
+    "iss": {
+      "maxLength": 96,
+      "minLength": 1,
+      "title": "Iss",
+      "type": "string"
+    },
+    "jti": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Jti",
+      "type": "string"
+    },
+    "nbf": {
+      "minimum": 0,
+      "title": "Nbf",
+      "type": "integer"
+    },
+    "sub": {
+      "maxLength": 96,
+      "minLength": 1,
+      "title": "Sub",
+      "type": "string"
+    }
+  },
+  "required": [
+    "iss",
+    "sub",
+    "aud",
+    "iat",
+    "nbf",
+    "exp",
+    "jti",
+    "body"
+  ],
+  "title": "JwsClaims",
+  "type": "object"
+}

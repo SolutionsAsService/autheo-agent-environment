@@ -1,0 +1,229 @@
+{
+  "$defs": {
+    "BudgetState": {
+      "additionalProperties": false,
+      "properties": {
+        "asset": {
+          "const": "DEMO",
+          "default": "DEMO",
+          "title": "Asset",
+          "type": "string"
+        },
+        "remaining_minor": {
+          "maximum": 1000000000000000,
+          "minimum": 0,
+          "title": "Remaining Minor",
+          "type": "integer"
+        },
+        "spent_minor": {
+          "maximum": 1000000000000000,
+          "minimum": 0,
+          "title": "Spent Minor",
+          "type": "integer"
+        },
+        "total_budget_minor": {
+          "maximum": 1000000000000000,
+          "minimum": 0,
+          "title": "Total Budget Minor",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total_budget_minor",
+        "spent_minor",
+        "remaining_minor"
+      ],
+      "title": "BudgetState",
+      "type": "object"
+    },
+    "Explanation": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "pattern": "^[a-z][a-z0-9_.:-]{0,95}$",
+          "title": "Check",
+          "type": "string"
+        },
+        "detail": {
+          "maxLength": 300,
+          "title": "Detail",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "pass",
+            "fail",
+            "escalate",
+            "not_applicable"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "check",
+        "outcome",
+        "detail"
+      ],
+      "title": "Explanation",
+      "type": "object"
+    }
+  },
+  "$id": "urn:autheo:schema:decision:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Policy decision point result with explanation (not a capability)",
+  "properties": {
+    "action": {
+      "enum": [
+        "marketplace.read",
+        "devhub.read",
+        "chain.read",
+        "compute.simulate",
+        "environment.handoff",
+        "tool.invoke",
+        "model.invoke",
+        "file.read",
+        "file.write",
+        "network.fetch",
+        "message.send",
+        "task.checkpoint"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "agent_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "amount_minor": {
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Amount Minor",
+      "type": "integer"
+    },
+    "budget": {
+      "$ref": "#/$defs/BudgetState"
+    },
+    "decision": {
+      "enum": [
+        "allow",
+        "escalate",
+        "block"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "environment": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Environment",
+      "type": "string"
+    },
+    "evaluated_at": {
+      "maximum": 9007199254740991,
+      "minimum": 0,
+      "title": "Evaluated At",
+      "type": "integer"
+    },
+    "executed": {
+      "const": false,
+      "default": false,
+      "title": "Executed",
+      "type": "boolean"
+    },
+    "explanation": {
+      "items": {
+        "$ref": "#/$defs/Explanation"
+      },
+      "maxItems": 128,
+      "title": "Explanation",
+      "type": "array"
+    },
+    "is_capability": {
+      "const": false,
+      "default": false,
+      "title": "Is Capability",
+      "type": "boolean"
+    },
+    "mandate_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Mandate Id",
+      "type": "string"
+    },
+    "policy_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Policy Digest",
+      "type": "string"
+    },
+    "policy_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9_]*(:[A-Za-z0-9:._-]{1,96})?$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Reasons",
+      "type": "array"
+    },
+    "request_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Request Digest",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "resource": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Resource",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "autheo.decision/v1",
+      "default": "autheo.decision/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "tool": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Tool"
+    }
+  },
+  "required": [
+    "request_id",
+    "agent_id",
+    "environment",
+    "mandate_id",
+    "action",
+    "resource",
+    "amount_minor",
+    "decision",
+    "reasons",
+    "explanation",
+    "policy_id",
+    "policy_digest",
+    "request_digest",
+    "budget",
+    "evaluated_at"
+  ],
+  "title": "Decision",
+  "type": "object"
+}

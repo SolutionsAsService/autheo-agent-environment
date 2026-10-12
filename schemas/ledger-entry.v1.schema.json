@@ -1,0 +1,38 @@
+{
+  "$id": "urn:autheo:schema:ledger-entry:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Stored ledger row: sequence, request id, receipt JWS, chain hash",
+  "properties": {
+    "chain_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Chain Hash",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,159}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "sequence": {
+      "maximum": 9007199254740991,
+      "minimum": 1,
+      "title": "Sequence",
+      "type": "integer"
+    },
+    "token": {
+      "maxLength": 131072,
+      "minLength": 1,
+      "title": "Token",
+      "type": "string"
+    }
+  },
+  "required": [
+    "sequence",
+    "request_id",
+    "token",
+    "chain_hash"
+  ],
+  "title": "LedgerEntry",
+  "type": "object"
+}

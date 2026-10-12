@@ -1,0 +1,94 @@
+{
+  "$id": "urn:autheo:schema:request:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Body of autheo-request+jwt: agent-signed proposal of one action",
+  "properties": {
+    "action": {
+      "enum": [
+        "marketplace.read",
+        "devhub.read",
+        "chain.read",
+        "compute.simulate",
+        "environment.handoff",
+        "tool.invoke",
+        "model.invoke",
+        "file.read",
+        "file.write",
+        "network.fetch",
+        "message.send",
+        "task.checkpoint"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "agent_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "amount_minor": {
+      "default": 0,
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Amount Minor",
+      "type": "integer"
+    },
+    "asset": {
+      "const": "DEMO",
+      "default": "DEMO",
+      "title": "Asset",
+      "type": "string"
+    },
+    "environment": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Environment",
+      "type": "string"
+    },
+    "mandate_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Mandate Id",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "resource": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Resource",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "autheo.request/v1",
+      "default": "autheo.request/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "tool": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Tool"
+    }
+  },
+  "required": [
+    "request_id",
+    "agent_id",
+    "environment",
+    "mandate_id",
+    "action",
+    "resource"
+  ],
+  "title": "Request",
+  "type": "object"
+}

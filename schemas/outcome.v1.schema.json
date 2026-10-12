@@ -1,0 +1,59 @@
+{
+  "$id": "urn:autheo:schema:outcome:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Body of autheo-outcome+jwt: executor-reported outcome claim",
+  "properties": {
+    "agent_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "detail_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Detail Sha256"
+    },
+    "environment": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Environment",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "autheo.outcome/v1",
+      "default": "autheo.outcome/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "succeeded",
+        "failed",
+        "unknown"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "agent_id",
+    "environment",
+    "status"
+  ],
+  "title": "OutcomeReport",
+  "type": "object"
+}

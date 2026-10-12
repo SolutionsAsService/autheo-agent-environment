@@ -1,0 +1,339 @@
+{
+  "$defs": {
+    "BudgetRule": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Actions",
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "limit_minor": {
+          "maximum": 1000000000000000,
+          "minimum": 0,
+          "title": "Limit Minor",
+          "type": "integer"
+        },
+        "tools": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Tools",
+          "type": "array"
+        },
+        "window_seconds": {
+          "anyOf": [
+            {
+              "maximum": 31536000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Window Seconds"
+        }
+      },
+      "required": [
+        "id",
+        "limit_minor"
+      ],
+      "title": "BudgetRule",
+      "type": "object"
+    },
+    "EscalationRule": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Actions",
+          "type": "array"
+        },
+        "amount_minor_gt": {
+          "anyOf": [
+            {
+              "maximum": 1000000000000000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount Minor Gt"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "resources": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Resources",
+          "type": "array"
+        },
+        "tools": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Tools",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "EscalationRule",
+      "type": "object"
+    },
+    "MatchSet": {
+      "additionalProperties": false,
+      "description": "Glob allow/deny lists. Deny wins. An empty allow list means \"no extra restriction\".",
+      "properties": {
+        "allow": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 200,
+          "title": "Allow",
+          "type": "array"
+        },
+        "deny": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 200,
+          "title": "Deny",
+          "type": "array"
+        }
+      },
+      "title": "MatchSet",
+      "type": "object"
+    },
+    "RateLimit": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Actions",
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "max_requests": {
+          "maximum": 1000000,
+          "minimum": 1,
+          "title": "Max Requests",
+          "type": "integer"
+        },
+        "tools": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Tools",
+          "type": "array"
+        },
+        "window_seconds": {
+          "maximum": 31536000,
+          "minimum": 1,
+          "title": "Window Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "max_requests",
+        "window_seconds"
+      ],
+      "title": "RateLimit",
+      "type": "object"
+    },
+    "TimeWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Actions",
+          "type": "array"
+        },
+        "days": {
+          "items": {
+            "enum": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "type": "string"
+          },
+          "maxItems": 7,
+          "minItems": 1,
+          "title": "Days",
+          "type": "array"
+        },
+        "end": {
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "title": "End",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "outside": {
+          "default": "block",
+          "enum": [
+            "block",
+            "escalate"
+          ],
+          "title": "Outside",
+          "type": "string"
+        },
+        "start": {
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "title": "Start",
+          "type": "string"
+        },
+        "timezone": {
+          "default": "UTC",
+          "maxLength": 64,
+          "title": "Timezone",
+          "type": "string"
+        },
+        "tools": {
+          "items": {
+            "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Tools",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "start",
+        "end"
+      ],
+      "title": "TimeWindow",
+      "type": "object"
+    }
+  },
+  "$id": "urn:autheo:schema:policy:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Declarative policy document (operator configuration)",
+  "properties": {
+    "budgets": {
+      "items": {
+        "$ref": "#/$defs/BudgetRule"
+      },
+      "maxItems": 50,
+      "title": "Budgets",
+      "type": "array"
+    },
+    "description": {
+      "default": "",
+      "maxLength": 500,
+      "title": "Description",
+      "type": "string"
+    },
+    "escalations": {
+      "items": {
+        "$ref": "#/$defs/EscalationRule"
+      },
+      "maxItems": 50,
+      "title": "Escalations",
+      "type": "array"
+    },
+    "policy_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "rate_limits": {
+      "items": {
+        "$ref": "#/$defs/RateLimit"
+      },
+      "maxItems": 50,
+      "title": "Rate Limits",
+      "type": "array"
+    },
+    "resources": {
+      "$ref": "#/$defs/MatchSet"
+    },
+    "schema_version": {
+      "const": "autheo.policy/v1",
+      "default": "autheo.policy/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scopes": {
+      "$ref": "#/$defs/MatchSet"
+    },
+    "time_windows": {
+      "items": {
+        "$ref": "#/$defs/TimeWindow"
+      },
+      "maxItems": 20,
+      "title": "Time Windows",
+      "type": "array"
+    },
+    "tools": {
+      "$ref": "#/$defs/MatchSet"
+    },
+    "use_mandate_approval_threshold": {
+      "default": true,
+      "title": "Use Mandate Approval Threshold",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "policy_id"
+  ],
+  "title": "PolicyDocument",
+  "type": "object"
+}

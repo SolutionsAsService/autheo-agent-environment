@@ -1,0 +1,34 @@
+{
+  "$id": "urn:autheo:schema:checkpoint:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Task checkpoint reference carried by a handoff",
+  "properties": {
+    "artifact_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Artifact Sha256",
+      "type": "string"
+    },
+    "step": {
+      "enum": [
+        "planned",
+        "inspected",
+        "awaiting_review"
+      ],
+      "title": "Step",
+      "type": "string"
+    },
+    "task_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "step",
+    "artifact_sha256"
+  ],
+  "title": "Checkpoint",
+  "type": "object"
+}

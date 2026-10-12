@@ -1,0 +1,39 @@
+{
+  "$id": "urn:autheo:schema:jws-header:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Protected header of an Autheo compact JWS (RFC 7515, EdDSA/Ed25519)",
+  "properties": {
+    "alg": {
+      "const": "EdDSA",
+      "title": "Alg",
+      "type": "string"
+    },
+    "kid": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Kid",
+      "type": "string"
+    },
+    "typ": {
+      "enum": [
+        "autheo-passport+jwt",
+        "autheo-mandate+jwt",
+        "autheo-request+jwt",
+        "autheo-receipt+jwt",
+        "autheo-handoff+jwt",
+        "autheo-trust-snapshot+jwt",
+        "autheo-outcome+jwt"
+      ],
+      "title": "Typ",
+      "type": "string"
+    }
+  },
+  "required": [
+    "alg",
+    "typ",
+    "kid"
+  ],
+  "title": "JwsHeader",
+  "type": "object"
+}

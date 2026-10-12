@@ -1,0 +1,620 @@
+{
+  "canonical": [
+    {
+      "canonical": "{}",
+      "name": "empty_object",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "value": {}
+    },
+    {
+      "canonical": "[]",
+      "name": "empty_array",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "value": []
+    },
+    {
+      "canonical": "{\"B\":3,\"_\":4,\"a\":2,\"aa\":5,\"b\":1}",
+      "name": "key_order_code_points",
+      "sha256": "a92259d364cc071673f20b9540b914ac5953b51c572fc3052eb7f81dd475af95",
+      "value": {
+        "B": 3,
+        "_": 4,
+        "a": 2,
+        "aa": 5,
+        "b": 1
+      }
+    },
+    {
+      "canonical": "{\"a\":[true,false],\"z\":{\"x\":{\"k\":null},\"y\":[3,2,1]}}",
+      "name": "nested",
+      "sha256": "0d9e382b78c2991a18f3f32ca911622a578e28f989df5be3633276a9d4a5c0ce",
+      "value": {
+        "a": [
+          true,
+          false
+        ],
+        "z": {
+          "x": {
+            "k": null
+          },
+          "y": [
+            3,
+            2,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "canonical": "{\"max_safe\":9007199254740991,\"min_safe\":-9007199254740991,\"neg\":-7,\"zero\":0}",
+      "name": "integers",
+      "sha256": "40a264571fe6cc708532f6b75c5518406f35716b5259b7b166d104b082f3d0b4",
+      "value": {
+        "max_safe": 9007199254740991,
+        "min_safe": -9007199254740991,
+        "neg": -7,
+        "zero": 0
+      }
+    },
+    {
+      "canonical": "{\"s\":\"quote\\\" backslash\\\\ slash/ nl\\n tab\\t cr\\r bs\\b ff\\f ctl\\u0001 del\\u007f\"}",
+      "name": "escapes",
+      "sha256": "90e5a7bb6a2e97a38940234be4e92b8ce98a4d76f0ce869320e5c8230f0d2918",
+      "value": {
+        "s": "quote\" backslash\\ slash/ nl\n tab\t cr\r bs\b ff\f ctl\u0001 del\u007f"
+      }
+    },
+    {
+      "canonical": "{\"s\":\"caf\\u00e9 \\u2014 \\u65e5\\u672c\"}",
+      "name": "non_ascii_bmp",
+      "sha256": "499bd3b95b43f4abbf57940dd213a7ffbef2fc515f6c2197c002c437a5a2e5ca",
+      "value": {
+        "s": "caf\u00e9 \u2014 \u65e5\u672c"
+      }
+    },
+    {
+      "canonical": "{\"s\":\"clef \\ud834\\udd1e\"}",
+      "name": "astral_surrogate_pair",
+      "sha256": "bb209a08aafad2726c69b88e87ca1a2c624d8025c70c7be043b9cec1d65a007a",
+      "value": {
+        "s": "clef \ud834\udd1e"
+      }
+    },
+    {
+      "canonical": "{\"agent_id\":\"agent:vector-01\",\"approval_threshold_minor\":5,\"asset\":\"DEMO\",\"destinations\":[],\"environment\":\"env:research\",\"owner_id\":\"human:vector-owner\",\"per_action_minor\":10,\"resources\":[\"repo:jarvis\"],\"schema_version\":\"autheo.mandate/v1\",\"scopes\":[\"tool.invoke\"],\"tools\":[\"git.status\"],\"total_budget_minor\":100}",
+      "name": "mandate_body",
+      "sha256": "f498f6d4b0b48cb00c5ffc2bffb4a462d38f6bb7775c0a7f199268b0202c1983",
+      "value": {
+        "agent_id": "agent:vector-01",
+        "approval_threshold_minor": 5,
+        "asset": "DEMO",
+        "destinations": [],
+        "environment": "env:research",
+        "owner_id": "human:vector-owner",
+        "per_action_minor": 10,
+        "resources": [
+          "repo:jarvis"
+        ],
+        "schema_version": "autheo.mandate/v1",
+        "scopes": [
+          "tool.invoke"
+        ],
+        "tools": [
+          "git.status"
+        ],
+        "total_budget_minor": 100
+      }
+    },
+    {
+      "error": true,
+      "json": "{\"amount\":1.5}",
+      "name": "reject_float"
+    },
+    {
+      "error": true,
+      "json": "{\"n\":9007199254740992}",
+      "name": "reject_unsafe_integer"
+    }
+  ],
+  "canonical_json": "autheo-cjson/1",
+  "chain": {
+    "environment": "env:research",
+    "genesis_previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "head": "ec62166c0b5ac5cf496ad1db078b1330664eb0c49b33a295d065245a79cd44fb",
+    "issuer": "autheo-test-authority",
+    "link_rule": "chain_hash = lowercase_hex(sha256(ascii(previous_hash) || ascii(receipt_jws)))",
+    "receipts": [
+      {
+        "body": {
+          "action": "tool.invoke",
+          "agent_id": "agent:vector-01",
+          "amount_minor": 40,
+          "decision": "allow",
+          "executed": false,
+          "kind": "simulation",
+          "mandate_id": "00000000-0000-4000-8000-000000000002",
+          "payload_hash": "1e10828ca7b6be1369255d882ee58e4871b7e6548701353422dcb0514d334eab",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "reasons": [
+            "within_demo_policy"
+          ],
+          "recorded_at": 1790000010,
+          "request_id": "req:vector-allow",
+          "resource": "repo:jarvis",
+          "schema_version": "autheo.receipt/v1",
+          "sequence": 1,
+          "simulation_only": true,
+          "tool": "git.status"
+        },
+        "chain_hash": "72d5e9bd3a648075d4bb0b0f368d40a715a26bbd2b1a56207a3b186edb55bc3b",
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "request_id": "req:vector-allow",
+        "sequence": 1,
+        "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMTAsIm5iZiI6MTc5MDAwMDAxMCwiZXhwIjoxNzkwMDg2NDEwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDEiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MSwicHJldmlvdXNfaGFzaCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsInBheWxvYWRfaGFzaCI6IjFlMTA4MjhjYTdiNmJlMTM2OTI1NWQ4ODJlZTU4ZTQ4NzFiN2U2NTQ4NzAxMzUzNDIyZGNiMDUxNGQzMzRlYWIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYWxsb3ciLCJyZWFzb25zIjpbIndpdGhpbl9kZW1vX3BvbGljeSJdLCJhbW91bnRfbWlub3IiOjQwLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMTAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.WEUOBOAwLRZ9KS37J85CLxFZTHW-6Z1jJ1Pr_FLMlxhqOprQUka8rbEMoLcGYJsYeeQlvj52eewCI2zaWQ-WBA"
+      },
+      {
+        "body": {
+          "action": "tool.invoke",
+          "agent_id": "agent:vector-01",
+          "amount_minor": 51,
+          "decision": "escalate",
+          "executed": false,
+          "kind": "simulation",
+          "mandate_id": "00000000-0000-4000-8000-000000000002",
+          "payload_hash": "64c4f87a2d3a1da52babd1ab028811eca272daab37d9484f24d745f420f7f8ca",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "72d5e9bd3a648075d4bb0b0f368d40a715a26bbd2b1a56207a3b186edb55bc3b",
+          "reasons": [
+            "human_review_required"
+          ],
+          "recorded_at": 1790000020,
+          "request_id": "req:vector-escalate",
+          "resource": "repo:jarvis",
+          "schema_version": "autheo.receipt/v1",
+          "sequence": 2,
+          "simulation_only": true,
+          "tool": "git.status"
+        },
+        "chain_hash": "8568fcf15c4a8cce718f715bc22f8eec77623b97e4d442099092db1f9bb1d945",
+        "previous_hash": "72d5e9bd3a648075d4bb0b0f368d40a715a26bbd2b1a56207a3b186edb55bc3b",
+        "request_id": "req:vector-escalate",
+        "sequence": 2,
+        "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMjAsIm5iZiI6MTc5MDAwMDAyMCwiZXhwIjoxNzkwMDg2NDIwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDIiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MiwicHJldmlvdXNfaGFzaCI6IjcyZDVlOWJkM2E2NDgwNzVkNGJiMGIwZjM2OGQ0MGE3MTVhMjZiYmQyYjFhNTYyMDdhM2IxODZlZGI1NWJjM2IiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1lc2NhbGF0ZSIsInBheWxvYWRfaGFzaCI6IjY0YzRmODdhMmQzYTFkYTUyYmFiZDFhYjAyODgxMWVjYTI3MmRhYWIzN2Q5NDg0ZjI0ZDc0NWY0MjBmN2Y4Y2EiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiZXNjYWxhdGUiLCJyZWFzb25zIjpbImh1bWFuX3Jldmlld19yZXF1aXJlZCJdLCJhbW91bnRfbWlub3IiOjUxLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMjAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.mWUTPelsiufl-Y9V1flDa0_usnh6MTKYXGduUPQV0fpvthnP0-9fB4G78jxApMB6jppxR0fUbzlER1v5TyzLBg"
+      },
+      {
+        "body": {
+          "action": "tool.invoke",
+          "agent_id": "agent:vector-01",
+          "amount_minor": 81,
+          "decision": "block",
+          "executed": false,
+          "kind": "simulation",
+          "mandate_id": "00000000-0000-4000-8000-000000000002",
+          "payload_hash": "bc5b60a611c9a761916122250133ebb5704480bac1f9fdb10fb6c9e4ac7d1d82",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "8568fcf15c4a8cce718f715bc22f8eec77623b97e4d442099092db1f9bb1d945",
+          "reasons": [
+            "per_action_limit",
+            "total_budget_limit"
+          ],
+          "recorded_at": 1790000030,
+          "request_id": "req:vector-block",
+          "resource": "repo:jarvis",
+          "schema_version": "autheo.receipt/v1",
+          "sequence": 3,
+          "simulation_only": true,
+          "tool": "git.status"
+        },
+        "chain_hash": "806ef7c456d17ab259d688fa264cddd13385e691b8518f32f937e67c5f4cf28b",
+        "previous_hash": "8568fcf15c4a8cce718f715bc22f8eec77623b97e4d442099092db1f9bb1d945",
+        "request_id": "req:vector-block",
+        "sequence": 3,
+        "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMzAsIm5iZiI6MTc5MDAwMDAzMCwiZXhwIjoxNzkwMDg2NDMwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDMiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MywicHJldmlvdXNfaGFzaCI6Ijg1NjhmY2YxNWM0YThjY2U3MThmNzE1YmMyMmY4ZWVjNzc2MjNiOTdlNGQ0NDIwOTkwOTJkYjFmOWJiMWQ5NDUiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1ibG9jayIsInBheWxvYWRfaGFzaCI6ImJjNWI2MGE2MTFjOWE3NjE5MTYxMjIyNTAxMzNlYmI1NzA0NDgwYmFjMWY5ZmRiMTBmYjZjOWU0YWM3ZDFkODIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYmxvY2siLCJyZWFzb25zIjpbInBlcl9hY3Rpb25fbGltaXQiLCJ0b3RhbF9idWRnZXRfbGltaXQiXSwiYW1vdW50X21pbm9yIjo4MSwiZXhlY3V0ZWQiOmZhbHNlLCJzaW11bGF0aW9uX29ubHkiOnRydWUsInJlY29yZGVkX2F0IjoxNzkwMDAwMDMwLCJhY3Rpb24iOiJ0b29sLmludm9rZSIsInJlc291cmNlIjoicmVwbzpqYXJ2aXMiLCJ0b29sIjoiZ2l0LnN0YXR1cyIsInBvbGljeV9pZCI6InBvbGljeTptYW5kYXRlLW9ubHkiLCJwb2xpY3lfZGlnZXN0IjoiYzFkMTc0YjQ2NjdiNjQyNzZkODVkYTNiZjkxMTQxNmQxMTI1MDMyZjk0Mjc0NmM1NWM5NzkyMmRjZmNhZmNiNCJ9fQ.0YI0Ke9bfQAyrg6GgfCYFH7rxEclxNatkfGHjLrbbjKZVf9pf6D0ooZLJ9g-FB4qYko_Z9458jK9XcqrYpQ2CA"
+      },
+      {
+        "body": {
+          "action": "tool.invoke",
+          "agent_id": "agent:vector-01",
+          "amount_minor": 0,
+          "decision": "recorded",
+          "executed": false,
+          "kind": "outcome_report",
+          "mandate_id": "00000000-0000-4000-8000-000000000002",
+          "payload_hash": "77f238f71e191986f78eeb018c6b9da8878a36893f73e8d30c7ef77ff4fd890a",
+          "previous_hash": "806ef7c456d17ab259d688fa264cddd13385e691b8518f32f937e67c5f4cf28b",
+          "reasons": [
+            "executor_reported_succeeded",
+            "not_independently_verified"
+          ],
+          "recorded_at": 1790000040,
+          "reference": "req:vector-allow",
+          "reported_by": "agent_signed",
+          "reported_status": "succeeded",
+          "request_id": "outcome:req:vector-allow",
+          "resource": "repo:jarvis",
+          "schema_version": "autheo.receipt/v1",
+          "sequence": 4,
+          "simulation_only": true,
+          "tool": "git.status"
+        },
+        "chain_hash": "ec62166c0b5ac5cf496ad1db078b1330664eb0c49b33a295d065245a79cd44fb",
+        "previous_hash": "806ef7c456d17ab259d688fa264cddd13385e691b8518f32f937e67c5f4cf28b",
+        "request_id": "outcome:req:vector-allow",
+        "sequence": 4,
+        "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwNDAsIm5iZiI6MTc5MDAwMDA0MCwiZXhwIjoxNzkwMDg2NDQwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDQiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6NCwicHJldmlvdXNfaGFzaCI6IjgwNmVmN2M0NTZkMTdhYjI1OWQ2ODhmYTI2NGNkZGQxMzM4NWU2OTFiODUxOGYzMmY5MzdlNjdjNWY0Y2YyOGIiLCJyZXF1ZXN0X2lkIjoib3V0Y29tZTpyZXE6dmVjdG9yLWFsbG93IiwicGF5bG9hZF9oYXNoIjoiNzdmMjM4ZjcxZTE5MTk4NmY3OGVlYjAxOGM2YjlkYTg4NzhhMzY4OTNmNzNlOGQzMGM3ZWY3N2ZmNGZkODkwYSIsImFnZW50X2lkIjoiYWdlbnQ6dmVjdG9yLTAxIiwibWFuZGF0ZV9pZCI6IjAwMDAwMDAwLTAwMDAtNDAwMC04MDAwLTAwMDAwMDAwMDAwMiIsImtpbmQiOiJvdXRjb21lX3JlcG9ydCIsImRlY2lzaW9uIjoicmVjb3JkZWQiLCJyZWFzb25zIjpbImV4ZWN1dG9yX3JlcG9ydGVkX3N1Y2NlZWRlZCIsIm5vdF9pbmRlcGVuZGVudGx5X3ZlcmlmaWVkIl0sImFtb3VudF9taW5vciI6MCwiZXhlY3V0ZWQiOmZhbHNlLCJzaW11bGF0aW9uX29ubHkiOnRydWUsInJlY29yZGVkX2F0IjoxNzkwMDAwMDQwLCJhY3Rpb24iOiJ0b29sLmludm9rZSIsInJlc291cmNlIjoicmVwbzpqYXJ2aXMiLCJ0b29sIjoiZ2l0LnN0YXR1cyIsInJlZmVyZW5jZSI6InJlcTp2ZWN0b3ItYWxsb3ciLCJyZXBvcnRlZF9zdGF0dXMiOiJzdWNjZWVkZWQiLCJyZXBvcnRlZF9ieSI6ImFnZW50X3NpZ25lZCJ9fQ.ywbINKMxdFoZJpeasPIN5Ap6Lfc43uWEs9v6deCbOz29x6VSMsmhHkYNHQg-7k7aYC1Jw1xL6_fDp2aUFef1Dw"
+      }
+    ]
+  },
+  "clock_skew_seconds": 2,
+  "digests": {
+    "default_policy": {
+      "budgets": [],
+      "description": "Mandate limits only; identical outcomes to the 0.1 reference simulator.",
+      "escalations": [],
+      "policy_id": "policy:mandate-only",
+      "rate_limits": [],
+      "resources": {
+        "allow": [],
+        "deny": []
+      },
+      "schema_version": "autheo.policy/v1",
+      "scopes": {
+        "allow": [],
+        "deny": []
+      },
+      "time_windows": [],
+      "tools": {
+        "allow": [],
+        "deny": []
+      },
+      "use_mandate_approval_threshold": true
+    },
+    "default_policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+    "passport_digest": "a42d6107173db462cdf5da50d899972b35d138cc5d07eb15b25afd9f143e1ed7"
+  },
+  "documents": [
+    {
+      "audience": "autheo-agent-environment",
+      "expect_valid": true,
+      "historical": false,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "passport",
+      "name": "passport",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXBhc3Nwb3J0K2p3dCJ9.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJhdXRoZW8tYWdlbnQtZW52aXJvbm1lbnQiLCJpYXQiOjE3OTAwMDAwMDAsIm5iZiI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDg2NDAwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDEiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnBhc3Nwb3J0L3YxIiwiYWdlbnRfaWQiOiJhZ2VudDp2ZWN0b3ItMDEiLCJvd25lcl9pZCI6Imh1bWFuOnZlY3Rvci1vd25lciIsInB1YmxpY19rZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUNvd0JRWURLMlZ3QXlFQS8vOWRRMzU5L05Ya2FDeEJIRTlkOTQ1SUNoOUUyU0VFSFJRVWRIM0VWU1E9XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiIsImVudmlyb25tZW50cyI6WyJlbnY6cmVzZWFyY2giLCJlbnY6cmV2aWV3Il19fQ.50_x20L2eyCNkq-SnhYBxFoUo2ElgS3Ecow7NMFGGuYluVM5JGAWORdYBfDRwZWlKOQrW2m1jnRFhGkviXJSDg",
+      "typ": "autheo-passport+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:research",
+      "expect_valid": true,
+      "historical": false,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "mandate",
+      "name": "mandate",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLW1hbmRhdGUrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMDAsIm5iZiI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAzNjAwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLm1hbmRhdGUvdjEiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm93bmVyX2lkIjoiaHVtYW46dmVjdG9yLW93bmVyIiwiZW52aXJvbm1lbnQiOiJlbnY6cmVzZWFyY2giLCJzY29wZXMiOlsidG9vbC5pbnZva2UiLCJjb21wdXRlLnNpbXVsYXRlIiwiZW52aXJvbm1lbnQuaGFuZG9mZiJdLCJyZXNvdXJjZXMiOlsicmVwbzpqYXJ2aXMiXSwiZGVzdGluYXRpb25zIjpbImVudjpyZXZpZXciXSwidG9vbHMiOlsiZ2l0LnN0YXR1cyJdLCJhc3NldCI6IkRFTU8iLCJwZXJfYWN0aW9uX21pbm9yIjo4MCwidG90YWxfYnVkZ2V0X21pbm9yIjoxMDAsImFwcHJvdmFsX3RocmVzaG9sZF9taW5vciI6NTB9fQ.ykdrT1-MCVJjH0SJ2ftfmiF1UsrskezKjvyAhSuJzqxuL004HapJB3Am3qD5CKZ0g-mjt3v0LBah5EqESBMZDw",
+      "typ": "autheo-mandate+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:research",
+      "expect_valid": true,
+      "historical": false,
+      "issuer": "agent:vector-01",
+      "key": "agent:vector-01",
+      "kind": "request",
+      "name": "request_agent_signed",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InNoYTI1NjoxOFkzNHUtNkhockJmT2xyWVhqdE5Lb01DbEU1Y2NqZ2Z4NHU3QXF4RDNjIiwidHlwIjoiYXV0aGVvLXJlcXVlc3Qrand0In0.eyJpc3MiOiJhZ2VudDp2ZWN0b3ItMDEiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMDUsIm5iZiI6MTc5MDAwMDAwNSwiZXhwIjoxNzkwMDAwMzA1LCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDMiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlcXVlc3QvdjEiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsImFnZW50X2lkIjoiYWdlbnQ6dmVjdG9yLTAxIiwiZW52aXJvbm1lbnQiOiJlbnY6cmVzZWFyY2giLCJtYW5kYXRlX2lkIjoiMDAwMDAwMDAtMDAwMC00MDAwLTgwMDAtMDAwMDAwMDAwMDAyIiwiYWN0aW9uIjoidG9vbC5pbnZva2UiLCJyZXNvdXJjZSI6InJlcG86amFydmlzIiwidG9vbCI6ImdpdC5zdGF0dXMiLCJhbW91bnRfbWlub3IiOjQwLCJhc3NldCI6IkRFTU8ifX0.TnJmTqWavrKJ9ziW9eXO9eeUCur6kn5rDRRy0-WV9tVtRMTBypJnrBkzJMUe-dZSSAkmjGebxRA4bZFXYIn1Aw",
+      "typ": "autheo-request+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:research",
+      "expect_valid": true,
+      "historical": false,
+      "issuer": "agent:vector-01",
+      "key": "agent:vector-01",
+      "kind": "outcome",
+      "name": "outcome_agent_signed",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InNoYTI1NjoxOFkzNHUtNkhockJmT2xyWVhqdE5Lb01DbEU1Y2NqZ2Z4NHU3QXF4RDNjIiwidHlwIjoiYXV0aGVvLW91dGNvbWUrand0In0.eyJpc3MiOiJhZ2VudDp2ZWN0b3ItMDEiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMjAsIm5iZiI6MTc5MDAwMDAyMCwiZXhwIjoxNzkwMDAwMzIwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDQiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLm91dGNvbWUvdjEiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsImFnZW50X2lkIjoiYWdlbnQ6dmVjdG9yLTAxIiwiZW52aXJvbm1lbnQiOiJlbnY6cmVzZWFyY2giLCJzdGF0dXMiOiJzdWNjZWVkZWQiLCJkZXRhaWxfc2hhMjU2IjoiZTgxYmMxNjBjMDg0M2VlNTZmMzFmMTI5OTdiYjNhZmY1MDUyOGQ1OTYwMDJkNDg2NjY3NmNiOGExYjE5MTk1YSJ9fQ.CRq1BsADKA13xE7prEN8zJDuIgTRe1M1ZUBLXvv_GMMAVn8d7vQAstRdUt7NN-34f046ZrlBclACcF3Q4O9VCw",
+      "typ": "autheo-outcome+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:review",
+      "expect_valid": true,
+      "historical": false,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "handoff",
+      "name": "handoff",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLWhhbmRvZmYrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmV2aWV3IiwiaWF0IjoxNzkwMDAwMDYwLCJuYmYiOjE3OTAwMDAwNjAsImV4cCI6MTc5MDAwMDM2MCwianRpIjoiMDAwMDAwMDAtMDAwMC00MDAwLTgwMDAtMDAwMDAwMDAwMDA1IiwiYm9keSI6eyJzY2hlbWFfdmVyc2lvbiI6ImF1dGhlby5oYW5kb2ZmL3YxIiwiYWdlbnRfaWQiOiJhZ2VudDp2ZWN0b3ItMDEiLCJvd25lcl9pZCI6Imh1bWFuOnZlY3Rvci1vd25lciIsInNvdXJjZV9lbnZpcm9ubWVudCI6ImVudjpyZXNlYXJjaCIsImRlc3RpbmF0aW9uX2Vudmlyb25tZW50IjoiZW52OnJldmlldyIsInNvdXJjZV9tYW5kYXRlX2lkIjoiMDAwMDAwMDAtMDAwMC00MDAwLTgwMDAtMDAwMDAwMDAwMDAyIiwicGFzc3BvcnRfZGlnZXN0IjoiYTQyZDYxMDcxNzNkYjQ2MmNkZjVkYTUwZDg5OTk3MmIzNWQxMzhjYzVkMDdlYjE1YjI1YWZkOWYxNDNlMWVkNyIsInNjb3BlcyI6WyJ0b29sLmludm9rZSJdLCJjaGVja3BvaW50Ijp7InRhc2tfaWQiOiJ0YXNrOnZlY3RvciIsInN0ZXAiOiJhd2FpdGluZ19yZXZpZXciLCJhcnRpZmFjdF9zaGEyNTYiOiI0NmMwZjIzYmIzZjIxNjZiYWFjOWRjY2M3NmZjYmM2N2IzY2JhZDkwMWRiMGU5Y2EwMTk5MmZiZDc0MmQyNDI1In0sInNvdXJjZV9hdWRpdF9oZWFkIjoiZWM2MjE2NmMwYjVhYzVjZjQ5NmFkMWRiMDc4YjEzMzA2NjRlYjBjNDliMzNhMjk1ZDA2NTI0NWE3OWNkNDRmYiIsImJ1ZGdldF90cmFuc2ZlcnJlZF9taW5vciI6MCwiYWN0aXZhdGlvbl9yZXF1aXJlc19uZXdfbWFuZGF0ZSI6dHJ1ZX19.3HUT6LhOJh7JMvHQ6ItOdxUyOfEIMfEA-WqZTYGuShVWtp2q4G2O-_SUKOLxOsRR4bEFZw7JXpONs4ISAWYfBQ",
+      "typ": "autheo-handoff+jwt",
+      "verify_at": 1790000090
+    },
+    {
+      "audience": "env:research",
+      "expect_valid": true,
+      "historical": true,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "receipt",
+      "name": "receipt_historical_after_expiry",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMTAsIm5iZiI6MTc5MDAwMDAxMCwiZXhwIjoxNzkwMDg2NDEwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDEiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MSwicHJldmlvdXNfaGFzaCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsInBheWxvYWRfaGFzaCI6IjFlMTA4MjhjYTdiNmJlMTM2OTI1NWQ4ODJlZTU4ZTQ4NzFiN2U2NTQ4NzAxMzUzNDIyZGNiMDUxNGQzMzRlYWIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYWxsb3ciLCJyZWFzb25zIjpbIndpdGhpbl9kZW1vX3BvbGljeSJdLCJhbW91bnRfbWlub3IiOjQwLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMTAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.WEUOBOAwLRZ9KS37J85CLxFZTHW-6Z1jJ1Pr_FLMlxhqOprQUka8rbEMoLcGYJsYeeQlvj52eewCI2zaWQ-WBA",
+      "typ": "autheo-receipt+jwt",
+      "verify_at": 1790864000
+    },
+    {
+      "audience": "env:research",
+      "expect_error": "expired",
+      "expect_valid": false,
+      "historical": false,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "mandate",
+      "name": "mandate_expired",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLW1hbmRhdGUrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMDAsIm5iZiI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAzNjAwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLm1hbmRhdGUvdjEiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm93bmVyX2lkIjoiaHVtYW46dmVjdG9yLW93bmVyIiwiZW52aXJvbm1lbnQiOiJlbnY6cmVzZWFyY2giLCJzY29wZXMiOlsidG9vbC5pbnZva2UiLCJjb21wdXRlLnNpbXVsYXRlIiwiZW52aXJvbm1lbnQuaGFuZG9mZiJdLCJyZXNvdXJjZXMiOlsicmVwbzpqYXJ2aXMiXSwiZGVzdGluYXRpb25zIjpbImVudjpyZXZpZXciXSwidG9vbHMiOlsiZ2l0LnN0YXR1cyJdLCJhc3NldCI6IkRFTU8iLCJwZXJfYWN0aW9uX21pbm9yIjo4MCwidG90YWxfYnVkZ2V0X21pbm9yIjoxMDAsImFwcHJvdmFsX3RocmVzaG9sZF9taW5vciI6NTB9fQ.ykdrT1-MCVJjH0SJ2ftfmiF1UsrskezKjvyAhSuJzqxuL004HapJB3Am3qD5CKZ0g-mjt3v0LBah5EqESBMZDw",
+      "typ": "autheo-mandate+jwt",
+      "verify_at": 1790003600
+    },
+    {
+      "audience": "env:research",
+      "expect_error": "not_yet_valid",
+      "expect_valid": false,
+      "historical": false,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "mandate",
+      "name": "mandate_not_yet_valid",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLW1hbmRhdGUrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMDAsIm5iZiI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAzNjAwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLm1hbmRhdGUvdjEiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm93bmVyX2lkIjoiaHVtYW46dmVjdG9yLW93bmVyIiwiZW52aXJvbm1lbnQiOiJlbnY6cmVzZWFyY2giLCJzY29wZXMiOlsidG9vbC5pbnZva2UiLCJjb21wdXRlLnNpbXVsYXRlIiwiZW52aXJvbm1lbnQuaGFuZG9mZiJdLCJyZXNvdXJjZXMiOlsicmVwbzpqYXJ2aXMiXSwiZGVzdGluYXRpb25zIjpbImVudjpyZXZpZXciXSwidG9vbHMiOlsiZ2l0LnN0YXR1cyJdLCJhc3NldCI6IkRFTU8iLCJwZXJfYWN0aW9uX21pbm9yIjo4MCwidG90YWxfYnVkZ2V0X21pbm9yIjoxMDAsImFwcHJvdmFsX3RocmVzaG9sZF9taW5vciI6NTB9fQ.ykdrT1-MCVJjH0SJ2ftfmiF1UsrskezKjvyAhSuJzqxuL004HapJB3Am3qD5CKZ0g-mjt3v0LBah5EqESBMZDw",
+      "typ": "autheo-mandate+jwt",
+      "verify_at": 1789999990
+    },
+    {
+      "audience": "env:research",
+      "expect_error": "bad_signature",
+      "expect_valid": false,
+      "historical": true,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "receipt",
+      "name": "receipt_tampered_payload",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMTAsIm5iZiI6MTc5MDAwMDAxMCwiZXhwIjoxNzkwMDg2NDEwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDEiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MSwicHJldmlvdXNfaGFzaCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsInBheWxvYWRfaGFzaCI6IjFlMTA4MjhjYTdiNmJlMTM2OTI1NWQ4ODJlZTU4ZTQ4NzFiN2U2NTQ4NzAxMzUzNDIyZGNiMDUxNGQzMzRlYWIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYWxsb3ciLCJyZWFzb25zIjpbIndpdGhpbl9kZW1vX3BvbGljeSJdLCJhbW91bnRfbWlub3IiOjQxLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMTAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.WEUOBOAwLRZ9KS37J85CLxFZTHW-6Z1jJ1Pr_FLMlxhqOprQUka8rbEMoLcGYJsYeeQlvj52eewCI2zaWQ-WBA",
+      "typ": "autheo-receipt+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:research",
+      "expect_error": "bad_signature",
+      "expect_valid": false,
+      "historical": true,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "receipt",
+      "name": "receipt_signed_by_other_key",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMTAsIm5iZiI6MTc5MDAwMDAxMCwiZXhwIjoxNzkwMDg2NDEwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxOTkiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MSwicHJldmlvdXNfaGFzaCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsInBheWxvYWRfaGFzaCI6IjFlMTA4MjhjYTdiNmJlMTM2OTI1NWQ4ODJlZTU4ZTQ4NzFiN2U2NTQ4NzAxMzUzNDIyZGNiMDUxNGQzMzRlYWIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYWxsb3ciLCJyZWFzb25zIjpbIndpdGhpbl9kZW1vX3BvbGljeSJdLCJhbW91bnRfbWlub3IiOjQwLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMTAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.zR9aIHVH_eOBqF6PgV8okPa2wQNkpkYXTz-cAta97MJKln-XHxlQwtmEKj4ofuiKB8ZJgrsrpYLPWnjp7pMgDQ",
+      "typ": "autheo-receipt+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:research",
+      "expect_error": "bad_header",
+      "expect_valid": false,
+      "historical": true,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "receipt",
+      "name": "receipt_alg_hs256_header",
+      "token": "eyJhbGciOiJIUzI1NiIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMTAsIm5iZiI6MTc5MDAwMDAxMCwiZXhwIjoxNzkwMDg2NDEwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDEiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MSwicHJldmlvdXNfaGFzaCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsInBheWxvYWRfaGFzaCI6IjFlMTA4MjhjYTdiNmJlMTM2OTI1NWQ4ODJlZTU4ZTQ4NzFiN2U2NTQ4NzAxMzUzNDIyZGNiMDUxNGQzMzRlYWIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYWxsb3ciLCJyZWFzb25zIjpbIndpdGhpbl9kZW1vX3BvbGljeSJdLCJhbW91bnRfbWlub3IiOjQwLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMTAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.WEUOBOAwLRZ9KS37J85CLxFZTHW-6Z1jJ1Pr_FLMlxhqOprQUka8rbEMoLcGYJsYeeQlvj52eewCI2zaWQ-WBA",
+      "typ": "autheo-receipt+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:research",
+      "expect_error": "bad_header",
+      "expect_valid": false,
+      "historical": true,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "receipt",
+      "name": "receipt_alg_none_header",
+      "token": "eyJhbGciOiJub25lIiwia2lkIjoidGVzdC1pc3N1ZXItdjEiLCJ0eXAiOiJhdXRoZW8tcmVjZWlwdCtqd3QifQ.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMTAsIm5iZiI6MTc5MDAwMDAxMCwiZXhwIjoxNzkwMDg2NDEwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDEiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MSwicHJldmlvdXNfaGFzaCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsInBheWxvYWRfaGFzaCI6IjFlMTA4MjhjYTdiNmJlMTM2OTI1NWQ4ODJlZTU4ZTQ4NzFiN2U2NTQ4NzAxMzUzNDIyZGNiMDUxNGQzMzRlYWIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYWxsb3ciLCJyZWFzb25zIjpbIndpdGhpbl9kZW1vX3BvbGljeSJdLCJhbW91bnRfbWlub3IiOjQwLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMTAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.WEUOBOAwLRZ9KS37J85CLxFZTHW-6Z1jJ1Pr_FLMlxhqOprQUka8rbEMoLcGYJsYeeQlvj52eewCI2zaWQ-WBA",
+      "typ": "autheo-receipt+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:research",
+      "expect_error": "bad_header",
+      "expect_valid": false,
+      "historical": true,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "receipt",
+      "name": "mandate_presented_as_receipt",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLW1hbmRhdGUrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMDAsIm5iZiI6MTc5MDAwMDAwMCwiZXhwIjoxNzkwMDAzNjAwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLm1hbmRhdGUvdjEiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm93bmVyX2lkIjoiaHVtYW46dmVjdG9yLW93bmVyIiwiZW52aXJvbm1lbnQiOiJlbnY6cmVzZWFyY2giLCJzY29wZXMiOlsidG9vbC5pbnZva2UiLCJjb21wdXRlLnNpbXVsYXRlIiwiZW52aXJvbm1lbnQuaGFuZG9mZiJdLCJyZXNvdXJjZXMiOlsicmVwbzpqYXJ2aXMiXSwiZGVzdGluYXRpb25zIjpbImVudjpyZXZpZXciXSwidG9vbHMiOlsiZ2l0LnN0YXR1cyJdLCJhc3NldCI6IkRFTU8iLCJwZXJfYWN0aW9uX21pbm9yIjo4MCwidG90YWxfYnVkZ2V0X21pbm9yIjoxMDAsImFwcHJvdmFsX3RocmVzaG9sZF9taW5vciI6NTB9fQ.ykdrT1-MCVJjH0SJ2ftfmiF1UsrskezKjvyAhSuJzqxuL004HapJB3Am3qD5CKZ0g-mjt3v0LBah5EqESBMZDw",
+      "typ": "autheo-receipt+jwt",
+      "verify_at": 1790000030
+    },
+    {
+      "audience": "env:review",
+      "expect_error": "bad_claims",
+      "expect_valid": false,
+      "historical": true,
+      "issuer": "autheo-test-authority",
+      "key": "autheo-test-authority",
+      "kind": "receipt",
+      "name": "receipt_wrong_audience",
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMTAsIm5iZiI6MTc5MDAwMDAxMCwiZXhwIjoxNzkwMDg2NDEwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDEiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MSwicHJldmlvdXNfaGFzaCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsInBheWxvYWRfaGFzaCI6IjFlMTA4MjhjYTdiNmJlMTM2OTI1NWQ4ODJlZTU4ZTQ4NzFiN2U2NTQ4NzAxMzUzNDIyZGNiMDUxNGQzMzRlYWIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYWxsb3ciLCJyZWFzb25zIjpbIndpdGhpbl9kZW1vX3BvbGljeSJdLCJhbW91bnRfbWlub3IiOjQwLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMTAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.WEUOBOAwLRZ9KS37J85CLxFZTHW-6Z1jJ1Pr_FLMlxhqOprQUka8rbEMoLcGYJsYeeQlvj52eewCI2zaWQ-WBA",
+      "typ": "autheo-receipt+jwt",
+      "verify_at": 1790000030
+    }
+  ],
+  "generated_by": "python -m autheo_agent_environment vectors generate",
+  "keys": {
+    "agent:vector-01": {
+      "TEST_ONLY_private_seed_hex": "59ae9936caa91b23399b07284b0cb62b8aeb5c314e78552e7d5de429da61c2fb",
+      "id": "agent:vector-01",
+      "jwk": {
+        "alg": "EdDSA",
+        "crv": "Ed25519",
+        "kid": "sha256:18Y34u-6HhrBfOlrYXjtNKoMClE5ccjgfx4u7AqxD3c",
+        "kty": "OKP",
+        "x": "__9dQ359_NXkaCxBHE9d945ICh9E2SEEHRQUdH3EVSQ"
+      },
+      "kid": "sha256:18Y34u-6HhrBfOlrYXjtNKoMClE5ccjgfx4u7AqxD3c",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA//9dQ359/NXkaCxBHE9d945ICh9E2SEEHRQUdH3EVSQ=\n-----END PUBLIC KEY-----\n",
+      "public_key_raw_hex": "ffff5d437e7dfcd5e4682c411c4f5df78e480a1f44d921041d1414747dc45524"
+    },
+    "autheo-test-authority": {
+      "TEST_ONLY_private_seed_hex": "c0f42fbcaff29d339f46dd414cb8d54e7e21e2e941cb3d9c9aa4305d1f0b84cb",
+      "id": "autheo-test-authority",
+      "jwk": {
+        "alg": "EdDSA",
+        "crv": "Ed25519",
+        "kid": "test-issuer-v1",
+        "kty": "OKP",
+        "x": "yUU-jMW42uGfm7p2TbRtV7APA43gYlKE3v9G_KJwyqk"
+      },
+      "kid": "test-issuer-v1",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAyUU+jMW42uGfm7p2TbRtV7APA43gYlKE3v9G/KJwyqk=\n-----END PUBLIC KEY-----\n",
+      "public_key_raw_hex": "c9453e8cc5b8dae19f9bba764db46d57b00f038de0625284deff46fca270caa9"
+    }
+  },
+  "spec": "docs/SPEC-SIGNATURES.md",
+  "tampered_chain": {
+    "description": "Receipt 2 has a forged chain_hash; verifiers must report sequence 2.",
+    "first_invalid_sequence": 2,
+    "receipts": [
+      {
+        "body": {
+          "action": "tool.invoke",
+          "agent_id": "agent:vector-01",
+          "amount_minor": 40,
+          "decision": "allow",
+          "executed": false,
+          "kind": "simulation",
+          "mandate_id": "00000000-0000-4000-8000-000000000002",
+          "payload_hash": "1e10828ca7b6be1369255d882ee58e4871b7e6548701353422dcb0514d334eab",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "reasons": [
+            "within_demo_policy"
+          ],
+          "recorded_at": 1790000010,
+          "request_id": "req:vector-allow",
+          "resource": "repo:jarvis",
+          "schema_version": "autheo.receipt/v1",
+          "sequence": 1,
+          "simulation_only": true,
+          "tool": "git.status"
+        },
+        "chain_hash": "72d5e9bd3a648075d4bb0b0f368d40a715a26bbd2b1a56207a3b186edb55bc3b",
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "request_id": "req:vector-allow",
+        "sequence": 1,
+        "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMTAsIm5iZiI6MTc5MDAwMDAxMCwiZXhwIjoxNzkwMDg2NDEwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDEiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MSwicHJldmlvdXNfaGFzaCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1hbGxvdyIsInBheWxvYWRfaGFzaCI6IjFlMTA4MjhjYTdiNmJlMTM2OTI1NWQ4ODJlZTU4ZTQ4NzFiN2U2NTQ4NzAxMzUzNDIyZGNiMDUxNGQzMzRlYWIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYWxsb3ciLCJyZWFzb25zIjpbIndpdGhpbl9kZW1vX3BvbGljeSJdLCJhbW91bnRfbWlub3IiOjQwLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMTAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.WEUOBOAwLRZ9KS37J85CLxFZTHW-6Z1jJ1Pr_FLMlxhqOprQUka8rbEMoLcGYJsYeeQlvj52eewCI2zaWQ-WBA"
+      },
+      {
+        "body": {
+          "action": "tool.invoke",
+          "agent_id": "agent:vector-01",
+          "amount_minor": 51,
+          "decision": "escalate",
+          "executed": false,
+          "kind": "simulation",
+          "mandate_id": "00000000-0000-4000-8000-000000000002",
+          "payload_hash": "64c4f87a2d3a1da52babd1ab028811eca272daab37d9484f24d745f420f7f8ca",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "72d5e9bd3a648075d4bb0b0f368d40a715a26bbd2b1a56207a3b186edb55bc3b",
+          "reasons": [
+            "human_review_required"
+          ],
+          "recorded_at": 1790000020,
+          "request_id": "req:vector-escalate",
+          "resource": "repo:jarvis",
+          "schema_version": "autheo.receipt/v1",
+          "sequence": 2,
+          "simulation_only": true,
+          "tool": "git.status"
+        },
+        "chain_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "previous_hash": "72d5e9bd3a648075d4bb0b0f368d40a715a26bbd2b1a56207a3b186edb55bc3b",
+        "request_id": "req:vector-escalate",
+        "sequence": 2,
+        "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMjAsIm5iZiI6MTc5MDAwMDAyMCwiZXhwIjoxNzkwMDg2NDIwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDIiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MiwicHJldmlvdXNfaGFzaCI6IjcyZDVlOWJkM2E2NDgwNzVkNGJiMGIwZjM2OGQ0MGE3MTVhMjZiYmQyYjFhNTYyMDdhM2IxODZlZGI1NWJjM2IiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1lc2NhbGF0ZSIsInBheWxvYWRfaGFzaCI6IjY0YzRmODdhMmQzYTFkYTUyYmFiZDFhYjAyODgxMWVjYTI3MmRhYWIzN2Q5NDg0ZjI0ZDc0NWY0MjBmN2Y4Y2EiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiZXNjYWxhdGUiLCJyZWFzb25zIjpbImh1bWFuX3Jldmlld19yZXF1aXJlZCJdLCJhbW91bnRfbWlub3IiOjUxLCJleGVjdXRlZCI6ZmFsc2UsInNpbXVsYXRpb25fb25seSI6dHJ1ZSwicmVjb3JkZWRfYXQiOjE3OTAwMDAwMjAsImFjdGlvbiI6InRvb2wuaW52b2tlIiwicmVzb3VyY2UiOiJyZXBvOmphcnZpcyIsInRvb2wiOiJnaXQuc3RhdHVzIiwicG9saWN5X2lkIjoicG9saWN5Om1hbmRhdGUtb25seSIsInBvbGljeV9kaWdlc3QiOiJjMWQxNzRiNDY2N2I2NDI3NmQ4NWRhM2JmOTExNDE2ZDExMjUwMzJmOTQyNzQ2YzU1Yzk3OTIyZGNmY2FmY2I0In19.mWUTPelsiufl-Y9V1flDa0_usnh6MTKYXGduUPQV0fpvthnP0-9fB4G78jxApMB6jppxR0fUbzlER1v5TyzLBg"
+      },
+      {
+        "body": {
+          "action": "tool.invoke",
+          "agent_id": "agent:vector-01",
+          "amount_minor": 81,
+          "decision": "block",
+          "executed": false,
+          "kind": "simulation",
+          "mandate_id": "00000000-0000-4000-8000-000000000002",
+          "payload_hash": "bc5b60a611c9a761916122250133ebb5704480bac1f9fdb10fb6c9e4ac7d1d82",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "8568fcf15c4a8cce718f715bc22f8eec77623b97e4d442099092db1f9bb1d945",
+          "reasons": [
+            "per_action_limit",
+            "total_budget_limit"
+          ],
+          "recorded_at": 1790000030,
+          "request_id": "req:vector-block",
+          "resource": "repo:jarvis",
+          "schema_version": "autheo.receipt/v1",
+          "sequence": 3,
+          "simulation_only": true,
+          "tool": "git.status"
+        },
+        "chain_hash": "806ef7c456d17ab259d688fa264cddd13385e691b8518f32f937e67c5f4cf28b",
+        "previous_hash": "8568fcf15c4a8cce718f715bc22f8eec77623b97e4d442099092db1f9bb1d945",
+        "request_id": "req:vector-block",
+        "sequence": 3,
+        "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwMzAsIm5iZiI6MTc5MDAwMDAzMCwiZXhwIjoxNzkwMDg2NDMwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDMiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6MywicHJldmlvdXNfaGFzaCI6Ijg1NjhmY2YxNWM0YThjY2U3MThmNzE1YmMyMmY4ZWVjNzc2MjNiOTdlNGQ0NDIwOTkwOTJkYjFmOWJiMWQ5NDUiLCJyZXF1ZXN0X2lkIjoicmVxOnZlY3Rvci1ibG9jayIsInBheWxvYWRfaGFzaCI6ImJjNWI2MGE2MTFjOWE3NjE5MTYxMjIyNTAxMzNlYmI1NzA0NDgwYmFjMWY5ZmRiMTBmYjZjOWU0YWM3ZDFkODIiLCJhZ2VudF9pZCI6ImFnZW50OnZlY3Rvci0wMSIsIm1hbmRhdGVfaWQiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAwMDIiLCJraW5kIjoic2ltdWxhdGlvbiIsImRlY2lzaW9uIjoiYmxvY2siLCJyZWFzb25zIjpbInBlcl9hY3Rpb25fbGltaXQiLCJ0b3RhbF9idWRnZXRfbGltaXQiXSwiYW1vdW50X21pbm9yIjo4MSwiZXhlY3V0ZWQiOmZhbHNlLCJzaW11bGF0aW9uX29ubHkiOnRydWUsInJlY29yZGVkX2F0IjoxNzkwMDAwMDMwLCJhY3Rpb24iOiJ0b29sLmludm9rZSIsInJlc291cmNlIjoicmVwbzpqYXJ2aXMiLCJ0b29sIjoiZ2l0LnN0YXR1cyIsInBvbGljeV9pZCI6InBvbGljeTptYW5kYXRlLW9ubHkiLCJwb2xpY3lfZGlnZXN0IjoiYzFkMTc0YjQ2NjdiNjQyNzZkODVkYTNiZjkxMTQxNmQxMTI1MDMyZjk0Mjc0NmM1NWM5NzkyMmRjZmNhZmNiNCJ9fQ.0YI0Ke9bfQAyrg6GgfCYFH7rxEclxNatkfGHjLrbbjKZVf9pf6D0ooZLJ9g-FB4qYko_Z9458jK9XcqrYpQ2CA"
+      },
+      {
+        "body": {
+          "action": "tool.invoke",
+          "agent_id": "agent:vector-01",
+          "amount_minor": 0,
+          "decision": "recorded",
+          "executed": false,
+          "kind": "outcome_report",
+          "mandate_id": "00000000-0000-4000-8000-000000000002",
+          "payload_hash": "77f238f71e191986f78eeb018c6b9da8878a36893f73e8d30c7ef77ff4fd890a",
+          "previous_hash": "806ef7c456d17ab259d688fa264cddd13385e691b8518f32f937e67c5f4cf28b",
+          "reasons": [
+            "executor_reported_succeeded",
+            "not_independently_verified"
+          ],
+          "recorded_at": 1790000040,
+          "reference": "req:vector-allow",
+          "reported_by": "agent_signed",
+          "reported_status": "succeeded",
+          "request_id": "outcome:req:vector-allow",
+          "resource": "repo:jarvis",
+          "schema_version": "autheo.receipt/v1",
+          "sequence": 4,
+          "simulation_only": true,
+          "tool": "git.status"
+        },
+        "chain_hash": "ec62166c0b5ac5cf496ad1db078b1330664eb0c49b33a295d065245a79cd44fb",
+        "previous_hash": "806ef7c456d17ab259d688fa264cddd13385e691b8518f32f937e67c5f4cf28b",
+        "request_id": "outcome:req:vector-allow",
+        "sequence": 4,
+        "token": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3QtaXNzdWVyLXYxIiwidHlwIjoiYXV0aGVvLXJlY2VpcHQrand0In0.eyJpc3MiOiJhdXRoZW8tdGVzdC1hdXRob3JpdHkiLCJzdWIiOiJhZ2VudDp2ZWN0b3ItMDEiLCJhdWQiOiJlbnY6cmVzZWFyY2giLCJpYXQiOjE3OTAwMDAwNDAsIm5iZiI6MTc5MDAwMDA0MCwiZXhwIjoxNzkwMDg2NDQwLCJqdGkiOiIwMDAwMDAwMC0wMDAwLTQwMDAtODAwMC0wMDAwMDAwMDAxMDQiLCJib2R5Ijp7InNjaGVtYV92ZXJzaW9uIjoiYXV0aGVvLnJlY2VpcHQvdjEiLCJzZXF1ZW5jZSI6NCwicHJldmlvdXNfaGFzaCI6IjgwNmVmN2M0NTZkMTdhYjI1OWQ2ODhmYTI2NGNkZGQxMzM4NWU2OTFiODUxOGYzMmY5MzdlNjdjNWY0Y2YyOGIiLCJyZXF1ZXN0X2lkIjoib3V0Y29tZTpyZXE6dmVjdG9yLWFsbG93IiwicGF5bG9hZF9oYXNoIjoiNzdmMjM4ZjcxZTE5MTk4NmY3OGVlYjAxOGM2YjlkYTg4NzhhMzY4OTNmNzNlOGQzMGM3ZWY3N2ZmNGZkODkwYSIsImFnZW50X2lkIjoiYWdlbnQ6dmVjdG9yLTAxIiwibWFuZGF0ZV9pZCI6IjAwMDAwMDAwLTAwMDAtNDAwMC04MDAwLTAwMDAwMDAwMDAwMiIsImtpbmQiOiJvdXRjb21lX3JlcG9ydCIsImRlY2lzaW9uIjoicmVjb3JkZWQiLCJyZWFzb25zIjpbImV4ZWN1dG9yX3JlcG9ydGVkX3N1Y2NlZWRlZCIsIm5vdF9pbmRlcGVuZGVudGx5X3ZlcmlmaWVkIl0sImFtb3VudF9taW5vciI6MCwiZXhlY3V0ZWQiOmZhbHNlLCJzaW11bGF0aW9uX29ubHkiOnRydWUsInJlY29yZGVkX2F0IjoxNzkwMDAwMDQwLCJhY3Rpb24iOiJ0b29sLmludm9rZSIsInJlc291cmNlIjoicmVwbzpqYXJ2aXMiLCJ0b29sIjoiZ2l0LnN0YXR1cyIsInJlZmVyZW5jZSI6InJlcTp2ZWN0b3ItYWxsb3ciLCJyZXBvcnRlZF9zdGF0dXMiOiJzdWNjZWVkZWQiLCJyZXBvcnRlZF9ieSI6ImFnZW50X3NpZ25lZCJ9fQ.ywbINKMxdFoZJpeasPIN5Ap6Lfc43uWEs9v6deCbOz29x6VSMsmhHkYNHQg-7k7aYC1Jw1xL6_fDp2aUFef1Dw"
+      }
+    ]
+  },
+  "version": "autheo-test-vectors/v1",
+  "warning": "All private seeds in this file are PUBLIC TEST VALUES. Never use them outside tests."
+}

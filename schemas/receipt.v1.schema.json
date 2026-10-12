@@ -1,0 +1,287 @@
+{
+  "$defs": {
+    "Checkpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Artifact Sha256",
+          "type": "string"
+        },
+        "step": {
+          "enum": [
+            "planned",
+            "inspected",
+            "awaiting_review"
+          ],
+          "title": "Step",
+          "type": "string"
+        },
+        "task_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "step",
+        "artifact_sha256"
+      ],
+      "title": "Checkpoint",
+      "type": "object"
+    }
+  },
+  "$id": "urn:autheo:schema:receipt:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Body of autheo-receipt+jwt: hash-linked signed ledger record",
+  "properties": {
+    "action": {
+      "anyOf": [
+        {
+          "enum": [
+            "marketplace.read",
+            "devhub.read",
+            "chain.read",
+            "compute.simulate",
+            "environment.handoff",
+            "tool.invoke",
+            "model.invoke",
+            "file.read",
+            "file.write",
+            "network.fetch",
+            "message.send",
+            "task.checkpoint"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Action"
+    },
+    "agent_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "amount_minor": {
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Amount Minor",
+      "type": "integer"
+    },
+    "checkpoint": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Checkpoint"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "decision": {
+      "enum": [
+        "allow",
+        "escalate",
+        "block",
+        "checkpoint_only",
+        "revoked",
+        "recorded"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "executed": {
+      "const": false,
+      "default": false,
+      "title": "Executed",
+      "type": "boolean"
+    },
+    "kind": {
+      "enum": [
+        "simulation",
+        "handoff_export",
+        "handoff_import",
+        "revocation",
+        "outcome_report",
+        "identity_issue",
+        "mandate_grant"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "mandate_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Mandate Id",
+      "type": "string"
+    },
+    "payload_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Payload Hash",
+      "type": "string"
+    },
+    "policy_digest": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Policy Digest"
+    },
+    "policy_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Policy Id"
+    },
+    "previous_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Previous Hash",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9_]*(:[A-Za-z0-9:._-]{1,96})?$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Reasons",
+      "type": "array"
+    },
+    "recorded_at": {
+      "maximum": 9007199254740991,
+      "minimum": 0,
+      "title": "Recorded At",
+      "type": "integer"
+    },
+    "reference": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,159}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reference"
+    },
+    "reported_by": {
+      "anyOf": [
+        {
+          "enum": [
+            "operator_api",
+            "agent_signed"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reported By"
+    },
+    "reported_status": {
+      "anyOf": [
+        {
+          "enum": [
+            "succeeded",
+            "failed",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reported Status"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,159}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "resource": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Resource"
+    },
+    "schema_version": {
+      "const": "autheo.receipt/v1",
+      "default": "autheo.receipt/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sequence": {
+      "maximum": 9007199254740991,
+      "minimum": 1,
+      "title": "Sequence",
+      "type": "integer"
+    },
+    "simulation_only": {
+      "const": true,
+      "default": true,
+      "title": "Simulation Only",
+      "type": "boolean"
+    },
+    "tool": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Tool"
+    }
+  },
+  "required": [
+    "sequence",
+    "previous_hash",
+    "request_id",
+    "payload_hash",
+    "agent_id",
+    "mandate_id",
+    "kind",
+    "decision",
+    "reasons",
+    "amount_minor",
+    "recorded_at"
+  ],
+  "title": "ReceiptBody",
+  "type": "object"
+}

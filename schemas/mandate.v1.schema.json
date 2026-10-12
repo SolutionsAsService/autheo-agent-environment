@@ -1,0 +1,116 @@
+{
+  "$id": "urn:autheo:schema:mandate:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Body of autheo-mandate+jwt: scoped, budgeted delegation",
+  "properties": {
+    "agent_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "approval_threshold_minor": {
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Approval Threshold Minor",
+      "type": "integer"
+    },
+    "asset": {
+      "const": "DEMO",
+      "default": "DEMO",
+      "title": "Asset",
+      "type": "string"
+    },
+    "destinations": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Destinations",
+      "type": "array"
+    },
+    "environment": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Environment",
+      "type": "string"
+    },
+    "owner_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Owner Id",
+      "type": "string"
+    },
+    "per_action_minor": {
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Per Action Minor",
+      "type": "integer"
+    },
+    "resources": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+        "type": "string"
+      },
+      "maxItems": 50,
+      "minItems": 1,
+      "title": "Resources",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "autheo.mandate/v1",
+      "default": "autheo.mandate/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scopes": {
+      "items": {
+        "enum": [
+          "marketplace.read",
+          "devhub.read",
+          "chain.read",
+          "compute.simulate",
+          "environment.handoff",
+          "tool.invoke",
+          "model.invoke",
+          "file.read",
+          "file.write",
+          "network.fetch",
+          "message.send",
+          "task.checkpoint"
+        ],
+        "type": "string"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Scopes",
+      "type": "array"
+    },
+    "tools": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Tools",
+      "type": "array"
+    },
+    "total_budget_minor": {
+      "maximum": 1000000000000000,
+      "minimum": 0,
+      "title": "Total Budget Minor",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "agent_id",
+    "owner_id",
+    "environment",
+    "scopes",
+    "resources",
+    "per_action_minor",
+    "total_budget_minor",
+    "approval_threshold_minor"
+  ],
+  "title": "Mandate",
+  "type": "object"
+}

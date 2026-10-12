@@ -1,0 +1,47 @@
+{
+  "$id": "urn:autheo:schema:passport:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Body of autheo-passport+jwt: issuer-asserted agent identity and key binding",
+  "properties": {
+    "agent_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "environments": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Environments",
+      "type": "array"
+    },
+    "owner_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+      "title": "Owner Id",
+      "type": "string"
+    },
+    "public_key": {
+      "maxLength": 256,
+      "title": "Public Key",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "autheo.passport/v1",
+      "default": "autheo.passport/v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "agent_id",
+    "owner_id",
+    "public_key",
+    "environments"
+  ],
+  "title": "Passport",
+  "type": "object"
+}
