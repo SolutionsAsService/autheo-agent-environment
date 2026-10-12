@@ -1,0 +1,2467 @@
+{
+  "components": {
+    "responses": {
+      "E400": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Validation, signature, expiry or policy-input rejection"
+      },
+      "E401": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Missing or wrong bearer token"
+      },
+      "E404": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Unknown identity, mandate, receipt, environment or route"
+      },
+      "E409": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Idempotency or replay conflict"
+      },
+      "E413": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Body larger than 64 KiB"
+      },
+      "E415": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Content-Type must be application/json"
+      },
+      "E421": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "detail": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Host header is not a loopback name with the bound port"
+      }
+    },
+    "schemas": {
+      "ActionInput": {
+        "additionalProperties": false,
+        "description": "Unsigned request fields; only usable for agents whose key is held by this local service.",
+        "properties": {
+          "action": {
+            "enum": [
+              "marketplace.read",
+              "devhub.read",
+              "chain.read",
+              "compute.simulate",
+              "environment.handoff",
+              "tool.invoke",
+              "model.invoke",
+              "file.read",
+              "file.write",
+              "network.fetch",
+              "message.send",
+              "task.checkpoint"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "agent_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Agent Id",
+            "type": "string"
+          },
+          "amount_minor": {
+            "default": 0,
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "mandate_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Mandate Id",
+            "type": "string"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Request Id"
+          },
+          "resource": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Resource",
+            "type": "string"
+          },
+          "tool": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool"
+          }
+        },
+        "required": [
+          "agent_id",
+          "mandate_id",
+          "action",
+          "resource"
+        ],
+        "title": "ActionInput",
+        "type": "object"
+      },
+      "BudgetRule": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Actions",
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "limit_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Limit Minor",
+            "type": "integer"
+          },
+          "tools": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Tools",
+            "type": "array"
+          },
+          "window_seconds": {
+            "anyOf": [
+              {
+                "maximum": 31536000,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Window Seconds"
+          }
+        },
+        "required": [
+          "id",
+          "limit_minor"
+        ],
+        "title": "BudgetRule",
+        "type": "object"
+      },
+      "BudgetState": {
+        "additionalProperties": false,
+        "properties": {
+          "asset": {
+            "const": "DEMO",
+            "default": "DEMO",
+            "title": "Asset",
+            "type": "string"
+          },
+          "remaining_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Remaining Minor",
+            "type": "integer"
+          },
+          "spent_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Spent Minor",
+            "type": "integer"
+          },
+          "total_budget_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Total Budget Minor",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_budget_minor",
+          "spent_minor",
+          "remaining_minor"
+        ],
+        "title": "BudgetState",
+        "type": "object"
+      },
+      "Checkpoint": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Artifact Sha256",
+            "type": "string"
+          },
+          "step": {
+            "enum": [
+              "planned",
+              "inspected",
+              "awaiting_review"
+            ],
+            "title": "Step",
+            "type": "string"
+          },
+          "task_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Task Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id",
+          "step",
+          "artifact_sha256"
+        ],
+        "title": "Checkpoint",
+        "type": "object"
+      },
+      "CheckpointInput": {
+        "additionalProperties": false,
+        "properties": {
+          "agent_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Agent Id",
+            "type": "string"
+          },
+          "checkpoint": {
+            "$ref": "#/components/schemas/Checkpoint"
+          },
+          "destination": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Destination",
+            "type": "string"
+          },
+          "mandate_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Mandate Id",
+            "type": "string"
+          },
+          "scopes": {
+            "items": {
+              "enum": [
+                "marketplace.read",
+                "devhub.read",
+                "chain.read",
+                "compute.simulate",
+                "environment.handoff",
+                "tool.invoke",
+                "model.invoke",
+                "file.read",
+                "file.write",
+                "network.fetch",
+                "message.send",
+                "task.checkpoint"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Scopes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "agent_id",
+          "mandate_id",
+          "destination",
+          "scopes",
+          "checkpoint"
+        ],
+        "title": "CheckpointInput",
+        "type": "object"
+      },
+      "Decision": {
+        "additionalProperties": false,
+        "description": "Policy-decision-point result. Not a capability token and not an execution result.",
+        "properties": {
+          "action": {
+            "enum": [
+              "marketplace.read",
+              "devhub.read",
+              "chain.read",
+              "compute.simulate",
+              "environment.handoff",
+              "tool.invoke",
+              "model.invoke",
+              "file.read",
+              "file.write",
+              "network.fetch",
+              "message.send",
+              "task.checkpoint"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "agent_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Agent Id",
+            "type": "string"
+          },
+          "amount_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "budget": {
+            "$ref": "#/components/schemas/BudgetState"
+          },
+          "decision": {
+            "enum": [
+              "allow",
+              "escalate",
+              "block"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "environment": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Environment",
+            "type": "string"
+          },
+          "evaluated_at": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "title": "Evaluated At",
+            "type": "integer"
+          },
+          "executed": {
+            "const": false,
+            "default": false,
+            "title": "Executed",
+            "type": "boolean"
+          },
+          "explanation": {
+            "items": {
+              "$ref": "#/components/schemas/Explanation"
+            },
+            "maxItems": 128,
+            "title": "Explanation",
+            "type": "array"
+          },
+          "is_capability": {
+            "const": false,
+            "default": false,
+            "title": "Is Capability",
+            "type": "boolean"
+          },
+          "mandate_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Mandate Id",
+            "type": "string"
+          },
+          "policy_digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Policy Digest",
+            "type": "string"
+          },
+          "policy_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Policy Id",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]*(:[A-Za-z0-9:._-]{1,96})?$",
+              "type": "string"
+            },
+            "maxItems": 64,
+            "minItems": 1,
+            "title": "Reasons",
+            "type": "array"
+          },
+          "request_digest": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Request Digest",
+            "type": "string"
+          },
+          "request_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "resource": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Resource",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "autheo.decision/v1",
+            "default": "autheo.decision/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "tool": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool"
+          }
+        },
+        "required": [
+          "request_id",
+          "agent_id",
+          "environment",
+          "mandate_id",
+          "action",
+          "resource",
+          "amount_minor",
+          "decision",
+          "reasons",
+          "explanation",
+          "policy_id",
+          "policy_digest",
+          "request_digest",
+          "budget",
+          "evaluated_at"
+        ],
+        "title": "Decision",
+        "type": "object"
+      },
+      "EscalationRule": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Actions",
+            "type": "array"
+          },
+          "amount_minor_gt": {
+            "anyOf": [
+              {
+                "maximum": 1000000000000000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Amount Minor Gt"
+          },
+          "id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "resources": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Resources",
+            "type": "array"
+          },
+          "tools": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Tools",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "EscalationRule",
+        "type": "object"
+      },
+      "EvaluateInput": {
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ActionInput"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "request_token": {
+            "anyOf": [
+              {
+                "maxLength": 131072,
+                "minLength": 16,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Request Token"
+          }
+        },
+        "title": "EvaluateInput",
+        "type": "object"
+      },
+      "Explanation": {
+        "additionalProperties": false,
+        "properties": {
+          "check": {
+            "pattern": "^[a-z][a-z0-9_.:-]{0,95}$",
+            "title": "Check",
+            "type": "string"
+          },
+          "detail": {
+            "maxLength": 300,
+            "title": "Detail",
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "pass",
+              "fail",
+              "escalate",
+              "not_applicable"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "check",
+          "outcome",
+          "detail"
+        ],
+        "title": "Explanation",
+        "type": "object"
+      },
+      "HandoffAcceptInput": {
+        "additionalProperties": false,
+        "properties": {
+          "allowed_scopes": {
+            "items": {
+              "enum": [
+                "marketplace.read",
+                "devhub.read",
+                "chain.read",
+                "compute.simulate",
+                "environment.handoff",
+                "tool.invoke",
+                "model.invoke",
+                "file.read",
+                "file.write",
+                "network.fetch",
+                "message.send",
+                "task.checkpoint"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Allowed Scopes",
+            "type": "array"
+          },
+          "handoff_token": {
+            "maxLength": 131072,
+            "minLength": 16,
+            "title": "Handoff Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "handoff_token",
+          "allowed_scopes"
+        ],
+        "title": "HandoffAcceptInput",
+        "type": "object"
+      },
+      "IdentityIssueInput": {
+        "additionalProperties": false,
+        "properties": {
+          "agent_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Agent Id",
+            "type": "string"
+          },
+          "environments": {
+            "items": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Environments",
+            "type": "array"
+          },
+          "generate_key": {
+            "default": false,
+            "title": "Generate Key",
+            "type": "boolean"
+          },
+          "owner_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Owner Id",
+            "type": "string"
+          },
+          "public_key": {
+            "anyOf": [
+              {
+                "maxLength": 4096,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Public Key"
+          },
+          "ttl_seconds": {
+            "default": 86400,
+            "maximum": 86400,
+            "minimum": 60,
+            "title": "Ttl Seconds",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "agent_id",
+          "owner_id",
+          "environments"
+        ],
+        "title": "IdentityIssueInput",
+        "type": "object"
+      },
+      "LedgerVerifyInput": {
+        "additionalProperties": false,
+        "properties": {
+          "environment": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Environment",
+            "type": "string"
+          },
+          "expected_head": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expected Head"
+          }
+        },
+        "required": [
+          "environment"
+        ],
+        "title": "LedgerVerifyInput",
+        "type": "object"
+      },
+      "MandateGrantInput": {
+        "additionalProperties": false,
+        "properties": {
+          "agent_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Agent Id",
+            "type": "string"
+          },
+          "approval_threshold_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Approval Threshold Minor",
+            "type": "integer"
+          },
+          "destinations": {
+            "items": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Destinations",
+            "type": "array"
+          },
+          "environment": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Environment",
+            "type": "string"
+          },
+          "per_action_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Per Action Minor",
+            "type": "integer"
+          },
+          "resources": {
+            "items": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "minItems": 1,
+            "title": "Resources",
+            "type": "array"
+          },
+          "scopes": {
+            "items": {
+              "enum": [
+                "marketplace.read",
+                "devhub.read",
+                "chain.read",
+                "compute.simulate",
+                "environment.handoff",
+                "tool.invoke",
+                "model.invoke",
+                "file.read",
+                "file.write",
+                "network.fetch",
+                "message.send",
+                "task.checkpoint"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Scopes",
+            "type": "array"
+          },
+          "tools": {
+            "items": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+              "type": "string"
+            },
+            "maxItems": 100,
+            "title": "Tools",
+            "type": "array"
+          },
+          "total_budget_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Total Budget Minor",
+            "type": "integer"
+          },
+          "ttl_seconds": {
+            "default": 3600,
+            "maximum": 3600,
+            "minimum": 10,
+            "title": "Ttl Seconds",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "agent_id",
+          "environment",
+          "scopes",
+          "resources",
+          "per_action_minor",
+          "total_budget_minor",
+          "approval_threshold_minor"
+        ],
+        "title": "MandateGrantInput",
+        "type": "object"
+      },
+      "MatchSet": {
+        "additionalProperties": false,
+        "description": "Glob allow/deny lists. Deny wins. An empty allow list means \"no extra restriction\".",
+        "properties": {
+          "allow": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 200,
+            "title": "Allow",
+            "type": "array"
+          },
+          "deny": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 200,
+            "title": "Deny",
+            "type": "array"
+          }
+        },
+        "title": "MatchSet",
+        "type": "object"
+      },
+      "OutcomeInput": {
+        "additionalProperties": false,
+        "properties": {
+          "detail_sha256": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Detail Sha256"
+          },
+          "environment": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Environment",
+            "type": "string"
+          },
+          "report_token": {
+            "anyOf": [
+              {
+                "maxLength": 131072,
+                "minLength": 16,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Report Token"
+          },
+          "request_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "succeeded",
+              "failed",
+              "unknown"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "environment",
+          "request_id",
+          "status"
+        ],
+        "title": "OutcomeInput",
+        "type": "object"
+      },
+      "PolicyDocument": {
+        "additionalProperties": false,
+        "properties": {
+          "budgets": {
+            "items": {
+              "$ref": "#/components/schemas/BudgetRule"
+            },
+            "maxItems": 50,
+            "title": "Budgets",
+            "type": "array"
+          },
+          "description": {
+            "default": "",
+            "maxLength": 500,
+            "title": "Description",
+            "type": "string"
+          },
+          "escalations": {
+            "items": {
+              "$ref": "#/components/schemas/EscalationRule"
+            },
+            "maxItems": 50,
+            "title": "Escalations",
+            "type": "array"
+          },
+          "policy_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Policy Id",
+            "type": "string"
+          },
+          "rate_limits": {
+            "items": {
+              "$ref": "#/components/schemas/RateLimit"
+            },
+            "maxItems": 50,
+            "title": "Rate Limits",
+            "type": "array"
+          },
+          "resources": {
+            "$ref": "#/components/schemas/MatchSet"
+          },
+          "schema_version": {
+            "const": "autheo.policy/v1",
+            "default": "autheo.policy/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "scopes": {
+            "$ref": "#/components/schemas/MatchSet"
+          },
+          "time_windows": {
+            "items": {
+              "$ref": "#/components/schemas/TimeWindow"
+            },
+            "maxItems": 20,
+            "title": "Time Windows",
+            "type": "array"
+          },
+          "tools": {
+            "$ref": "#/components/schemas/MatchSet"
+          },
+          "use_mandate_approval_threshold": {
+            "default": true,
+            "title": "Use Mandate Approval Threshold",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "policy_id"
+        ],
+        "title": "PolicyDocument",
+        "type": "object"
+      },
+      "RateLimit": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Actions",
+            "type": "array"
+          },
+          "id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "max_requests": {
+            "maximum": 1000000,
+            "minimum": 1,
+            "title": "Max Requests",
+            "type": "integer"
+          },
+          "tools": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Tools",
+            "type": "array"
+          },
+          "window_seconds": {
+            "maximum": 31536000,
+            "minimum": 1,
+            "title": "Window Seconds",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "max_requests",
+          "window_seconds"
+        ],
+        "title": "RateLimit",
+        "type": "object"
+      },
+      "ReceiptBody": {
+        "additionalProperties": false,
+        "description": "Body of a signed autheo-receipt+jwt. Hash-linked to its predecessor.",
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "enum": [
+                  "marketplace.read",
+                  "devhub.read",
+                  "chain.read",
+                  "compute.simulate",
+                  "environment.handoff",
+                  "tool.invoke",
+                  "model.invoke",
+                  "file.read",
+                  "file.write",
+                  "network.fetch",
+                  "message.send",
+                  "task.checkpoint"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Action"
+          },
+          "agent_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Agent Id",
+            "type": "string"
+          },
+          "amount_minor": {
+            "maximum": 1000000000000000,
+            "minimum": 0,
+            "title": "Amount Minor",
+            "type": "integer"
+          },
+          "checkpoint": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Checkpoint"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "decision": {
+            "enum": [
+              "allow",
+              "escalate",
+              "block",
+              "checkpoint_only",
+              "revoked",
+              "recorded"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "executed": {
+            "const": false,
+            "default": false,
+            "title": "Executed",
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "simulation",
+              "handoff_export",
+              "handoff_import",
+              "revocation",
+              "outcome_report",
+              "identity_issue",
+              "mandate_grant"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "mandate_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Mandate Id",
+            "type": "string"
+          },
+          "payload_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Payload Hash",
+            "type": "string"
+          },
+          "policy_digest": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Policy Digest"
+          },
+          "policy_id": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Policy Id"
+          },
+          "previous_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Previous Hash",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]*(:[A-Za-z0-9:._-]{1,96})?$",
+              "type": "string"
+            },
+            "maxItems": 64,
+            "title": "Reasons",
+            "type": "array"
+          },
+          "recorded_at": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "title": "Recorded At",
+            "type": "integer"
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,159}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reference"
+          },
+          "reported_by": {
+            "anyOf": [
+              {
+                "enum": [
+                  "operator_api",
+                  "agent_signed"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reported By"
+          },
+          "reported_status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "succeeded",
+                  "failed",
+                  "unknown"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reported Status"
+          },
+          "request_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,159}$",
+            "title": "Request Id",
+            "type": "string"
+          },
+          "resource": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Resource"
+          },
+          "schema_version": {
+            "const": "autheo.receipt/v1",
+            "default": "autheo.receipt/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "sequence": {
+            "maximum": 9007199254740991,
+            "minimum": 1,
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "simulation_only": {
+            "const": true,
+            "default": true,
+            "title": "Simulation Only",
+            "type": "boolean"
+          },
+          "tool": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tool"
+          }
+        },
+        "required": [
+          "sequence",
+          "previous_hash",
+          "request_id",
+          "payload_hash",
+          "agent_id",
+          "mandate_id",
+          "kind",
+          "decision",
+          "reasons",
+          "amount_minor",
+          "recorded_at"
+        ],
+        "title": "ReceiptBody",
+        "type": "object"
+      },
+      "RevokeInput": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "default": "operator_revoked",
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "title": "RevokeInput",
+        "type": "object"
+      },
+      "TimeWindow": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Actions",
+            "type": "array"
+          },
+          "days": {
+            "items": {
+              "enum": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri",
+                "sat",
+                "sun"
+              ],
+              "type": "string"
+            },
+            "maxItems": 7,
+            "minItems": 1,
+            "title": "Days",
+            "type": "array"
+          },
+          "end": {
+            "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+            "title": "End",
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "outside": {
+            "default": "block",
+            "enum": [
+              "block",
+              "escalate"
+            ],
+            "title": "Outside",
+            "type": "string"
+          },
+          "start": {
+            "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+            "title": "Start",
+            "type": "string"
+          },
+          "timezone": {
+            "default": "UTC",
+            "maxLength": 64,
+            "title": "Timezone",
+            "type": "string"
+          },
+          "tools": {
+            "items": {
+              "pattern": "^[A-Za-z0-9*?:._/\\[\\]!-]{1,128}$",
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Tools",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "start",
+          "end"
+        ],
+        "title": "TimeWindow",
+        "type": "object"
+      },
+      "VerifyReceiptInput": {
+        "additionalProperties": false,
+        "properties": {
+          "token": {
+            "maxLength": 131072,
+            "minLength": 16,
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "title": "VerifyReceiptInput",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "description": "Token from <state-dir>/api-token",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "Loopback-only local reference API. Decisions are simulations recorded as signed, hash-chained receipts; nothing is executed and no DID, wallet or payment is involved. Signature and canonicalization rules: docs/SPEC-SIGNATURES.md.",
+    "license": {
+      "name": "MIT"
+    },
+    "title": "Autheo Agent Environment local trust API",
+    "version": "0.2.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/v1/checkpoints": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckpointInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Export a destination-bound signed checkpoint (handoff)"
+      }
+    },
+    "/v1/evaluate": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "decision": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/Decision"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Null when an identical request_id is replayed"
+                    },
+                    "executed": {
+                      "const": false
+                    },
+                    "outcome": {
+                      "enum": [
+                        "allow",
+                        "escalate",
+                        "block"
+                      ]
+                    },
+                    "reasons": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "receipt": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/ReceiptBody"
+                        }
+                      ],
+                      "description": "Receipt body plus chain hash"
+                    },
+                    "receipt_token": {
+                      "description": "Signed autheo-receipt+jwt",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "replayed": {
+                      "type": "boolean"
+                    },
+                    "request_proof": {
+                      "enum": [
+                        "agent_signed_request",
+                        "service_held_key_local_dev"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Evaluate one action; records a signed decision receipt. Never executes."
+      }
+    },
+    "/v1/handoffs/accept": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HandoffAcceptInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "receipt": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/ReceiptBody"
+                        }
+                      ],
+                      "description": "Receipt body plus chain hash"
+                    },
+                    "receipt_token": {
+                      "description": "Signed autheo-receipt+jwt",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Admit a checkpoint at its destination; grants no authority"
+      }
+    },
+    "/v1/health": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [],
+        "summary": "Liveness and mode"
+      }
+    },
+    "/v1/identities": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IdentityIssueInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Issue an agent passport (agent-held public key, or local-dev generated key)"
+      }
+    },
+    "/v1/identities/{agent_id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Identity status"
+      }
+    },
+    "/v1/identities/{agent_id}/revoke": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Revoke the agent passport in every environment"
+      }
+    },
+    "/v1/info": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Issuer, key id, public key, environments and active policy digest"
+      }
+    },
+    "/v1/ledger/receipts": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "environment",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "agent_id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "maximum": 500,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "List recent receipts with tokens"
+      }
+    },
+    "/v1/ledger/verify": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "environment",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expected_head",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Verify a ledger (signatures, links, identity, triggers, optional anchor)"
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LedgerVerifyInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Verify a ledger"
+      }
+    },
+    "/v1/mandates": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MandateGrantInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "receipt": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/ReceiptBody"
+                        }
+                      ],
+                      "description": "Receipt body plus chain hash"
+                    },
+                    "receipt_token": {
+                      "description": "Signed autheo-receipt+jwt",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Grant a scoped, budgeted, short-lived mandate"
+      }
+    },
+    "/v1/mandates/{mandate_id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "mandate_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Mandate status: spent, remaining, revoked, expiry"
+      }
+    },
+    "/v1/mandates/{mandate_id}/revoke": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "mandate_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "receipt": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/ReceiptBody"
+                        }
+                      ],
+                      "description": "Receipt body plus chain hash"
+                    },
+                    "receipt_token": {
+                      "description": "Signed autheo-receipt+jwt",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Revoke a mandate (recorded as a signed receipt)"
+      }
+    },
+    "/v1/openapi.json": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "security": [],
+        "summary": "This document"
+      }
+    },
+    "/v1/policy": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "policy": {
+                      "$ref": "#/components/schemas/PolicyDocument"
+                    },
+                    "policy_digest": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Active declarative policy and digest"
+      }
+    },
+    "/v1/receipts/outcome": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutcomeInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "receipt": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/ReceiptBody"
+                        }
+                      ],
+                      "description": "Receipt body plus chain hash"
+                    },
+                    "receipt_token": {
+                      "description": "Signed autheo-receipt+jwt",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Record an executor-reported outcome for an allowed decision"
+      }
+    },
+    "/v1/receipts/verify": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyReceiptInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/E400"
+          },
+          "401": {
+            "$ref": "#/components/responses/E401"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "409": {
+            "$ref": "#/components/responses/E409"
+          },
+          "413": {
+            "$ref": "#/components/responses/E413"
+          },
+          "415": {
+            "$ref": "#/components/responses/E415"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "summary": "Verify a receipt signature and its ledger membership"
+      }
+    },
+    "/v1/schemas": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "security": [],
+        "summary": "List versioned JSON Schemas"
+      }
+    },
+    "/v1/schemas/{name}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "$ref": "#/components/responses/E404"
+          },
+          "421": {
+            "$ref": "#/components/responses/E421"
+          }
+        },
+        "security": [],
+        "summary": "One JSON Schema (draft 2020-12)"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "servers": [
+    {
+      "description": "Default loopback bind",
+      "url": "http://127.0.0.1:8780"
+    }
+  ]
+}

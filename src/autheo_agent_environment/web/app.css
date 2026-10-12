@@ -174,3 +174,12 @@ footer { min-height: 49px; border-top: 1px solid var(--line-soft); display: flex
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+.decision-chip.recorded { color: #9fc3d6; background: rgba(60, 96, 120, .22); }
+.decision-chip.revoked, .decision-chip.checkpoint_only { color: #c9b7e6; background: rgba(90, 70, 120, .22); }
+.explanation { list-style: none; margin: 12px 0; padding: 0; display: grid; gap: 4px; font: 11px var(--mono); }
+.explanation li { display: flex; gap: 8px; color: #a6b5bf; }
+.explanation .check-fail { color: var(--red); }
+.explanation .check-escalate { color: var(--amber); }
+.explanation .check-pass { color: var(--green); }
+.inline-button { width: auto; margin: 0; padding: 4px 10px; }

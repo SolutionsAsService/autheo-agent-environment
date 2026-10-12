@@ -10,6 +10,9 @@ from pydantic import ValidationError
 from autheo_agent_environment.web_demo import WebDemoSession
 from autheo_agent_environment.webapp import create_server
 
+# Since 0.2 the ledger also records the identity issuance and mandate grant receipts.
+LIFECYCLE_RECEIPTS = 2
+
 
 @pytest.fixture
 def running_server():
@@ -57,7 +60,7 @@ def test_web_demo_session_uses_simulator_and_never_executes():
         assert state["execution_authorized"] is False
         assert state["identity"]["identifier_type"] == "local demo identifiers; not DIDs"
         assert state["mandate"]["spent_minor"] == 40
-        assert state["audit"]["count"] == 3
+        assert state["audit"]["count"] == LIFECYCLE_RECEIPTS + 3
     finally:
         session.close()
 
@@ -67,7 +70,7 @@ def test_web_demo_rejects_untyped_action_and_records_nothing():
     try:
         with pytest.raises(ValidationError):
             session.simulate("arbitrary.execute", "listing:demo-01", 1)
-        assert session.state()["audit"]["count"] == 0
+        assert session.state()["audit"]["count"] == LIFECYCLE_RECEIPTS
     finally:
         session.close()
 
@@ -99,7 +102,7 @@ def test_browser_assets_are_served_from_the_local_app(running_server):
     connection = HTTPConnection("127.0.0.1", running_server.server_port, timeout=3)
     for path, expected_type, marker in [
         ("/assets/app.css", "text/css", ".trust-flow"),
-        ("/assets/app.js", "text/javascript", "X-Autheo-Demo-Token"),
+        ("/assets/app.js", "text/javascript", "/v1/evaluate"),
     ]:
         connection.request("GET", path)
         response = connection.getresponse()
@@ -123,7 +126,7 @@ def test_mutation_requires_exact_loopback_host_origin_and_demo_token(running_ser
     assert status == 403
     status, _, _ = post(server, "/api/simulate", payload, origin=origin)
     assert status == 403
-    assert server.demo_session.state()["audit"]["count"] == 0
+    assert server.demo_session.state()["audit"]["count"] == LIFECYCLE_RECEIPTS
 
 
 def test_http_rejects_bad_fields_and_non_json_without_receipt(running_server):
@@ -149,7 +152,7 @@ def test_http_rejects_bad_fields_and_non_json_without_receipt(running_server):
         content_type="text/plain",
     )
     assert status == 415
-    assert server.demo_session.state()["audit"]["count"] == 0
+    assert server.demo_session.state()["audit"]["count"] == LIFECYCLE_RECEIPTS
 
 
 def test_http_actions_match_simulator_and_sample_sequence(running_server):
@@ -167,7 +170,7 @@ def test_http_actions_match_simulator_and_sample_sequence(running_server):
     assert headers.get("Access-Control-Allow-Origin") is None
     assert [item["decision"] for item in payload["results"]] == ["allow", "escalate", "block"]
     assert all(item["executed"] is False for item in payload["results"])
-    assert payload["state"]["audit"]["count"] == 3
+    assert payload["state"]["audit"]["count"] == LIFECYCLE_RECEIPTS + 3
 
     status, _, body = post(
         server,
@@ -178,3 +181,31 @@ def test_http_actions_match_simulator_and_sample_sequence(running_server):
     )
     assert status == 200
     assert json.loads(body)["results"][0]["decision"] == "block"
+
+
+def test_page_uses_v1_api_with_bearer_token(running_server):
+    server = running_server
+    session = server.demo_session
+    connection = HTTPConnection("127.0.0.1", server.server_port, timeout=3)
+    connection.request("GET", "/")
+    html = connection.getresponse().read().decode()
+    assert session.mandate_id in html and "__AUTHEO_MANDATE_ID__" not in html
+    connection.request("GET", f"/v1/mandates/{session.mandate_id}")
+    response = connection.getresponse()
+    assert response.status == 401
+    response.read()
+    headers = {"Authorization": f"Bearer {server.demo_token}", "Content-Type": "application/json"}
+    body = json.dumps({"request": {"agent_id": session.agent_id, "mandate_id": session.mandate_id,
+                                   "action": "compute.simulate", "resource": "listing:demo-01",
+                                   "amount_minor": 55}})
+    connection.request("POST", "/v1/evaluate", body=body, headers=headers)
+    response = connection.getresponse()
+    result = json.loads(response.read())
+    assert response.status == 200 and result["outcome"] == "escalate"
+    assert any(c["outcome"] == "escalate" for c in result["decision"]["explanation"])
+    connection.request("GET", "/v1/ledger/verify?environment=env:research", headers=headers)
+    report = json.loads(connection.getresponse().read())
+    assert report["valid"] and report["count"] == LIFECYCLE_RECEIPTS + 1
+    connection.close()
+    status, _, _ = post(server, "/v1/evaluate", {}, host=f"localhost:{server.server_port}")
+    assert status == 421

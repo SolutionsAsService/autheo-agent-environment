@@ -1,8 +1,14 @@
-"""Serve the local-only browser demo on the loopback interface."""
+"""Serve the local-only browser demo on the loopback interface.
+
+The page talks to the same /v1 trust API as the CLI and integrations (mounted on
+this server, same origin, bearer token injected into the page). The original
+/api/state, /api/simulate and /api/sample routes remain for compatibility.
+"""
 
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import secrets
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -11,9 +17,11 @@ from json import JSONDecodeError
 
 from pydantic import ValidationError
 
+from .api import ApiRouter
 from .web_demo import WebDemoSession
 
 MAX_BODY_BYTES = 4096
+MAX_API_BODY_BYTES = 65536
 SAMPLE_REQUESTS = [
     {"action": "compute.simulate", "resource": "listing:demo-01", "amount_minor": 40},
     {"action": "compute.simulate", "resource": "listing:demo-01", "amount_minor": 55},
@@ -23,7 +31,14 @@ SAMPLE_REQUESTS = [
 
 def create_server(port: int = 8765) -> ThreadingHTTPServer:
     session = WebDemoSession()
-    csrf_token = secrets.token_urlsafe(32)
+    csrf_token = session.api_token
+    router = ApiRouter(session.service, csrf_token)
+    page_values = {
+        "__AUTHEO_DEMO_TOKEN__": csrf_token,
+        "__AUTHEO_AGENT_ID__": html.escape(session.agent_id),
+        "__AUTHEO_MANDATE_ID__": html.escape(session.mandate_id),
+        "__AUTHEO_ENVIRONMENT__": html.escape(session.environment_id),
+    }
     web_root = files("autheo_agent_environment").joinpath("web")
 
     class Handler(BaseHTTPRequestHandler):
@@ -94,13 +109,28 @@ def create_server(port: int = 8765) -> ThreadingHTTPServer:
                 return False
             return True
 
+        def _api(self, method: str) -> None:
+            body = b""
+            if method == "POST":
+                try:
+                    size = int(self.headers.get("Content-Length", "-1"))
+                except ValueError:
+                    size = -1
+                body = self.rfile.read(size) if 0 <= size <= MAX_API_BODY_BYTES else None
+            status, payload = router.handle(method, self.path, self.headers, body)
+            self._json(status, payload)
+
         def do_GET(self) -> None:
             if not self._local_request():
                 return
+            if self.path.startswith("/v1/"):
+                self._api("GET")
+                return
             if self.path == "/":
                 body = web_root.joinpath("index.html").read_text(encoding="utf-8")
-                body = body.replace("__AUTHEO_DEMO_TOKEN__", csrf_token).encode()
-                self._send(200, "text/html; charset=utf-8", body)
+                for marker, value in page_values.items():
+                    body = body.replace(marker, value)
+                self._send(200, "text/html; charset=utf-8", body.encode())
                 return
             if self.path == "/api/state":
                 self._json(200, session.state())
@@ -118,7 +148,12 @@ def create_server(port: int = 8765) -> ThreadingHTTPServer:
             self._json(404, {"error": "not_found"})
 
         def do_POST(self) -> None:
-            if not self._local_request() or not self._require_demo_token():
+            if not self._local_request():
+                return
+            if self.path.startswith("/v1/"):
+                self._api("POST")
+                return
+            if not self._require_demo_token():
                 return
             payload = self._read_payload()
             if payload is None:
@@ -169,10 +204,10 @@ def create_server(port: int = 8765) -> ThreadingHTTPServer:
     return server
 
 
-def main() -> None:
+def main(argv=None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8765)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if not 0 <= args.port <= 65535:
         parser.error("--port must be between 0 and 65535")
     server = create_server(args.port)

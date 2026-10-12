@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="__AUTHEO_DEMO_TOKEN__">
+    <meta name="autheo-agent-id" content="__AUTHEO_AGENT_ID__">
+    <meta name="autheo-mandate-id" content="__AUTHEO_MANDATE_ID__">
+    <meta name="autheo-environment" content="__AUTHEO_ENVIRONMENT__">
     <meta name="theme-color" content="#0a1119">
     <title>Autheo Agent Trust · Local Demo</title>
     <link rel="stylesheet" href="/assets/app.css">
@@ -83,7 +86,7 @@
               <div><p class="eyebrow">REQUEST CONSOLE</p><h2>Try a policy decision</h2></div>
               <span class="request-number">01 / 01</span>
             </div>
-            <p class="card-description">The server signs this request with the ephemeral demo agent key, then submits it to the existing policy simulator.</p>
+            <p class="card-description">The page calls the local <span class="mono">/v1/evaluate</span> API. The server signs the request with the ephemeral demo agent key and evaluates it against the mandate and declarative policy.</p>
             <form id="request-form">
               <label for="action">Requested capability</label>
               <select id="action" name="action">
@@ -115,13 +118,14 @@
               <div><dt>Budget</dt><dd>—</dd></div>
               <div><dt>Execution</dt><dd>Not authorized</dd></div>
             </dl>
+            <ol id="explanation" class="explanation" aria-label="Policy checks"></ol>
             <div class="decision-boundary"><span class="boundary-icon" aria-hidden="true">!</span><span><strong>Simulation boundary</strong><small>An “allow” reserves demo budget only. It does not call a tool, submit a transaction, or run a workload.</small></span></div>
           </article>
         </section>
 
         <section class="data-card receipt-card" aria-labelledby="receipts-title">
           <div class="section-heading compact-heading">
-            <div><p class="eyebrow">EVIDENCE LEDGER</p><h2 id="receipts-title">Signed decision receipts</h2></div>
+            <div><p class="eyebrow">EVIDENCE LEDGER</p><h2 id="receipts-title">Signed receipts</h2></div>
             <span id="receipt-count" class="receipt-count">0 RECORDS</span>
           </div>
           <p class="card-description">Hash-linked records from this temporary session. Local and tamper-evident, but not immutable or externally anchored.</p>
@@ -131,7 +135,7 @@
               <tbody id="receipt-rows"><tr class="empty-row"><td colspan="6">No requests recorded in this session.</td></tr></tbody>
             </table>
           </div>
-          <div class="ledger-foot"><span><span class="mini-dot"></span> SIGNED · HASH-LINKED</span><span id="audit-head" class="mono">HEAD —</span></div>
+          <div class="ledger-foot"><span><span class="mini-dot"></span> SIGNED · HASH-LINKED</span><button class="secondary-button inline-button" id="verify-ledger" type="button">Verify ledger</button><span id="audit-head" class="mono">HEAD —</span></div>
         </section>
 
         <section class="security-strip" aria-label="Security boundary notes">
