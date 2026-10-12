@@ -1,10 +1,10 @@
 """Offline receipt-chain verification against an operator-pinned public key."""
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 
+from .canonical import chain_hash
 from .signing import read_public, verify
 
 
@@ -29,7 +29,7 @@ def verify_archive(
         ):
             raise ValueError("Audit chain integrity failure")
         ids.add(body["request_id"])
-        previous = hashlib.sha256((previous + token).encode()).hexdigest()
+        previous = chain_hash(previous, token)
     if expected_head is not None and previous != expected_head:
         raise ValueError("Audit head differs from external checkpoint")
     return {
@@ -49,6 +49,7 @@ def main():
     parser.add_argument("--issuer", required=True)
     parser.add_argument("--environment", required=True)
     parser.add_argument("--expected-head")
+    parser.add_argument("--kid", default="demo-v1", help="issuer key id (persistent state uses local-...)")
     args = parser.parse_args()
     # Local operator utility; bound input to keep malformed files from exhausting memory.
     if args.archive.stat().st_size > 10_000_000 or args.public_key.stat().st_size > 4096:
@@ -59,6 +60,7 @@ def main():
         args.issuer,
         args.environment,
         args.expected_head,
+        args.kid,
     )
     print(json.dumps(result, indent=2))
 

@@ -10,3 +10,6 @@ demo-output/
 *.pem
 *.jwt
 .env*
+.autheo-state/
+.coverage
+htmlcov/

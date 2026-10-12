@@ -4,20 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autheo-agent-environment"
-version = "0.1.0"
-description = "Local reference environment for agent mandates, simulated budgets, signed receipts and checkpoint handoffs"
+version = "0.2.0"
+description = "Local reference trust layer for agent identities, mandates, declarative policy, signed hash-chained receipts and checkpoint handoffs"
 requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [{name = "SolutionsAsService"}]
-dependencies = ["PyJWT[crypto]>=2.10,<3", "pydantic>=2.7,<3"]
+dependencies = ["PyJWT[crypto]>=2.10,<3", "pydantic>=2.7,<3", "PyYAML>=6,<7"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "ruff>=0.6"]
+dev = ["pytest>=8", "ruff>=0.6", "jsonschema>=4.18", "pytest-cov>=5"]
 
 [project.scripts]
 autheo-agent-demo = "autheo_agent_environment.demo:main"
 autheo-agent-web-demo = "autheo_agent_environment.webapp:main"
+autheo-agent = "autheo_agent_environment.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
