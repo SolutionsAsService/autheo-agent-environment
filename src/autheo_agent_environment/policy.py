@@ -13,6 +13,7 @@ the decisions and reason codes are identical to the 0.1 mandate-only simulator.
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from fnmatch import fnmatchcase
@@ -44,6 +45,17 @@ DAYS: tuple[str, ...] = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
 
 def _matches(value: str | None, patterns: list[str]) -> bool:
     return value is not None and any(fnmatchcase(value, pattern) for pattern in patterns)
+
+
+def _grants(granted: list[str], value: str | None) -> bool:
+    """Mandate/capability grant match. v1 grants are exact strings (their grammar has no "*");
+    v2 delegated capabilities may also use "prefix*" and "*" (docs/SPEC-DID.md section 4)."""
+    if value is None:
+        return False
+    for item in granted:
+        if item == value or item == "*" or (item.endswith("*") and value.startswith(item[:-1])):
+            return True
+    return False
 
 
 def _applies(patterns: list[str], value: str | None) -> bool:
@@ -206,6 +218,25 @@ def _check(explanation, check, outcome, detail):
     explanation.append(Explanation(check=check, outcome=outcome, detail=detail[:300]))
 
 
+@dataclass(frozen=True)
+class ChainCheck:
+    """A delegation-chain check computed by the caller (v2), evaluated before the mandate checks."""
+
+    check: str
+    failed: bool
+    reason: str
+    detail: str
+
+
+@dataclass(frozen=True)
+class ChainBudget:
+    """Cumulative budget of an ancestor delegation: everything spent under it counts (v2)."""
+
+    label: str
+    limit_minor: int
+    spent_minor: int
+
+
 def evaluate(
     *,
     policy: PolicyDocument,
@@ -215,8 +246,14 @@ def evaluate(
     revoked: bool,
     history: list[PriorEvent],
     now: int,
+    chain_checks: Sequence[ChainCheck] = (),
+    chain_budgets: Sequence[ChainBudget] = (),
 ) -> Decision:
-    """Deterministically evaluate one request. Runs every check so the explanation is complete."""
+    """Deterministically evaluate one request. Runs every check so the explanation is complete.
+
+    v2 callers pass the leaf delegation's Capability as "mandate" (same limit fields) plus
+    chain_checks/chain_budgets; with both empty the result is identical to v1.
+    """
     blocks: list[str] = []
     escalations: list[str] = []
     explanation: list[Explanation] = []
@@ -228,12 +265,16 @@ def evaluate(
             blocks.append(reason)
         _check(explanation, check, "fail" if failed else "pass", detail_fail if failed else detail_ok)
 
+    # --- delegation chain (v2 only) ------------------------------------------
+    for item in chain_checks:
+        gate(item.check, item.failed, item.reason, item.detail, item.detail)
+
     # --- mandate (0.1-compatible, fixed order) ---------------------------------
     gate("mandate.revocation", revoked, "revoked", "passport and mandate are not revoked",
          "passport or mandate is revoked")
     gate("mandate.scope", request.action not in mandate.scopes, "scope_denied",
          f"action {request.action} is granted", f"action {request.action} is not granted by the mandate")
-    gate("mandate.resource", request.resource not in mandate.resources, "resource_denied",
+    gate("mandate.resource", not _grants(mandate.resources, request.resource), "resource_denied",
          f"resource {request.resource} is granted", f"resource {request.resource} is not granted")
     gate("mandate.per_action_limit", request.amount_minor > mandate.per_action_minor, "per_action_limit",
          f"{request.amount_minor} <= per-action limit {mandate.per_action_minor}",
@@ -242,12 +283,17 @@ def evaluate(
          "total_budget_limit",
          f"spent {spent} + {request.amount_minor} <= total {mandate.total_budget_minor}",
          f"spent {spent} + {request.amount_minor} exceeds total {mandate.total_budget_minor}")
+    for item in chain_budgets:
+        gate(f"chain.budget:{item.label}", item.spent_minor + request.amount_minor > item.limit_minor,
+             f"chain_budget_limit:{item.label}",
+             f"spent {item.spent_minor} + {request.amount_minor} <= delegated total {item.limit_minor}",
+             f"spent {item.spent_minor} + {request.amount_minor} exceeds delegated total {item.limit_minor}")
     if request.action == "tool.invoke" and request.tool is None:
         gate("mandate.tool", True, "tool_required", "", "tool.invoke requires a tool name")
     elif request.tool is None:
         _check(explanation, "mandate.tool", "not_applicable", "request names no tool")
     else:
-        gate("mandate.tool", request.tool not in mandate.tools, "tool_denied",
+        gate("mandate.tool", not _grants(mandate.tools, request.tool), "tool_denied",
              f"tool {request.tool} is granted", f"tool {request.tool} is not granted by the mandate")
 
     # --- declarative policy (can only narrow) ----------------------------------
