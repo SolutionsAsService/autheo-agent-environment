@@ -1,5 +1,8 @@
 # Autheo document, signature and receipt-chain specification (v1)
 
+> v1 profile (JWS). It is unchanged in 0.3. DID identities, delegation chains, Data Integrity
+> proofs and offline verification are specified separately in [SPEC-DID.md](SPEC-DID.md) (v2, additive).
+
 **Status:** stable for schema v1 of this local reference implementation (0.2).
 It specifies bytes precisely enough for an independent verifier in another
 language. It is not an Autheo platform standard, a DID method or a W3C VC

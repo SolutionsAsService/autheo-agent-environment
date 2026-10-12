@@ -29,9 +29,9 @@ python -m autheo_agent_environment.webapp
 
 Open `http://127.0.0.1:8765/`. The web demo binds only to loopback, creates
 ephemeral identities and a temporary local ledger, and clears its state when the
-server stops. It uses the same policy simulator as the CLI; it does not create a
-DID, connect to Autheo, approve an escalation, or execute a tool, workload, or
-transaction. To choose another local port, use `--port 8766`.
+server stops. It uses the same policy simulator as the CLI; its DIDs are local
+did:key identities (nothing is registered), and it does not connect to Autheo, approve
+an escalation, or execute a tool, workload, or transaction. To choose another local port, use `--port 8766`.
 
 The demo:
 
@@ -48,11 +48,47 @@ The demo:
 there is no agent-callable approval override. `block` consumes no demo budget.
 **No action is actually executed, even when the policy outcome is allow.**
 
+## Permissionless control with DIDs (0.3, v2)
+
+Anyone can create an agent identity, delegate authority and verify any decision -
+**without a registry, issuer or server**. Identities are `did:key` DIDs generated locally;
+authority is a chain of signed, attenuated delegation credentials (W3C VC 2.0 + Data
+Integrity `eddsa-jcs-2022`) back to a root DID the verifier pins; revocations are signed
+records anyone can relay.
+
+```sh
+D="python -m autheo_agent_environment did"
+$D create --out human.json        # did:key, offline; private key stays in the file (0600)
+$D create --out agent.json
+$D create --out sub.json
+$D delegate --key human.json --to did:key:<agent> --environment 'env:*' --scope compute.simulate \
+   --resource 'listing:*' --per-action 80 --total 100 --threshold 50 --depth 1 --out chain1.json
+$D delegate --key agent.json --to did:key:<sub> --parent chain1.json --environment env:research \
+   --scope compute.simulate --resource listing:demo-01 --per-action 30 --total 50 --threshold 20 \
+   --out chain2.json               # can only narrow; widening is refused and rejected by verifiers
+$D invoke --key sub.json --chain chain2.json --environment env:research \
+   --action compute.simulate --resource listing:demo-01 --amount 20 --out inv.json
+$D verify chain inv.json --root did:key:<human>          # offline, no state, no network
+# With a local environment (records a signed v2 receipt and returns an offline bundle):
+$D trust --environment env:research --root did:key:<human>
+$D evaluate --invocation inv.json --bundle-out bundle.json
+python -m autheo_agent_environment.verifier bundle bundle.json --root did:key:<human>
+$D revoke --key agent.json --chain chain2.json --out rev.json && $D record-revocation rev.json
+```
+
+- [v2 specification](docs/SPEC-DID.md) · [standards decision record](docs/EXISTING-SOLUTIONS.md)
+  · [threat model](docs/THREAT-MODEL.md) · [v2 schemas](schemas/) ·
+  [v2 vectors](tests/vectors/autheo-v2-vectors.json) · [JS verifier](interop/js/autheo-did.mjs)
+- The browser demo has a "Delegation chains between DIDs" panel: human -> agent -> sub-agent,
+  allowed/blocked actions, a revocation, and bundles verified **in the browser** via WebCrypto.
+- Not real yet: no on-chain anchoring, no revocation freshness guarantee (keep TTLs short),
+  did:web untested against live servers, demo DID keys are unencrypted local files.
+
 ## Local trust service (0.2)
 
 The same engine now runs as a persistent, local-first trust layer for agent
 runtimes such as JARVIS and Paperclip. It is still a reference implementation:
-file-based dev keys, DEMO units, no DID/wallet/payment, and nothing is executed.
+file-based dev keys, DEMO units, no wallet/payment, and nothing is executed.
 
 ```sh
 A="python -m autheo_agent_environment --state-dir .autheo-state"

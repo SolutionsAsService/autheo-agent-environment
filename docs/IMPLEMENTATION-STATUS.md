@@ -1,5 +1,27 @@
 # Delivery / claim ceiling
 
+## Implemented in 0.3 (v2: permissionless DID delegation, tested)
+
+- **DIDs:** did:key (Ed25519 Multikey) for every agent, principal and environment, created
+  offline with no registration; DID documents; v1 key ids map to the same key's did:key;
+  did:web resolution offline by default (cache/pinned documents; HTTPS fetch only if enabled -
+  never tested live).
+- **Delegation:** W3C VC 2.0 `AutheoDelegation` credentials signed with Data Integrity
+  `eddsa-jcs-2022`; chains of up to 10 links bound by parent id + digest; attenuation of
+  environments/scopes/resources/tools/budgets/validity/depth enforced by issuers and verifiers;
+  signed revocation records (issuer/ancestor/subject), distributed via revocation lists, ledger
+  exports and bundles.
+- **Offline verification:** `python -m autheo_agent_environment.verifier` (bundle, chain,
+  invocation, ledger) and the dependency-free isomorphic `interop/js/autheo-did.mjs` verify a
+  decision and its whole chain back to a pinned root DID with no network or service.
+- **Policy decision point:** invocations are verified, chains checked against trusted roots and
+  accepted revocations, the policy engine evaluates the leaf capability plus cumulative ancestor
+  budgets, and environment-signed hash-linked v2 receipts are recorded beside the v1 ledger.
+- **Contracts:** [SPEC-DID.md](SPEC-DID.md), `schemas/*.v2.schema.json`, deterministic
+  `tests/vectors/autheo-v2-vectors.json` checked by Python and JavaScript; HTTP API + OpenAPI and
+  CLI `did` commands; web demo scenario with in-browser verification.
+- v1 is unchanged: v1 schemas, vectors and JWS verification are byte-identical.
+
 ## Implemented in 0.2 (local reference, tested)
 
 - **Contracts:** versioned JSON Schemas (`schemas/*.v1.schema.json`) generated from
@@ -27,10 +49,13 @@
 
 ## Not implemented (do not claim)
 
-- No DID method, verifiable credential, wallet, payment, THEO transfer, chain
-  anchoring, or connection to any Autheo platform service.
-- No production key custody: issuer and server-held agent keys are unencrypted
-  local files. No HSM/KMS, rotation or issuer rollover.
+- No wallet, payment, THEO transfer, on-chain anchoring of ledger heads or
+  delegation registries, or connection to any Autheo platform service.
+- No hosted revocation service or revocation freshness guarantee (lag is bounded only
+  by TTLs and distribution); no signed key-rotation records (rotation = re-delegate and revoke).
+- did:web is resolved from pinned/cached documents; live HTTPS resolution is untested.
+- No production key custody: issuer, service-held agent keys and local-dev DID keys are
+  unencrypted local files. No HSM/KMS/wallet, no issuer rollover.
 - No human approval workflow: `escalate` stays pending.
 - No TLS, multi-tenant isolation, hosted deployment, replication or HA.
 - No executor: Autheo never runs an action; outcome receipts are executor claims.

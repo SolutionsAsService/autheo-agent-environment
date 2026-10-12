@@ -23,8 +23,14 @@ jobs:
         run: |
           python -m autheo_agent_environment schema check schemas
           python -m autheo_agent_environment vectors check tests/vectors/autheo-v1-vectors.json
+          python -m autheo_agent_environment vectors-v2 check tests/vectors/autheo-v2-vectors.json
           python -m autheo_agent_environment openapi check docs/openapi.json
       - run: node interop/js/verify-vectors.mjs
+      - run: node interop/js/verify-v2-vectors.mjs
+      - name: Browser demo modules parse and the served verifier matches interop/js
+        run: |
+          node --check src/autheo_agent_environment/web/did-demo.js
+          cmp interop/js/autheo-did.mjs src/autheo_agent_environment/web/autheo-did.mjs
       - run: python -m autheo_agent_environment.demo --output demo-output
       - run: python -m autheo_agent_environment.audit demo-output/source-audit.json --public-key demo-output/issuer-public.pem --issuer autheo-demo-authority --environment env:research
       - name: Persistent CLI smoke test
@@ -36,3 +42,22 @@ jobs:
           M=$($A mandate grant --agent-id agent:ci --environment env:research --scope tool.invoke --resource repo:ci --tool git.status --per-action 10 --total 10 --threshold 10 | python -c "import json,sys; print(json.load(sys.stdin)['mandate_id'])")
           $A evaluate --agent-id agent:ci --mandate-id "$M" --action tool.invoke --resource repo:ci --tool git.status --amount 5
           $A ledger verify --environment env:research
+      - name: v2 DID delegation smoke test (offline signing + offline verification)
+        run: |
+          set -euo pipefail
+          A="python -m autheo_agent_environment --state-dir ci-state"
+          did() { python -c "import json,sys; print(json.load(open(sys.argv[1]))['did'])" "$1"; }
+          $A did create --out human.json >/dev/null; $A did create --out agent.json >/dev/null; $A did create --out sub.json >/dev/null
+          H=$(did human.json); G=$(did agent.json); S=$(did sub.json)
+          $A did delegate --key human.json --to "$G" --environment 'env:*' --scope compute.simulate --resource 'listing:*' --per-action 80 --total 100 --threshold 50 --depth 1 --out chain1.json >/dev/null
+          $A did delegate --key agent.json --to "$S" --parent chain1.json --environment env:research --scope compute.simulate --resource listing:demo-01 --per-action 30 --total 50 --threshold 20 --out chain2.json >/dev/null
+          $A did invoke --key sub.json --chain chain2.json --environment env:research --action compute.simulate --resource listing:demo-01 --amount 20 --out inv.json >/dev/null
+          python -m autheo_agent_environment.verifier chain inv.json --root "$H" >/dev/null
+          $A did trust --environment env:research --root "$H" >/dev/null
+          $A did evaluate --invocation inv.json --bundle-out bundle.json | python -c "import json,sys; assert json.load(sys.stdin)['outcome'] == 'allow'"
+          ENV_DID=$($A info | python -c "import json,sys; print(json.load(sys.stdin)['authority_did'])")
+          python -m autheo_agent_environment.verifier bundle bundle.json --root "$H" --environment-did "$ENV_DID" >/dev/null
+          $A did revoke --key agent.json --chain chain2.json --out rev.json >/dev/null
+          $A did record-revocation rev.json >/dev/null
+          if python -m autheo_agent_environment.verifier chain chain2.json --root "$H" --revocations rev.json >/dev/null; then echo "revoked chain verified" && exit 1; fi
+          $A did ledger verify --environment env:research >/dev/null

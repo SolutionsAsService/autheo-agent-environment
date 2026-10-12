@@ -10,7 +10,9 @@ service, and the JavaScript verifier agreeing with the committed vectors.
 The trust layer is a **policy decision point and evidence ledger**. The
 integrating runtime is the **policy enforcement point**: it must call Autheo
 immediately before a consequential effect, dispatch only on `allow`, and record
-what it did. Autheo never executes anything, never holds funds and issues no DIDs.
+what it did. Autheo never executes anything and never holds funds. Since 0.3 agents and
+principals can be did:key identities whose authority comes from signed delegation chains
+(see "Adopting v2" below); nothing needs to be registered with Autheo.
 
 ## Common pattern
 
@@ -118,4 +120,49 @@ new mandate and a new decision, both on the ledger.
 * Decisions are only as good as the integrating runtime's enforcement: Autheo
   cannot stop a runtime that skips the check.
 * Outcome receipts are claims by the executor, not proof of what happened.
-* No DID, VC, wallet, payment, chain anchoring or Autheo platform service is involved.
+* No wallet, payment, chain anchoring or Autheo platform service is involved. v2 DIDs and
+  delegation VCs are local cryptographic objects, not registrations anywhere.
+
+## Adopting v2 (notes only - JARVIS and Paperclip were not modified)
+
+v1 keeps working unchanged: JARVIS (commit f8006b7) vendors the v1 schemas and vectors and
+verifies v1 receipts in JS; none of that changes. v2 is additive and can be adopted per flow.
+
+**What to vendor:** `interop/js/autheo-did.mjs` (single dependency-free file, WebCrypto),
+`schemas/*.v2.schema.json` and `tests/vectors/autheo-v2-vectors.json`, plus a CI step running
+`verify-v2-vectors.mjs` against the vendored vectors (the same pattern as v1).
+
+**JARVIS (Node 24 kernel)**
+
+1. Each kernel agent/workload generates an Ed25519 key and uses its did:key as its identity
+   (`didFromSeed` / any WebCrypto Ed25519 key); the human operator's root did:key (kept outside
+   the kernel, ideally hardware-backed) is pinned in the Autheo environment (`did trust`) and in
+   JARVIS config.
+2. Work approval becomes delegation: when a human approves a task, the operator path issues an
+   `AutheoDelegation` from the root DID to the agent DID with the task's scopes/resources/budget
+   and a short `validUntil`. Agents that spawn helpers sub-delegate narrower credentials
+   themselves - no Autheo call needed.
+3. Before an effect, the agent signs an invocation in JS (`signDocument(doc, seed,
+   'capabilityInvocation', now)` with the chain embedded) and posts it to
+   `/v1/invocations/evaluate`; dispatch only on `allow`, as in v1 (fail closed otherwise).
+4. Store the returned bundle in the kernel event log; any later audit runs
+   `verifyBundle(bundle, {trustedRoots: [humanDid], environmentDid})` offline. Revocations
+   issued by the operator are posted to `/v1/revocations` and kept in the kernel's own store.
+5. JARVIS's existing receipts/budgets stay authoritative for its own admission control; the
+   cumulative ancestor-budget check means sibling agents share the delegated budget.
+
+**Paperclip**
+
+1. Paperclip agent key ids already use the v1 fingerprint format; the did:key of the same
+   public key is derivable (`did from-key --public-key-file agent.pem`), so an agent keeps its
+   key and gains a DID.
+2. A company/owner root DID delegates per-agent capabilities (budget = the agent's spend cap,
+   resources = the projects/issues it may touch); heartbeat runs carry the chain and sign
+   invocations before consequential tool calls.
+3. Revocation lists (`GET /v1/revocations`, or the records themselves) are synced into
+   Paperclip so its own UI can show which agents lost authority; verification needs no Autheo
+   uptime.
+
+**Open questions for adopters:** where root keys live (hardware/OS keystore), what TTLs fit each
+flow (shorter = less revocation lag), whether to publish revocation lists somewhere both sides
+can read (git repo, object store), and whether did:web is needed for roots that must rotate.

@@ -88,3 +88,25 @@ it cannot accept an old MCP snapshot or a policy preview as a spendable capabili
 Production security review must examine key compromise, confused deputy attacks,
 TOCTOU, storage rollback, replay across replicas, policy rollback, retries,
 partial external execution, revocation races and recovery from a failed handoff.
+
+
+## v2: DIDs and delegation chains (0.3.0)
+
+What a v2 verifier relies on: Ed25519, SHA-256, the root DID(s) it pins, the environment DID it
+pins (for receipts), its own clock, and the revocation records it holds. Nothing else - no
+registry, issuer service or network.
+
+| Threat | What happens | Residual risk / mitigation |
+| --- | --- | --- |
+| **Chain forgery** (invented or edited links, swapped parents, an impostor issuing below someone else's grant) | Every link's proof is checked against its issuer's did:key; each link names its parent by id **and digest** and must be issued by the parent's subject; tampering yields `bad_signature`/`broken_link` and is rejected (tested incl. property tests). | None known within the profile; forging requires a private key. |
+| **Privilege widening** by a correctly signed child | Attenuation is checked at issuance (refused) **and** by every verifier (`attenuation_violation`, `depth_exceeded`) - verifiers never trust the issuer's tooling. | Pattern semantics are deliberately simple (exact, `prefix*`, `*`); richer caveats are not supported. |
+| **Key compromise of an agent** | The thief can act within that agent's delegated capability until the link expires or is revoked; it cannot widen it. The parent (or any ancestor) revokes; the agent can also renounce. | Exposure window = time until revocation reaches each verifier, capped by the link's validity (max 30 days, CLI default 1 h). Use short TTLs and re-delegate. |
+| **Key compromise of a root** | The thief can issue new chains under that root. | Relying parties must re-pin a new root; the old root's revocations help only verifiers that receive them. Keep root keys offline/hardware-backed (not implemented here); prefer did:web for roots that need rotation. |
+| **Compromise of the environment key** | Receipts and the v2 ledger can be rewritten or forged by the key holder (same as v1). | Store ledger heads elsewhere (`--expected-head`). Bundles still re-check the chain: a forged `allow` receipt cannot be backed by a chain unless the root/agent keys are also compromised. |
+| **Replay** | Invocations expire within 300 s; each environment records one decision per request id (same document = replay of the stored receipt, different = conflict). | An offline verifier cannot detect replays across environments or ledgers it does not see; idempotency is per environment ledger. |
+| **Clock skew** | Two seconds of skew are tolerated for `validFrom/created`; expiry is strict. Bundles are evaluated at the receipt's `recorded_at`. | A verifier with a wrong clock can accept expired links or reject fresh ones; historical checks trust the environment's `recorded_at`. |
+| **Revocation lag** | Revocations are effective only where they are known: environments apply every record they accepted; offline verifiers apply the records they are given. | **Inherent to permissionless, offline verification.** Bound it with short TTLs, distribute lists (ledger export, revocation list, bundles), and have high-stakes verifiers fetch fresh lists before accepting. There is no freshness proof. |
+| **Backdated revocation** | `revoked_at` is asserted by the revoker; an entitled revoker could make past decisions look unauthorized. | The ledger receipt order shows when the environment learned of it. |
+| **Revocation spam** | Anyone may submit records, but only records by an entitled DID (issuer of the link or an ancestor, or the link's subject) have an effect. | Storage growth of unentitled records (they are stored and receipted). |
+| **did:web takeover** | Whoever controls the domain/TLS controls the DID. Resolution is offline by default (cached/pinned documents), fetch is opt-in. | Live did:web resolution is untested; pin documents (`did web-cache add`) for anything important. |
+| **Local-dev custody** | `POST /v1/dids` keeps private keys as unencrypted files in the state dir for demos. | Never use service-held keys for real authority; real agents sign their own documents. |
