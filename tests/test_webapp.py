@@ -103,6 +103,8 @@ def test_browser_assets_are_served_from_the_local_app(running_server):
     for path, expected_type, marker in [
         ("/assets/app.css", "text/css", ".trust-flow"),
         ("/assets/app.js", "text/javascript", "/v1/evaluate"),
+        ("/assets/did-demo.js", "text/javascript", "/v1/invocations/evaluate"),
+        ("/assets/autheo-did.mjs", "text/javascript", "export async function verifyBundle"),
     ]:
         connection.request("GET", path)
         response = connection.getresponse()
@@ -209,3 +211,51 @@ def test_page_uses_v1_api_with_bearer_token(running_server):
     connection.close()
     status, _, _ = post(server, "/v1/evaluate", {}, host=f"localhost:{server.server_port}")
     assert status == 421
+
+
+
+def test_browser_verifier_is_a_byte_identical_copy_of_the_interop_module():
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    served = root / "src" / "autheo_agent_environment" / "web" / "autheo-did.mjs"
+    assert served.read_bytes() == (root / "interop" / "js" / "autheo-did.mjs").read_bytes()
+
+
+def test_did_delegation_scenario_runs_through_the_demo_server(running_server):
+    """The same calls did-demo.js makes, against the demo server's same-origin /v1 API."""
+    server = running_server
+    headers = {"Authorization": f"Bearer {server.demo_token}", "Content-Type": "application/json"}
+
+    def call(method, path, payload=None):
+        connection = HTTPConnection("127.0.0.1", server.server_port, timeout=5)
+        connection.request(method, path, body=json.dumps(payload) if payload is not None else None, headers=headers)
+        response = connection.getresponse()
+        result = response.status, json.loads(response.read())
+        connection.close()
+        return result
+
+    connection = HTTPConnection("127.0.0.1", server.server_port, timeout=3)
+    connection.request("GET", "/")
+    page = connection.getresponse().read().decode()
+    connection.close()
+    assert 'id="did-run"' in page and "/assets/did-demo.js" in page
+    human, agent, sub = (call("POST", "/v1/dids", {})[1]["did"] for _ in range(3))
+    assert call("POST", "/v1/trust-roots", {"environment": "env:research", "did": human})[0] == 200
+    root_cap = {"environments": ["env:*"], "scopes": ["compute.simulate", "marketplace.read"],
+                "resources": ["listing:*"], "per_action_minor": 80, "total_budget_minor": 100,
+                "approval_threshold_minor": 50, "max_delegation_depth": 1}
+    first = call("POST", "/v1/delegations", {"issuer": human, "subject": agent, "capability": root_cap})[1]
+    sub_cap = {"environments": ["env:research"], "scopes": ["compute.simulate"], "resources": ["listing:demo-01"],
+               "per_action_minor": 30, "total_budget_minor": 50, "approval_threshold_minor": 20}
+    chain = call("POST", "/v1/delegations", {"issuer": agent, "subject": sub, "capability": sub_cap,
+                                             "parent_chain": first["chain"]})[1]["chain"]
+    request = {"invoker": sub, "chain": chain, "environment": "env:research", "action": "compute.simulate",
+               "resource": "listing:demo-01", "amount_minor": 20}
+    status, allowed = call("POST", "/v1/invocations/evaluate", {"request": request})
+    assert status == 200 and allowed["outcome"] == "allow"
+    call("POST", "/v1/revocations", {"issuer": agent, "chain": chain})
+    status, blocked = call("POST", "/v1/invocations/evaluate", {"request": {**request, "request_id": "req:after"}})
+    assert blocked["reasons"][0] == "delegation_revoked:1"
+    status, report = call("POST", "/v1/bundles/verify", {"bundle": allowed["bundle"], "trusted_roots": [human]})
+    assert report["verdict"] == "allow_verified"

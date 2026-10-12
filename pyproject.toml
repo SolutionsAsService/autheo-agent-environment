@@ -24,7 +24,7 @@ autheo-agent = "autheo_agent_environment.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-autheo_agent_environment = ["web/*.html", "web/*.css", "web/*.js"]
+autheo_agent_environment = ["web/*.html", "web/*.css", "web/*.js", "web/*.mjs"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

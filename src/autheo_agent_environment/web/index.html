@@ -11,6 +11,7 @@
     <title>Autheo Agent Trust · Local Demo</title>
     <link rel="stylesheet" href="/assets/app.css">
     <script src="/assets/app.js" defer></script>
+    <script type="module" src="/assets/did-demo.js"></script>
   </head>
   <body>
     <div class="app-frame">
@@ -138,8 +139,25 @@
           <div class="ledger-foot"><span><span class="mini-dot"></span> SIGNED · HASH-LINKED</span><button class="secondary-button inline-button" id="verify-ledger" type="button">Verify ledger</button><span id="audit-head" class="mono">HEAD —</span></div>
         </section>
 
+        <section class="data-card did-card" aria-labelledby="did-title">
+          <div class="section-heading compact-heading">
+            <div><p class="eyebrow">PERMISSIONLESS CONTROL · v2</p><h2 id="did-title">Delegation chains between DIDs</h2></div>
+            <span class="tag tag-teal">DID:KEY · OFFLINE VERIFIABLE</span>
+          </div>
+          <p class="card-description">A human's <span class="mono">did:key</span> delegates to an agent, which sub-delegates narrower rights to a sub-agent. Every link is a signed W3C Verifiable Credential (Data Integrity <span class="mono">eddsa-jcs-2022</span>); authority comes from the chain, not from a registry. The demo server holds these keys only for convenience; anyone can verify the results.</p>
+          <div class="did-actions">
+            <button class="primary-button" id="did-run" type="button"><span>Run delegation scenario</span><span aria-hidden="true">↗</span></button>
+            <button class="secondary-button" id="did-verify" type="button" disabled>Verify bundles in this browser</button>
+          </div>
+          <div class="did-grid">
+            <div><p class="eyebrow">TIMELINE</p><ol id="did-steps" class="did-steps"><li class="did-step"><small>Not run yet.</small></li></ol></div>
+            <div><p class="eyebrow">DELEGATION CHAIN</p><div id="did-chain" class="did-chain"><small class="subtle">Root → agent → sub-agent appears here.</small></div>
+              <p class="eyebrow did-verify-title">OFFLINE VERIFICATION</p><div id="did-verify-output" class="did-verify"></div></div>
+          </div>
+        </section>
+
         <section class="security-strip" aria-label="Security boundary notes">
-          <div><span class="security-number">A</span><span><strong>Identity is not authority</strong><small>DIDs and real credential resolution are not implemented here.</small></span></div>
+          <div><span class="security-number">A</span><span><strong>Identity is not authority</strong><small>DIDs identify keys; authority comes only from signed, attenuated delegation chains to a root you pin.</small></span></div>
           <div><span class="security-number">B</span><span><strong>Policy is not execution</strong><small>This single-host prototype has no executor or production security boundary.</small></span></div>
           <div><span class="security-number">C</span><span><strong>Controls are layered</strong><small>No single guardrail guarantees prevention, detection, or recovery.</small></span></div>
         </section>

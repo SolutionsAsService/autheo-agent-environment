@@ -21,6 +21,13 @@ from .api import ApiRouter
 from .web_demo import WebDemoSession
 
 MAX_BODY_BYTES = 4096
+ASSETS = {
+    "/assets/app.css": ("app.css", "text/css; charset=utf-8"),
+    "/assets/app.js": ("app.js", "text/javascript; charset=utf-8"),
+    "/assets/did-demo.js": ("did-demo.js", "text/javascript; charset=utf-8"),
+    # Byte-identical copy of interop/js/autheo-did.mjs (enforced by tests/test_webapp.py).
+    "/assets/autheo-did.mjs": ("autheo-did.mjs", "text/javascript; charset=utf-8"),
+}
 MAX_API_BODY_BYTES = 65536
 SAMPLE_REQUESTS = [
     {"action": "compute.simulate", "resource": "listing:demo-01", "amount_minor": 40},
@@ -135,15 +142,9 @@ def create_server(port: int = 8765) -> ThreadingHTTPServer:
             if self.path == "/api/state":
                 self._json(200, session.state())
                 return
-            if self.path == "/assets/app.css":
-                self._send(200, "text/css; charset=utf-8", web_root.joinpath("app.css").read_bytes())
-                return
-            if self.path == "/assets/app.js":
-                self._send(
-                    200,
-                    "text/javascript; charset=utf-8",
-                    web_root.joinpath("app.js").read_bytes(),
-                )
+            if self.path in ASSETS:
+                name, content_type = ASSETS[self.path]
+                self._send(200, content_type, web_root.joinpath(name).read_bytes())
                 return
             self._json(404, {"error": "not_found"})
 

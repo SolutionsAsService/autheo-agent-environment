@@ -183,3 +183,20 @@ footer { min-height: 49px; border-top: 1px solid var(--line-soft); display: flex
 .explanation .check-escalate { color: var(--amber); }
 .explanation .check-pass { color: var(--green); }
 .inline-button { width: auto; margin: 0; padding: 4px 10px; }
+
+/* --- v2 permissionless delegation panel --- */
+.did-card { margin-top: 24px; }
+.did-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.did-actions .primary-button, .did-actions .secondary-button { width: auto; margin: 0; }
+.did-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; }
+@media (max-width: 900px) { .did-grid { grid-template-columns: 1fr; } }
+.did-steps { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; }
+.did-step { border-left: 2px solid rgba(98, 214, 196, 0.35); padding: 4px 0 4px 12px; display: grid; gap: 4px; }
+.did-step-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.did-step small, .did-link small, .did-verify-row small { overflow-wrap: anywhere; opacity: 0.8; }
+.did-chain { display: grid; gap: 10px; margin-top: 8px; }
+.did-link { border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px 12px; display: grid; gap: 4px; }
+.did-verify-title { margin-top: 18px; }
+.did-verify { display: grid; gap: 10px; margin-top: 8px; }
+.did-verify-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; }
+.did-verify-row small { grid-column: 1 / -1; }
