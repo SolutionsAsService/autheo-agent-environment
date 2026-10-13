@@ -1,3 +1,5 @@
+> **Stale copy.** The maintained repository is [SolutionsAsService/autheo-agent-environment](https://github.com/SolutionsAsService/autheo-agent-environment). This fork is archived (read-only).
+
 # Autheo Agent Environment — local reference prototype
 
 **Identities, scoped mandates, policy decisions, signed receipts, and controlled task checkpoints.**
