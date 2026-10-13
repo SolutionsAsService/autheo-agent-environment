@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autheo Agent Environment — status</title>
+<meta name="description" content="Reference trust layer for AI agents: DIDs, delegation, receipts — and the path to a post-quantum DID agent environment.">
+<style>
+:root{--bg:#0b0d17;--card:#141a2e;--fg:#e8eaf4;--mut:#8e95b2;--acc:#8957e5;--ok:#2ea043;--wip:#d29922;--no:#6e7681;--bad:#f85149}
+*{box-sizing:border-box}body{margin:0;font:15px/1.55 system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--fg)}
+a{color:#b69cff}header{padding:36px 24px 18px;max-width:1100px;margin:auto}h1{margin:0 0 6px;font-size:28px}
+.sub{color:var(--mut)}.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;margin-right:6px}
+.ok{background:#12361f;color:#56d364}.wip{background:#3b2a07;color:#e3b341}.no{background:#21262d;color:#9ea7b3}
+main{max-width:1100px;margin:auto;padding:0 24px 48px;display:grid;gap:18px}
+.card{background:var(--card);border:1px solid #232a44;border-radius:12px;padding:18px 20px}.card h2{margin:0 0 12px;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.kpi b{display:block;font-size:24px}.kpi span{color:var(--mut);font-size:13px}
+table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid #232a44;text-align:left;vertical-align:top}th{color:var(--mut);font-weight:500;font-size:13px}
+.bar{height:10px;background:#21262d;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),#56d364)}
+ol.phases{list-style:none;padding:0;margin:0;display:grid;gap:10px}ol.phases li{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:start}
+code{color:#c9b6ff}footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Autheo Agent Environment</h1>
+  <div class="sub">Reference trust layer for AI agents — signed identities (DIDs), scoped delegation, policy decisions, receipts. <b>v0.4.0</b> · local reference implementation, not a hosted service.</div>
+  <p><span class="pill ok">implemented</span><span class="pill wip">experimental / in progress</span><span class="pill no">not started</span></p>
+</header>
+<main>
+  <section class="grid">
+    <div class="card kpi"><b>v2 DID</b><span>did:key + VC 2.0 delegation chains, offline verification</span></div>
+    <div class="card kpi"><b>Hybrid PQC</b><span>Ed25519 + ML-DSA-44 proof sets (experimental, 0.4)</span></div>
+    <div class="card kpi"><b>Python + JS</b><span>cross-language vectors (v1, v2, v3-PQ)</span></div>
+    <div class="card kpi"><b>0 hosted</b><span>no custody, payments, chain anchoring or production deployment yet</span></div>
+  </section>
+
+  <section class="card">
+    <h2>Where it is</h2>
+    <table>
+      <tr><th>Capability</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>did:key identities (Ed25519) for agents, principals, environments</td><td><span class="pill ok">done</span></td><td>Offline, permissionless; did:web from pinned/cached documents</td></tr>
+      <tr><td>Delegation chains (W3C VC 2.0, <code>eddsa-jcs-2022</code>)</td><td><span class="pill ok">done</span></td><td>Up to 10 links, attenuation of scope/resource/tool/budget/validity/depth</td></tr>
+      <tr><td>Policy decision point + receipts</td><td><span class="pill ok">done</span></td><td>Declarative <code>autheo.policy/v1</code>, hash-linked signed receipts, SQLite ledger</td></tr>
+      <tr><td>Revocation</td><td><span class="pill ok">done</span></td><td>Signed records & lists; no hosted status service or freshness guarantee</td></tr>
+      <tr><td>Offline verifiers</td><td><span class="pill ok">done</span></td><td>Python CLI + dependency-free isomorphic JS (browser demo)</td></tr>
+      <tr><td>HTTP API, CLI, OpenAPI, web demo</td><td><span class="pill ok">done</span></td><td>Loopback only, bearer token</td></tr>
+      <tr><td>ML-DSA-44 did:key + <code>mldsa44-jcs-2024</code> proofs</td><td><span class="pill wip">experimental</span></td><td>FIPS 204 via OpenSSL 3.5; Node 24 verifier; verify-only vectors</td></tr>
+      <tr><td>Hybrid proof sets + key binding + verifier policy</td><td><span class="pill wip">experimental</span></td><td><code>classical</code> / <code>hybrid</code> / <code>pq</code>; not yet wired into delegation chains</td></tr>
+      <tr><td>Hybrid delegation chains & receipts</td><td><span class="pill no">next</span></td><td>Phase P1</td></tr>
+      <tr><td>ML-KEM key agreement / encrypted handoffs</td><td><span class="pill no">planned</span></td><td>Phase P2</td></tr>
+      <tr><td>Production key custody (HSM/KMS/wallet), rotation</td><td><span class="pill no">planned</span></td><td>did:key cannot rotate → updatable DID for long-lived principals</td></tr>
+      <tr><td>Status lists & ledger anchoring on Autheo L1</td><td><span class="pill no">planned</span></td><td>Needs L1 contract decisions</td></tr>
+      <tr><td>Human approval workflow, enforcing executors, TLS/multi-tenant</td><td><span class="pill no">planned</span></td><td>See roadmap phases B–D</td></tr>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>Progress toward a true DID agent environment on PQC</h2>
+    <p class="sub">Rough engineering estimate, not a delivery promise.</p>
+    <table>
+      <tr><td style="width:40%">DID identity & delegation core</td><td><div class="bar"><i style="width:75%"></i></div></td></tr>
+      <tr><td>Post-quantum signatures (hybrid)</td><td><div class="bar"><i style="width:30%"></i></div></td></tr>
+      <tr><td>Post-quantum key exchange</td><td><div class="bar"><i style="width:5%"></i></div></td></tr>
+      <tr><td>Custody, rotation, status at scale</td><td><div class="bar"><i style="width:10%"></i></div></td></tr>
+      <tr><td>Enforcement in real runtimes (JARVIS / MCP / Paperclip)</td><td><div class="bar"><i style="width:15%"></i></div></td></tr>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>PQC migration phases</h2>
+    <ol class="phases">
+      <li><span class="pill wip">P0 · agility</span><span>Suite registry, ML-DSA did:key, hybrid proof sets, key binding, verifier policy, Python == Node vectors. <b>Done in 0.4 (experimental).</b></span></li>
+      <li><span class="pill no">P1 · hybrid chains</span><span>Delegations, invocations, revocations and receipts carry hybrid proofs; per-environment policy; <code>did bind</code> CLI/API; downgrade tests.</span></li>
+      <li><span class="pill no">P2 · PQ KEM</span><span>ML-KEM-768 + X25519 hybrid for keyAgreement and encrypted checkpoints; hybrid TLS groups.</span></li>
+      <li><span class="pill no">P3 · PQ default</span><span>Hybrid required for new evidence; SLH-DSA for long-lived roots and ledger anchors.</span></li>
+      <li><span class="pill no">P4 · PQ-only</span><span>Policy <code>pq</code> for regulated tenants; external audit; CNSA 2.0 alignment.</span></li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Docs</h2>
+    <ul>
+      <li><a href="docs/PQC-ROADMAP.md">PQC roadmap & gap analysis</a></li>
+      <li><a href="docs/IMPLEMENTATION-STATUS.md">Implementation status (claim ceiling)</a></li>
+      <li><a href="docs/SPEC-DID.md">v2 DID specification</a> · <a href="docs/THREAT-MODEL.md">Threat model</a> · <a href="docs/ROADMAP.md">Product roadmap</a></li>
+      <li><a href="https://github.com/SolutionsAsService/autheo-agent-environment">Source on GitHub</a></li>
+    </ul>
+  </section>
+</main>
+<footer>Autheo Agent Environment · reference implementation · nothing here is a hosted or production service.</footer>
+</body>
+</html>

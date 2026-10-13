@@ -172,6 +172,7 @@ Snapshot inspection does **not** enforce policy on existing read-only MCP tools.
 
 ## Architecture and next steps
 
+- **Status page** ([index.html](index.html), published with GitHub Pages) and the [PQC roadmap / gap analysis toward a true DID agent environment](docs/PQC-ROADMAP.md) — 0.4 adds experimental hybrid Ed25519 + ML-DSA-44 proofs (`pqc.py`)
 - [Product plan, current-state audit, DID model, security layers, Hyperliquid flow, and phased acceptance gates](docs/PRODUCT-PLAN.md)
 - [Autheo Agent Trust north-star architecture diagram](docs/AUTHEO-AGENT-TRUST-ARCHITECTURE.svg)
 - [Vision mapped into components](docs/VISION-AND-ARCHITECTURE.md)

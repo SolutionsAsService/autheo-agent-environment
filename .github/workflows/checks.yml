@@ -27,6 +27,7 @@ jobs:
           python -m autheo_agent_environment openapi check docs/openapi.json
       - run: node interop/js/verify-vectors.mjs
       - run: node interop/js/verify-v2-vectors.mjs
+      - run: node interop/js/verify-v3-pq-vectors.mjs
       - name: Browser demo modules parse and the served verifier matches interop/js
         run: |
           node --check src/autheo_agent_environment/web/did-demo.js

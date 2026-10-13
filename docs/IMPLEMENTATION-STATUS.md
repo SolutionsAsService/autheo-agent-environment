@@ -1,5 +1,19 @@
 # Delivery / claim ceiling
 
+## Experimental in 0.4 (post-quantum agility, tested, not a stable contract)
+
+- `pqc.py`: ML-DSA-44 (FIPS 204, via `cryptography`/OpenSSL 3.5) did:key
+  (multicodec 0x1210, draft), the `mldsa44-jcs-2024` Data Integrity cryptosuite
+  (W3C CCG quantum-safe draft), hybrid proof sets `[eddsa-jcs-2022,
+  mldsa44-jcs-2024]`, self-issued cross-signed `AutheoKeyBinding` credentials,
+  and verifier policies `classical` / `hybrid` / `pq` (stripping, unbound keys,
+  tampering, wrong purpose and duplicate suites are rejected).
+- `tests/vectors/autheo-v3-pq-vectors.json` (verify-only, ML-DSA is randomised)
+  checked by Python and by `interop/js/autheo-pqc.mjs` on Node >= 24.
+- **Not yet**: hybrid proofs inside delegation chains, invocations, revocations
+  or receipts; ML-KEM; browser ML-DSA verification; CLI/API surface. v2 bytes are
+  unchanged. Plan: [PQC-ROADMAP.md](PQC-ROADMAP.md).
+
 ## Implemented in 0.3 (v2: permissionless DID delegation, tested)
 
 - **DIDs:** did:key (Ed25519 Multikey) for every agent, principal and environment, created
