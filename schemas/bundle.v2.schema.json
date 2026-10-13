@@ -73,6 +73,7 @@
               "dex.quote",
               "dex.policy_check",
               "dex.order.build",
+              "dex.order.request_signature",
               "dex.order.sign"
             ],
             "type": "string"
@@ -333,6 +334,7 @@
             "dex.quote",
             "dex.policy_check",
             "dex.order.build",
+            "dex.order.request_signature",
             "dex.order.sign"
           ],
           "title": "Action",
@@ -477,6 +479,7 @@
                 "dex.quote",
                 "dex.policy_check",
                 "dex.order.build",
+                "dex.order.request_signature",
                 "dex.order.sign"
               ],
               "type": "string"

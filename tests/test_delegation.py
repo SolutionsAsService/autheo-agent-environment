@@ -168,6 +168,22 @@ def test_capability_problems_reason_codes():
                                               resource="repo:jarvis", tool="git.push", amount_minor=0)] == ["tool_denied"]
 
 
+
+def test_deprecated_dex_order_sign_alias_matches_request_signature():
+    # shortcut: alias accepted for 0.7 only; delete this test with the alias in 0.8.
+    venue = dict(SUB_CAP, resources=["chain:31337:*"])
+    old = Capability.model_validate(dict(venue, scopes=["dex.order.sign"]))
+    new = Capability.model_validate(dict(venue, scopes=["dex.order.request_signature"]))
+    for cap in (old, new):
+        for action in ("dex.order.sign", "dex.order.request_signature"):
+            assert capability_problems(cap, environment="env:research", action=action,
+                                       resource="chain:31337:asset:RWA1", tool=None, amount_minor=0) == []
+    assert attenuation_problems(old, new) == [] and attenuation_problems(new, old) == []
+    other = Capability.model_validate(dict(venue, scopes=["dex.order.build"]))
+    assert [c for c, _ in capability_problems(other, environment="env:research", action="dex.order.sign",
+                                              resource="chain:31337:asset:RWA1", tool=None, amount_minor=0)] == ["scope_denied"]
+
+
 # ---------------------------------------------------------------------- chain verification
 def test_three_link_chain_verifies_back_to_the_root():
     chain = chain3()

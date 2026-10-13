@@ -34,9 +34,20 @@ Scope = Literal[
     "dex.quote",
     "dex.policy_check",
     "dex.order.build",
-    "dex.order.sign",
+    "dex.order.request_signature",
+    "dex.order.sign",  # deprecated alias of dex.order.request_signature (0.7); removed in 0.8
 ]
 SCOPES: tuple[str, ...] = Scope.__args__  # type: ignore[attr-defined]
+SCOPE_ALIASES = {"dex.order.sign": "dex.order.request_signature"}
+
+
+def canonical_scope(scope: str) -> str:
+    """Deprecated alias -> current name; scope comparisons go through this so old grants keep working."""
+    return SCOPE_ALIASES.get(scope, scope)
+
+
+def scope_granted(scope: str, granted) -> bool:
+    return canonical_scope(scope) in {canonical_scope(s) for s in granted}
 
 Outcome = Literal["allow", "escalate", "block"]
 ReceiptKind = Literal[

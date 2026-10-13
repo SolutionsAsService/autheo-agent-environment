@@ -2,7 +2,7 @@
 
 ## Implemented in 0.6 (agents at external trading venues, tested)
 
-- `dex.quote`, `dex.policy_check`, `dex.order.build`, `dex.order.sign` scopes and
+- `dex.quote`, `dex.policy_check`, `dex.order.build`, `dex.order.request_signature` scopes (0.7 renamed from `dex.order.sign`, still accepted as a deprecated alias until 0.8) and
   `chain:<id>:asset:<id>` resources ([SPEC-VENUE.md](SPEC-VENUE.md)).
 - Budgets in a real unit: `asset` on capabilities, invocations and receipts (was fixed to
   `DEMO`); attenuation keeps it, `asset_mismatch` blocks cross-unit spend. Existing v2 vectors

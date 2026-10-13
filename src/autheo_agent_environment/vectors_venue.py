@@ -49,7 +49,7 @@ def build() -> dict:  # noqa: PLR0915 - one linear fixture script
                           delegation_id=_uuid(401))
     d2 = issue_delegation(agent.signer, sub.did, AGENT_CAP, valid_from=NOW, valid_until=NOW + 3600, parent=d1,
                           delegation_id=_uuid(402))
-    widened = _forge(agent.signer, sub.did, {**AGENT_CAP, "scopes": ["dex.quote", "dex.order.build", "dex.order.sign"],
+    widened = _forge(agent.signer, sub.did, {**AGENT_CAP, "scopes": ["dex.quote", "dex.order.build", "dex.order.request_signature"],
                                              "resources": ["chain:*"]},
                      valid_from=NOW, valid_until=NOW + 3600, parent=d1, number=421)
     foreign = _forge(stranger.signer, sub.did, AGENT_CAP, valid_from=NOW, valid_until=NOW + 3600, parent=d1,
@@ -89,12 +89,12 @@ def build() -> dict:  # noqa: PLR0915 - one linear fixture script
              history=[spent(60_000, [d1, d2])]),
         case("order_build_over_ancestor_budget", invoke("build-ancestor", "dex.order.build", amount=20_000),
              history=[spent(140_000, [d1])]),
-        case("order_sign_not_delegated", invoke("sign", "dex.order.sign", amount=30_000)),
+        case("order_sign_not_delegated", invoke("sign", "dex.order.request_signature", amount=30_000)),
         case("other_asset", invoke("other-asset", "dex.quote", resource="chain:31337:asset:RWA2")),
         case("other_chain", invoke("other-chain", "dex.quote", resource="chain:1:asset:RWA1")),
         case("budget_asset_mismatch", invoke("asset", "dex.order.build", amount=30_000,
                                              asset="erc20:0x00000000000000000000000000000000000000d1")),
-        case("widened_chain", invoke("widened", "dex.order.sign", amount=30_000, chain=(d1, widened))),
+        case("widened_chain", invoke("widened", "dex.order.request_signature", amount=30_000, chain=(d1, widened))),
         case("revoked_chain", invoke("revoked", "dex.order.build", amount=30_000), revocations=[revoked]),
         case("untrusted_root", invoke("untrusted", "dex.quote"), roots=(stranger.did,)),
         case("wrong_venue", invoke("wrong-venue", "dex.quote", environment="venue:other")),
@@ -142,7 +142,7 @@ def build() -> dict:  # noqa: PLR0915 - one linear fixture script
         bundle_case("edited_decision", edited, invocations["order_build_escalate"]),
     ]
     refused = []
-    for label, capability in [("scope", {**AGENT_CAP, "scopes": ["dex.quote", "dex.order.sign"]}),
+    for label, capability in [("scope", {**AGENT_CAP, "scopes": ["dex.quote", "dex.order.request_signature"]}),
                               ("budget", {**AGENT_CAP, "per_action_minor": 100_001, "total_budget_minor": 150_001}),
                               ("asset", {**AGENT_CAP, "asset": "DEMO"})]:
         try:

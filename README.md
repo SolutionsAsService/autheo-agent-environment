@@ -88,7 +88,7 @@ $D revoke --key agent.json --chain chain2.json --out rev.json && $D record-revoc
 
 A DEX or exchange can act as the decision point for agents without trusting a server: the agent
 sends an invocation with its delegation chain using the `dex.quote`, `dex.policy_check`,
-`dex.order.build` or `dex.order.sign` scopes on `chain:<id>:asset:<id>` resources, with budgets in
+`dex.order.build` or `dex.order.request_signature` scopes (0.7; `dex.order.sign` is a deprecated alias until 0.8) on `chain:<id>:asset:<id>` resources, with budgets in
 a named asset (e.g. `erc20:0x...` minor units). The venue verifies offline, decides
 allow / escalate / block with the same rules as this environment, returns only **unsigned**
 orders bound to the invocation digest, and signs receipts anyone can verify.

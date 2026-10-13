@@ -61,6 +61,16 @@ for (const item of vectors.bundle_cases) {
   expect('bundle:' + item.name + ':problems', same(result.problems, item.expect_problems));
 }
 
+// Deprecated alias (0.7 only): dex.order.sign and dex.order.request_signature grant and request each other.
+const aliasCap = (scope) => ({ environments: ['venue:*'], scopes: [scope], resources: ['chain:*'], per_action_minor: 1,
+  total_budget_minor: 1, approval_threshold_minor: 1 });
+for (const [granted, asked] of [['dex.order.sign', 'dex.order.request_signature'], ['dex.order.request_signature', 'dex.order.sign']]) {
+  expect('alias:' + granted + '->' + asked, did.capabilityProblems(aliasCap(granted), { environment: 'venue:x', action: asked,
+    resource: 'chain:1:asset:A' }).length === 0 && did.attenuationProblems(aliasCap(granted), aliasCap(asked)).length === 0);
+}
+expect('alias:build-does-not-grant-sign', same(did.capabilityProblems(aliasCap('dex.order.build'),
+  { environment: 'venue:x', action: 'dex.order.sign', resource: 'chain:1:asset:A' }), ['scope_denied']));
+
 if (failures.length) {
   console.error('FAIL ' + failures.length + '/' + checks + ': ' + failures.join(', '));
   process.exit(1);

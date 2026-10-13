@@ -373,7 +373,7 @@
     {
       "bundle": {
         "invocation": {
-          "action": "dex.order.sign",
+          "action": "dex.order.request_signature",
           "amount_minor": 30000,
           "asset": "erc20:0x00000000000000000000000000000000000000c5",
           "capability": [
@@ -486,7 +486,7 @@
             "created": "2026-09-22T18:00:10Z",
             "cryptosuite": "eddsa-jcs-2022",
             "proofPurpose": "capabilityInvocation",
-            "proofValue": "z4PveQjQHW64LqswGfvw3epShfN8icKXog75p8FobHVyPSJwohECVNRuxjosKJTDwsw5AsT31ggigxN4uLLQ2hk1C",
+            "proofValue": "z5rEyj2cJDuimnpMe3B25qfTqxnguV1ibC7QP1QGpVZd4RGDosdShzLzbnq9cJpUf3faKJoJHZfGpwCVUq4Gp2XRj",
             "type": "DataIntegrityProof",
             "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
           },
@@ -495,7 +495,7 @@
           "type": "AutheoInvocation"
         },
         "receipt": {
-          "action": "dex.order.sign",
+          "action": "dex.order.request_signature",
           "amount_minor": 30000,
           "asset": "erc20:0x00000000000000000000000000000000000000c5",
           "chain": [
@@ -513,7 +513,7 @@
             }
           ],
           "decision": "block",
-          "document_digest": "d8e7113823770cec7570853c4061f8def73d7ed56dc8837adeceb7513772839f",
+          "document_digest": "3b38badf7525fccc0b4e3b853819e730c48c85a7772dde2df9d75f9bdb378801",
           "environment": "venue:example-dex",
           "executed": false,
           "id": "urn:uuid:00000000-0000-4000-8000-000000000503",
@@ -527,7 +527,7 @@
             "created": "2026-09-22T18:00:23Z",
             "cryptosuite": "eddsa-jcs-2022",
             "proofPurpose": "assertionMethod",
-            "proofValue": "z4w5VRkP1QhW3bFEzZBtQJRZav6bLB8tCkWN1d834VYn7C51PeUCMLmKwdKzWphrHWw2Gc9DHpM2aRyt87VjTgmHz",
+            "proofValue": "z4DAU7Moew3L9Xfuvzkdcfw3zTMdtGF88aAgsuygQv41SpPcYPieUmGU324F2xqZQfX86iLmjBAdtKMmgrsf13dz5",
             "type": "DataIntegrityProof",
             "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
           },
@@ -1600,14 +1600,14 @@
     {
       "at": 1790100020,
       "expect_decision": "block",
-      "expect_digest": "d8e7113823770cec7570853c4061f8def73d7ed56dc8837adeceb7513772839f",
+      "expect_digest": "3b38badf7525fccc0b4e3b853819e730c48c85a7772dde2df9d75f9bdb378801",
       "expect_error": null,
       "expect_reasons": [
         "scope_denied"
       ],
       "history": [],
       "invocation": {
-        "action": "dex.order.sign",
+        "action": "dex.order.request_signature",
         "amount_minor": 30000,
         "asset": "erc20:0x00000000000000000000000000000000000000c5",
         "capability": [
@@ -1720,7 +1720,7 @@
           "created": "2026-09-22T18:00:10Z",
           "cryptosuite": "eddsa-jcs-2022",
           "proofPurpose": "capabilityInvocation",
-          "proofValue": "z4PveQjQHW64LqswGfvw3epShfN8icKXog75p8FobHVyPSJwohECVNRuxjosKJTDwsw5AsT31ggigxN4uLLQ2hk1C",
+          "proofValue": "z5rEyj2cJDuimnpMe3B25qfTqxnguV1ibC7QP1QGpVZd4RGDosdShzLzbnq9cJpUf3faKJoJHZfGpwCVUq4Gp2XRj",
           "type": "DataIntegrityProof",
           "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
         },
@@ -2148,14 +2148,14 @@
     {
       "at": 1790100020,
       "expect_decision": "block",
-      "expect_digest": "cfda2117b74d63ab02033e56aac64e090f760b44aa98e2dcf79a26f59395ed09",
+      "expect_digest": "43e51d484cd8ea96942d5e73535b146be101d61eb9940c7c699c288d14893d52",
       "expect_error": null,
       "expect_reasons": [
         "delegation_attenuation_violation:1"
       ],
       "history": [],
       "invocation": {
-        "action": "dex.order.sign",
+        "action": "dex.order.request_signature",
         "amount_minor": 30000,
         "asset": "erc20:0x00000000000000000000000000000000000000c5",
         "capability": [
@@ -2227,7 +2227,7 @@
                 "scopes": [
                   "dex.quote",
                   "dex.order.build",
-                  "dex.order.sign"
+                  "dex.order.request_signature"
                 ],
                 "tools": [],
                 "total_budget_minor": 100000
@@ -2248,7 +2248,7 @@
               "created": "2026-09-22T18:00:00Z",
               "cryptosuite": "eddsa-jcs-2022",
               "proofPurpose": "capabilityDelegation",
-              "proofValue": "z39CUFxymUXvp47nXufiizdbNe6zy7cNQjpaFHCWppxJW4EvoGBPDFm3myq5nRizkxRBS9ypQ2pYAtsMbNPxsY2z",
+              "proofValue": "z5Tog8XmgW6cKnenmjsVYQdjeTgbsTstutfS1hQ9QtTU47MFaCRp9mJXtXUbvSBgkwt2NcnKQhDBeF2RwED16Dyiu",
               "type": "DataIntegrityProof",
               "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
             },
@@ -2269,7 +2269,7 @@
           "created": "2026-09-22T18:00:10Z",
           "cryptosuite": "eddsa-jcs-2022",
           "proofPurpose": "capabilityInvocation",
-          "proofValue": "zMy6F3cxeKwATq1xQSQzdBpy3fJtUDrAboUADLt6QWF3TNvXhs8NAhPHgTZz3bi6FWDZYRXWnWdXz2YRv5BqdN47",
+          "proofValue": "z5yUxyWAFG52EhPSQGyTqVNBwazXknB87FndzrVMheAXwSNybfLyqZGY2m3SZszH5HQa8fpYe68G9bEiLcGJCpop7",
           "type": "DataIntegrityProof",
           "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
         },
@@ -3095,7 +3095,7 @@
           "scopes": [
             "dex.quote",
             "dex.order.build",
-            "dex.order.sign"
+            "dex.order.request_signature"
           ],
           "tools": [],
           "total_budget_minor": 100000
@@ -3116,7 +3116,7 @@
         "created": "2026-09-22T18:00:00Z",
         "cryptosuite": "eddsa-jcs-2022",
         "proofPurpose": "capabilityDelegation",
-        "proofValue": "z39CUFxymUXvp47nXufiizdbNe6zy7cNQjpaFHCWppxJW4EvoGBPDFm3myq5nRizkxRBS9ypQ2pYAtsMbNPxsY2z",
+        "proofValue": "z5Tog8XmgW6cKnenmjsVYQdjeTgbsTstutfS1hQ9QtTU47MFaCRp9mJXtXUbvSBgkwt2NcnKQhDBeF2RwED16Dyiu",
         "type": "DataIntegrityProof",
         "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
       },
@@ -3152,7 +3152,7 @@
   },
   "ledger": {
     "environment": "venue:example-dex",
-    "head": "1ee23b52b8b0bb935dcac22117dcfe6c6657264b12f1770081fcad9976baf160",
+    "head": "e97fbad6b172037102002dea7d4e2b0b4f8064a74036f0b6a11b680ef7a2847c",
     "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
     "receipts": [
       {
@@ -3254,7 +3254,7 @@
         "type": "AutheoReceipt"
       },
       {
-        "action": "dex.order.sign",
+        "action": "dex.order.request_signature",
         "amount_minor": 30000,
         "asset": "erc20:0x00000000000000000000000000000000000000c5",
         "chain": [
@@ -3272,7 +3272,7 @@
           }
         ],
         "decision": "block",
-        "document_digest": "d8e7113823770cec7570853c4061f8def73d7ed56dc8837adeceb7513772839f",
+        "document_digest": "3b38badf7525fccc0b4e3b853819e730c48c85a7772dde2df9d75f9bdb378801",
         "environment": "venue:example-dex",
         "executed": false,
         "id": "urn:uuid:00000000-0000-4000-8000-000000000503",
@@ -3286,7 +3286,7 @@
           "created": "2026-09-22T18:00:23Z",
           "cryptosuite": "eddsa-jcs-2022",
           "proofPurpose": "assertionMethod",
-          "proofValue": "z4w5VRkP1QhW3bFEzZBtQJRZav6bLB8tCkWN1d834VYn7C51PeUCMLmKwdKzWphrHWw2Gc9DHpM2aRyt87VjTgmHz",
+          "proofValue": "z4DAU7Moew3L9Xfuvzkdcfw3zTMdtGF88aAgsuygQv41SpPcYPieUmGU324F2xqZQfX86iLmjBAdtKMmgrsf13dz5",
           "type": "DataIntegrityProof",
           "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
         },

@@ -171,6 +171,7 @@
               "dex.quote",
               "dex.policy_check",
               "dex.order.build",
+              "dex.order.request_signature",
               "dex.order.sign"
             ],
             "title": "Action",
@@ -481,6 +482,7 @@
                 "dex.quote",
                 "dex.policy_check",
                 "dex.order.build",
+                "dex.order.request_signature",
                 "dex.order.sign"
               ],
               "type": "string"
@@ -678,6 +680,7 @@
                 "dex.quote",
                 "dex.policy_check",
                 "dex.order.build",
+                "dex.order.request_signature",
                 "dex.order.sign"
               ],
               "type": "string"
@@ -785,6 +788,7 @@
               "dex.quote",
               "dex.policy_check",
               "dex.order.build",
+              "dex.order.request_signature",
               "dex.order.sign"
             ],
             "title": "Action",
@@ -1238,6 +1242,7 @@
                 "dex.quote",
                 "dex.policy_check",
                 "dex.order.build",
+                "dex.order.request_signature",
                 "dex.order.sign"
               ],
               "type": "string"
@@ -1338,6 +1343,7 @@
               "dex.quote",
               "dex.policy_check",
               "dex.order.build",
+              "dex.order.request_signature",
               "dex.order.sign"
             ],
             "title": "Action",
@@ -1490,6 +1496,7 @@
               "dex.quote",
               "dex.policy_check",
               "dex.order.build",
+              "dex.order.request_signature",
               "dex.order.sign"
             ],
             "title": "Action",
@@ -1661,6 +1668,7 @@
                 "dex.quote",
                 "dex.policy_check",
                 "dex.order.build",
+                "dex.order.request_signature",
                 "dex.order.sign"
               ],
               "type": "string"
@@ -1952,6 +1960,7 @@
                   "dex.quote",
                   "dex.policy_check",
                   "dex.order.build",
+                  "dex.order.request_signature",
                   "dex.order.sign"
                 ],
                 "type": "string"
@@ -2208,6 +2217,7 @@
                   "dex.quote",
                   "dex.policy_check",
                   "dex.order.build",
+                  "dex.order.request_signature",
                   "dex.order.sign"
                 ],
                 "type": "string"
@@ -2782,7 +2792,7 @@
       "name": "MIT"
     },
     "title": "Autheo Agent Environment local trust API",
-    "version": "0.6.0"
+    "version": "0.7.0"
   },
   "openapi": "3.1.0",
   "paths": {

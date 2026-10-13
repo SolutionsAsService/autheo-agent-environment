@@ -1,6 +1,6 @@
 {
   "name": "@autheo/did",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Dependency-free, isomorphic Autheo v2 verifier: did:key, eddsa-jcs-2022, delegation chains, invocations, mandate-only decisions, receipts, bundles",
   "license": "MIT",
   "type": "module",

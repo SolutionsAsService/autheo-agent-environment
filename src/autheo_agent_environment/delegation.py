@@ -26,6 +26,7 @@ from pydantic import ValidationError
 from .data_integrity import ProofError, add_proof, format_time, parse_time, verify_proof
 from .did import DidSigner, Resolver
 from .jcs import jcs_digest
+from .models import scope_granted
 from .models_v2 import (
     MAX_CHAIN_LENGTH,
     MAX_DELEGATION_SECONDS,
@@ -86,7 +87,7 @@ def attenuation_problems(parent: Capability, child: Capability) -> list[str]:
             if not pattern_covers(getattr(parent, name), pattern):
                 problems.append(f"{name}: {pattern} is not within the parent grant")
     for scope in child.scopes:
-        if scope not in parent.scopes:
+        if not scope_granted(scope, parent.scopes):
             problems.append(f"scopes: {scope} is not granted by the parent")
     if child.asset != parent.asset:
         problems.append(f"asset: {child.asset} differs from parent {parent.asset}")
@@ -102,7 +103,7 @@ def capability_problems(capability: Capability, *, environment: str, action: str
     problems = []
     if not any(pattern_matches(p, environment) for p in capability.environments):
         problems.append(("environment_denied", f"environment {environment} is not delegated"))
-    if action not in capability.scopes:
+    if not scope_granted(action, capability.scopes):
         problems.append(("scope_denied", f"action {action} is not delegated"))
     if not any(pattern_matches(p, resource) for p in capability.resources):
         problems.append(("resource_denied", f"resource {resource} is not delegated"))

@@ -19,7 +19,11 @@ export const MAX_INVOCATION_SECONDS = 300;
 export const ZERO_HASH = '0'.repeat(64);
 export const SCOPES = ['marketplace.read', 'devhub.read', 'chain.read', 'compute.simulate', 'environment.handoff',
   'tool.invoke', 'model.invoke', 'file.read', 'file.write', 'network.fetch', 'message.send', 'task.checkpoint',
-  'dex.quote', 'dex.policy_check', 'dex.order.build', 'dex.order.sign'];
+  'dex.quote', 'dex.policy_check', 'dex.order.build', 'dex.order.request_signature', 'dex.order.sign'];
+// dex.order.sign: deprecated alias of dex.order.request_signature (0.7), removed in 0.8; compare through hasScope.
+export const SCOPE_ALIASES = { 'dex.order.sign': 'dex.order.request_signature' };
+export const canonicalScope = (scope) => SCOPE_ALIASES[scope] || scope;
+export const hasScope = (granted, scope) => granted.some((s) => canonicalScope(s) === canonicalScope(scope));
 // The built-in policy (autheo.policy/v1 "policy:mandate-only"); decideInvocation implements exactly this one.
 export const MANDATE_ONLY_POLICY = { policy_id: 'policy:mandate-only',
   policy_digest: 'c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4' };
@@ -548,7 +552,7 @@ export function attenuationProblems(parent, child) {
   for (const name of ['environments', 'resources', 'tools']) {
     for (const pattern of c[name]) if (!patternCovers(p[name], pattern)) problems.push(name + ': ' + pattern);
   }
-  for (const scope of c.scopes) if (!p.scopes.includes(scope)) problems.push('scopes: ' + scope);
+  for (const scope of c.scopes) if (!hasScope(p.scopes, scope)) problems.push('scopes: ' + scope);
   if (c.asset !== p.asset) problems.push('asset: ' + c.asset);
   for (const name of ['per_action_minor', 'total_budget_minor', 'approval_threshold_minor']) {
     if (c[name] > p[name]) problems.push(name);
@@ -561,7 +565,7 @@ export function capabilityProblems(capability, request) {
   const tool = request.tool === undefined ? null : request.tool;
   const problems = [];
   if (!cap.environments.some((p) => patternMatches(p, request.environment))) problems.push('environment_denied');
-  if (!cap.scopes.includes(request.action)) problems.push('scope_denied');
+  if (!hasScope(cap.scopes, request.action)) problems.push('scope_denied');
   if (!cap.resources.some((p) => patternMatches(p, request.resource))) problems.push('resource_denied');
   if (request.action === 'tool.invoke' && tool === null) problems.push('tool_required');
   else if (tool !== null && !cap.tools.some((p) => patternMatches(p, tool))) problems.push('tool_denied');
@@ -591,7 +595,7 @@ export function decideInvocation(result, options = {}) {
   for (const e of chain.errors) block('delegation_' + e.code + ':' + e.index);
   if (!cap.environments.some((p) => patternMatches(p, options.environment))) block('environment_denied');
   if ((invocation.asset || 'DEMO') !== cap.asset) block('asset_mismatch');
-  if (!cap.scopes.includes(invocation.action)) block('scope_denied');
+  if (!hasScope(cap.scopes, invocation.action)) block('scope_denied');
   if (!cap.resources.some((p) => patternMatches(p, invocation.resource))) block('resource_denied');
   if (amount > cap.per_action_minor) block('per_action_limit');
   const leaf = chain.links[chain.links.length - 1];

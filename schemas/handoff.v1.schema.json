@@ -96,11 +96,12 @@
           "dex.quote",
           "dex.policy_check",
           "dex.order.build",
+          "dex.order.request_signature",
           "dex.order.sign"
         ],
         "type": "string"
       },
-      "maxItems": 16,
+      "maxItems": 17,
       "minItems": 1,
       "title": "Scopes",
       "type": "array"

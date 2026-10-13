@@ -1,6 +1,6 @@
 # Agents at external trading venues (`dex.*` scopes, v2 profile)
 
-Status: 0.6, tested, not a stable contract. Builds on [SPEC-DID.md](SPEC-DID.md) (delegations,
+Status: 0.7, tested, not a stable contract. Builds on [SPEC-DID.md](SPEC-DID.md) (delegations,
 invocations, receipts, bundles) and [POLICY.md](POLICY.md). Machine-checked by
 `tests/vectors/autheo-v2-venue-vectors.json` (Python and `interop/js`).
 
@@ -17,11 +17,15 @@ receive them.
 | `dex.quote` | price a trade or route (read only) | 0 |
 | `dex.policy_check` | explain whether a transfer would pass the asset's rules (read only) | 0 |
 | `dex.order.build` | build an **unsigned** order for the principal to sign | what the principal gives up |
-| `dex.order.sign` | present a built order to the principal for signature | same as the order |
+| `dex.order.request_signature` | present a built order to the principal for signature | same as the order |
 
-`dex.order.sign` never means "sign for me": no conforming venue signs on a principal's behalf or
+`dex.order.request_signature` never means "sign for me": no conforming venue signs on a principal's behalf or
 accepts a principal's private key from an agent. Grant it only to agents that may put orders in
 front of the principal.
+
+`dex.order.sign` (0.6 name) is a **deprecated alias**: in 0.7 verifiers treat it as
+`dex.order.request_signature` in grants and invocations, so existing chains keep working. Issue new
+grants with the new name; the alias is removed in 0.8.
 
 ## 2. Resources and amounts
 
@@ -66,7 +70,7 @@ front of the principal.
 `tests/vectors/autheo-v2-venue-vectors.json` (generate/check:
 `python -m autheo_agent_environment vectors-venue generate|check <path>`): a principal -> agent ->
 sub-agent chain with a cash budget, and decision cases for allow, escalate, per-action / total /
-ancestor budgets, an undelegated `dex.order.sign`, other asset, other chain, budget-asset
+ancestor budgets, an undelegated `dex.order.request_signature`, other asset, other chain, budget-asset
 mismatch, a forged widened chain, a revoked chain, an untrusted root, a wrong venue, a tampered
 invocation and a forged chain; plus venue-signed receipts, a ledger export and bundles.
 `node interop/js/verify-venue-vectors.mjs` checks that the JS package reproduces every

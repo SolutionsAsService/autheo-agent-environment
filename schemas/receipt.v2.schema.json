@@ -125,6 +125,7 @@
             "dex.quote",
             "dex.policy_check",
             "dex.order.build",
+            "dex.order.request_signature",
             "dex.order.sign"
           ],
           "type": "string"

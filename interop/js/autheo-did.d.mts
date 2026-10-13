@@ -29,6 +29,9 @@ export declare const MAX_CHAIN_LENGTH: number;
 export declare const MAX_INVOCATION_SECONDS: number;
 export declare const ZERO_HASH: string;
 export declare const SCOPES: string[];
+export declare const SCOPE_ALIASES: Record<string, string>;
+export declare function canonicalScope(scope: string): string;
+export declare function hasScope(granted: string[], scope: string): boolean;
 export declare const MANDATE_ONLY_POLICY: { policy_id: string; policy_digest: string };
 export declare class AutheoError extends Error { code: string; constructor(code: string, detail?: string) }
 
