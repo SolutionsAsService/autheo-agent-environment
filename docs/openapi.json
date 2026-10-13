@@ -167,7 +167,12 @@
               "file.write",
               "network.fetch",
               "message.send",
-              "task.checkpoint"
+              "task.checkpoint",
+              "dex.quote",
+              "dex.policy_check",
+              "dex.order.build",
+              "dex.order.request_signature",
+              "dex.order.sign"
             ],
             "title": "Action",
             "type": "string"
@@ -415,8 +420,8 @@
             "type": "integer"
           },
           "asset": {
-            "const": "DEMO",
             "default": "DEMO",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$",
             "title": "Asset",
             "type": "string"
           },
@@ -473,7 +478,12 @@
                 "file.write",
                 "network.fetch",
                 "message.send",
-                "task.checkpoint"
+                "task.checkpoint",
+                "dex.quote",
+                "dex.policy_check",
+                "dex.order.build",
+                "dex.order.request_signature",
+                "dex.order.sign"
               ],
               "type": "string"
             },
@@ -666,7 +676,12 @@
                 "file.write",
                 "network.fetch",
                 "message.send",
-                "task.checkpoint"
+                "task.checkpoint",
+                "dex.quote",
+                "dex.policy_check",
+                "dex.order.build",
+                "dex.order.request_signature",
+                "dex.order.sign"
               ],
               "type": "string"
             },
@@ -769,7 +784,12 @@
               "file.write",
               "network.fetch",
               "message.send",
-              "task.checkpoint"
+              "task.checkpoint",
+              "dex.quote",
+              "dex.policy_check",
+              "dex.order.build",
+              "dex.order.request_signature",
+              "dex.order.sign"
             ],
             "title": "Action",
             "type": "string"
@@ -1218,7 +1238,12 @@
                 "file.write",
                 "network.fetch",
                 "message.send",
-                "task.checkpoint"
+                "task.checkpoint",
+                "dex.quote",
+                "dex.policy_check",
+                "dex.order.build",
+                "dex.order.request_signature",
+                "dex.order.sign"
               ],
               "type": "string"
             },
@@ -1314,7 +1339,12 @@
               "file.write",
               "network.fetch",
               "message.send",
-              "task.checkpoint"
+              "task.checkpoint",
+              "dex.quote",
+              "dex.policy_check",
+              "dex.order.build",
+              "dex.order.request_signature",
+              "dex.order.sign"
             ],
             "title": "Action",
             "type": "string"
@@ -1327,8 +1357,8 @@
             "type": "integer"
           },
           "asset": {
-            "const": "DEMO",
             "default": "DEMO",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$",
             "title": "Asset",
             "type": "string"
           },
@@ -1462,7 +1492,12 @@
               "file.write",
               "network.fetch",
               "message.send",
-              "task.checkpoint"
+              "task.checkpoint",
+              "dex.quote",
+              "dex.policy_check",
+              "dex.order.build",
+              "dex.order.request_signature",
+              "dex.order.sign"
             ],
             "title": "Action",
             "type": "string"
@@ -1629,7 +1664,12 @@
                 "file.write",
                 "network.fetch",
                 "message.send",
-                "task.checkpoint"
+                "task.checkpoint",
+                "dex.quote",
+                "dex.policy_check",
+                "dex.order.build",
+                "dex.order.request_signature",
+                "dex.order.sign"
               ],
               "type": "string"
             },
@@ -1916,7 +1956,12 @@
                   "file.write",
                   "network.fetch",
                   "message.send",
-                  "task.checkpoint"
+                  "task.checkpoint",
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build",
+                  "dex.order.request_signature",
+                  "dex.order.sign"
                 ],
                 "type": "string"
               },
@@ -2168,7 +2213,12 @@
                   "file.write",
                   "network.fetch",
                   "message.send",
-                  "task.checkpoint"
+                  "task.checkpoint",
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build",
+                  "dex.order.request_signature",
+                  "dex.order.sign"
                 ],
                 "type": "string"
               },
@@ -2185,6 +2235,19 @@
             "minimum": 0,
             "title": "Amount Minor",
             "type": "integer"
+          },
+          "asset": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Asset"
           },
           "chain": {
             "items": {
@@ -2729,7 +2792,7 @@
       "name": "MIT"
     },
     "title": "Autheo Agent Environment local trust API",
-    "version": "0.5.0"
+    "version": "0.7.0"
   },
   "openapi": "3.1.0",
   "paths": {

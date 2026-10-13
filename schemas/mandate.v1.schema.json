@@ -76,11 +76,16 @@
           "file.write",
           "network.fetch",
           "message.send",
-          "task.checkpoint"
+          "task.checkpoint",
+          "dex.quote",
+          "dex.policy_check",
+          "dex.order.build",
+          "dex.order.request_signature",
+          "dex.order.sign"
         ],
         "type": "string"
       },
-      "maxItems": 12,
+      "maxItems": 17,
       "minItems": 1,
       "title": "Scopes",
       "type": "array"

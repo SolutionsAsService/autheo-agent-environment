@@ -17,7 +17,12 @@
         "file.write",
         "network.fetch",
         "message.send",
-        "task.checkpoint"
+        "task.checkpoint",
+        "dex.quote",
+        "dex.policy_check",
+        "dex.order.build",
+        "dex.order.request_signature",
+        "dex.order.sign"
       ],
       "title": "Action",
       "type": "string"

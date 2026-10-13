@@ -152,6 +152,7 @@ def verify_bundle(bundle: dict, *, resolver: Resolver, trusted_roots=None, envir
         "resource": (receipt.resource, invocation.resource),
         "tool": (receipt.tool, invocation.tool),
         "amount_minor": (receipt.amount_minor, invocation.amount_minor),
+        "asset": (receipt.asset or "DEMO", invocation.asset),
         "root": (receipt.root, chain.root),
         "chain": ([link.model_dump() for link in receipt.chain],
                   [{k: link[k] for k in ("id", "digest", "issuer", "subject")} for link in chain.links]),
@@ -165,7 +166,8 @@ def verify_bundle(bundle: dict, *, resolver: Resolver, trusted_roots=None, envir
     if chain.capability is not None:
         request_problems = [code for code, _ in capability_problems(
             chain.capability, environment=invocation.environment, action=invocation.action,
-            resource=invocation.resource, tool=invocation.tool, amount_minor=invocation.amount_minor)]
+            resource=invocation.resource, tool=invocation.tool, amount_minor=invocation.amount_minor,
+            asset=invocation.asset)]
     authorized = chain.valid and not request_problems
     report["authorized_by_chain"] = authorized
     report["request_problems"] = request_problems
@@ -279,8 +281,8 @@ def run(args) -> tuple[int, dict]:
               "chain": result.chain.to_dict(), "root_pinned": roots is not None}
     problems = capability_problems(result.chain.capability, environment=result.invocation.environment,
                                    action=result.invocation.action, resource=result.invocation.resource,
-                                   tool=result.invocation.tool, amount_minor=result.invocation.amount_minor
-                                   ) if result.chain.capability else []
+                                   tool=result.invocation.tool, amount_minor=result.invocation.amount_minor,
+                                   asset=result.invocation.asset) if result.chain.capability else []
     report["request_problems"] = [code for code, _ in problems]
     report["valid"] = report["valid"] and not problems
     return (0 if report["valid"] else 1), report

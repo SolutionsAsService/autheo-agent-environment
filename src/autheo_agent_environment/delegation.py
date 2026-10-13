@@ -26,6 +26,7 @@ from pydantic import ValidationError
 from .data_integrity import ProofError, add_proof, format_time, parse_time, verify_proof
 from .did import DidSigner, Resolver
 from .jcs import jcs_digest
+from .models import scope_granted
 from .models_v2 import (
     MAX_CHAIN_LENGTH,
     MAX_DELEGATION_SECONDS,
@@ -86,8 +87,10 @@ def attenuation_problems(parent: Capability, child: Capability) -> list[str]:
             if not pattern_covers(getattr(parent, name), pattern):
                 problems.append(f"{name}: {pattern} is not within the parent grant")
     for scope in child.scopes:
-        if scope not in parent.scopes:
+        if not scope_granted(scope, parent.scopes):
             problems.append(f"scopes: {scope} is not granted by the parent")
+    if child.asset != parent.asset:
+        problems.append(f"asset: {child.asset} differs from parent {parent.asset}")
     for name in ("per_action_minor", "total_budget_minor", "approval_threshold_minor"):
         if getattr(child, name) > getattr(parent, name):
             problems.append(f"{name}: {getattr(child, name)} exceeds parent {getattr(parent, name)}")
@@ -95,12 +98,12 @@ def attenuation_problems(parent: Capability, child: Capability) -> list[str]:
 
 
 def capability_problems(capability: Capability, *, environment: str, action: str, resource: str,
-                        tool: str | None, amount_minor: int) -> list[tuple[str, str]]:
+                        tool: str | None, amount_minor: int, asset: str = "DEMO") -> list[tuple[str, str]]:
     """Static checks of one request against a capability: [(reason code, detail)]; empty = within grant."""
     problems = []
     if not any(pattern_matches(p, environment) for p in capability.environments):
         problems.append(("environment_denied", f"environment {environment} is not delegated"))
-    if action not in capability.scopes:
+    if not scope_granted(action, capability.scopes):
         problems.append(("scope_denied", f"action {action} is not delegated"))
     if not any(pattern_matches(p, resource) for p in capability.resources):
         problems.append(("resource_denied", f"resource {resource} is not delegated"))
@@ -108,6 +111,8 @@ def capability_problems(capability: Capability, *, environment: str, action: str
         problems.append(("tool_required", "tool.invoke requires a tool name"))
     elif tool is not None and not any(pattern_matches(p, tool) for p in capability.tools):
         problems.append(("tool_denied", f"tool {tool} is not delegated"))
+    if asset != capability.asset:
+        problems.append(("asset_mismatch", f"amount is in {asset}, the grant is in {capability.asset}"))
     if amount_minor > capability.per_action_minor:
         problems.append(("per_action_limit", f"{amount_minor} exceeds per-action limit {capability.per_action_minor}"))
     return problems
@@ -171,7 +176,7 @@ def issue_revocation(signer: DidSigner, target: dict, *, revoked_at: int, reason
 
 def issue_invocation(signer: DidSigner, chain: list[dict], *, request_id: str, environment: str, action: str,
                      resource: str, tool: str | None = None, amount_minor: int = 0, created: int,
-                     ttl: int = 60) -> dict:
+                     ttl: int = 60, asset: str = "DEMO") -> dict:
     if not 0 < ttl <= MAX_INVOCATION_SECONDS:
         raise ValueError(f"invocation lifetime must be 1..{MAX_INVOCATION_SECONDS} seconds")
     document = {
@@ -183,7 +188,7 @@ def issue_invocation(signer: DidSigner, chain: list[dict], *, request_id: str, e
         "action": action,
         "resource": resource,
         "amount_minor": amount_minor,
-        "asset": "DEMO",
+        "asset": asset,
         "created": format_time(created),
         "expires": format_time(created + ttl),
         "capability": list(chain),

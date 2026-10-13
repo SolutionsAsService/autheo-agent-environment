@@ -33,6 +33,7 @@ from .models import (
     Minor,
     Request,
     StrictModel,
+    scope_granted,
 )
 
 MAX_POLICY_BYTES = 262144
@@ -272,7 +273,7 @@ def evaluate(
     # --- mandate (0.1-compatible, fixed order) ---------------------------------
     gate("mandate.revocation", revoked, "revoked", "passport and mandate are not revoked",
          "passport or mandate is revoked")
-    gate("mandate.scope", request.action not in mandate.scopes, "scope_denied",
+    gate("mandate.scope", not scope_granted(request.action, mandate.scopes), "scope_denied",
          f"action {request.action} is granted", f"action {request.action} is not granted by the mandate")
     gate("mandate.resource", not _grants(mandate.resources, request.resource), "resource_denied",
          f"resource {request.resource} is granted", f"resource {request.resource} is not granted")

@@ -1,5 +1,18 @@
 # Delivery / claim ceiling
 
+## Implemented in 0.6 (agents at external trading venues, tested)
+
+- `dex.quote`, `dex.policy_check`, `dex.order.build`, `dex.order.request_signature` scopes (0.7 renamed from `dex.order.sign`, still accepted as a deprecated alias until 0.8) and
+  `chain:<id>:asset:<id>` resources ([SPEC-VENUE.md](SPEC-VENUE.md)).
+- Budgets in a real unit: `asset` on capabilities, invocations and receipts (was fixed to
+  `DEMO`); attenuation keeps it, `asset_mismatch` blocks cross-unit spend. Existing v2 vectors
+  are unchanged.
+- `decide_invocation` (Python) / `decideInvocation` (JS) and `signDecisionReceipt` (JS) so a
+  venue can decide and record offline; `tests/vectors/autheo-v2-venue-vectors.json` checked by both.
+- `interop/js` packaged as `@autheo/did` with TypeScript declarations (pinned/vendored, not on npm).
+- Fixed: v2 receipts repeated a `delegation_<code>:<link>` reason once per error detail; now one
+  reason per (link, code), like the offline verifier.
+
 ## Experimental in 0.5 (tunable strength + hybrid KEM, tested, not a stable contract)
 
 - ML-DSA-44/65/87 (`mldsa{44,65,87}-jcs-2024`, multicodec 0x1210–0x1212, draft), verifier

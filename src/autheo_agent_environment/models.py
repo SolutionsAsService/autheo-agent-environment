@@ -14,9 +14,10 @@ Minor = Annotated[int, Field(strict=True, ge=0, le=10**15)]
 Timestamp = Annotated[int, Field(strict=True, ge=0, le=2**53 - 1)]
 DocumentId = Annotated[str, StringConstraints(pattern=r"^[A-Za-z0-9][A-Za-z0-9:._-]{0,159}$", strict=True)]
 
-# Enumerated action vocabulary. The first five are the original 0.1 scopes; the rest
-# were added in schema v1 for agent-runtime integrations (JARVIS, Paperclip). A
-# mandate only ever grants exact members of this list; wildcards are never granted.
+# Enumerated action vocabulary. The first five are the original 0.1 scopes; the next seven
+# were added in schema v1 for agent-runtime integrations (JARVIS, Paperclip); the dex.* scopes
+# cover external trading venues (docs/SPEC-VENUE.md). A mandate only ever grants exact
+# members of this list; wildcards are never granted.
 Scope = Literal[
     "marketplace.read",
     "devhub.read",
@@ -30,8 +31,23 @@ Scope = Literal[
     "network.fetch",
     "message.send",
     "task.checkpoint",
+    "dex.quote",
+    "dex.policy_check",
+    "dex.order.build",
+    "dex.order.request_signature",
+    "dex.order.sign",  # deprecated alias of dex.order.request_signature (0.7); removed in 0.8
 ]
 SCOPES: tuple[str, ...] = Scope.__args__  # type: ignore[attr-defined]
+SCOPE_ALIASES = {"dex.order.sign": "dex.order.request_signature"}
+
+
+def canonical_scope(scope: str) -> str:
+    """Deprecated alias -> current name; scope comparisons go through this so old grants keep working."""
+    return SCOPE_ALIASES.get(scope, scope)
+
+
+def scope_granted(scope: str, granted) -> bool:
+    return canonical_scope(scope) in {canonical_scope(s) for s in granted}
 
 Outcome = Literal["allow", "escalate", "block"]
 ReceiptKind = Literal[

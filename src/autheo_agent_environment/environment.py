@@ -27,6 +27,7 @@ from .models import (
     Passport,
     ReceiptBody,
     Request,
+    scope_granted,
 )
 from .policy import DEFAULT_POLICY, PolicyDocument, PriorEvent, evaluate
 from .signing import LEGACY_KID, Signer, agent_kid, public_pem, read_public, verify
@@ -496,7 +497,7 @@ class Environment:
                 or destination not in mandate.destinations
                 or destination not in passport.environments
                 or destination == self.environment_id
-                or not set(scopes).issubset(mandate.scopes)
+                or not all(scope_granted(s, mandate.scopes) for s in scopes)
             ):
                 raise ValueError("Handoff scope or destination denied")
             bundle = Handoff(
@@ -543,8 +544,7 @@ class Environment:
             and self.environment_id in mandate.destinations
             and bundle.passport_digest == digest(passport_token)
             and "environment.handoff" in mandate.scopes
-            and set(bundle.scopes).issubset(mandate.scopes)
-            and set(bundle.scopes).issubset(allowed_scopes)
+            and all(scope_granted(s, mandate.scopes) and scope_granted(s, allowed_scopes) for s in bundle.scopes)
         ):
             raise ValueError("Handoff destination, identity, or policy mismatch")
         with self.transaction() as db:

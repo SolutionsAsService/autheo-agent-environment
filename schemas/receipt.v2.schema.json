@@ -121,7 +121,12 @@
             "file.write",
             "network.fetch",
             "message.send",
-            "task.checkpoint"
+            "task.checkpoint",
+            "dex.quote",
+            "dex.policy_check",
+            "dex.order.build",
+            "dex.order.request_signature",
+            "dex.order.sign"
           ],
           "type": "string"
         },
@@ -138,6 +143,19 @@
       "minimum": 0,
       "title": "Amount Minor",
       "type": "integer"
+    },
+    "asset": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Asset"
     },
     "chain": {
       "items": {
