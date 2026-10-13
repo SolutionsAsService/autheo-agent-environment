@@ -78,7 +78,7 @@ def test_base58_round_trip(data):
     assert b58decode(b58encode(data)) == data
 
 
-@pytest.mark.parametrize("bad", ["0OIl", "abc!", "z" * 5000])
+@pytest.mark.parametrize("bad", ["0OIl", "abc!", "z" * 8193])  # bound = multibase.MAX_ENCODED
 def test_base58_rejects_invalid(bad):
     with pytest.raises(ValueError):
         b58decode(bad)

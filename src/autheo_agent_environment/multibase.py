@@ -14,7 +14,8 @@ from __future__ import annotations
 
 ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 _INDEX = {character: value for value, character in enumerate(ALPHABET)}
-MAX_ENCODED = 4096
+# Bounded to keep base58 decoding cheap; 8192 fits ML-DSA-87 signatures (4627 bytes ≈ 6.3k chars).
+MAX_ENCODED = 8192
 
 ED25519_PUB = 0xED
 ED25519_PRIV = 0x1300

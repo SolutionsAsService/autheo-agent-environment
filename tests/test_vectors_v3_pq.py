@@ -22,7 +22,8 @@ def _cases():
 @pytest.mark.parametrize("case", _cases(), ids=lambda c: c["name"])
 def test_python_agrees_with_vectors(case):
     try:
-        verify_proofs(case["document"], "assertionMethod", policy=case["policy"], bindings=case["bindings"])
+        verify_proofs(case["document"], "assertionMethod", policy=case["policy"], bindings=case["bindings"],
+                      min_category=case.get("min_category", 2))
         ok = True
     except ProofError:
         ok = False

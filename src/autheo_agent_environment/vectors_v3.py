@@ -25,6 +25,8 @@ def build() -> dict:
     pq = MldsaKey.from_seed(bytes(range(32, 64)))
     doc = {**DOC, "issuer": ed.did}
     hybrid = add_hybrid_proofs(doc, ed.signer, pq.signer, "assertionMethod", T)
+    pq65 = MldsaKey.from_seed(bytes(range(64, 96)), 65)
+    pq87 = MldsaKey.from_seed(bytes(range(96, 128)), 87)
     tampered = copy.deepcopy(hybrid)
     tampered["credentialSubject"]["scope"] = "payments.send"
     stripped = {**hybrid, "proof": hybrid["proof"][0]}
@@ -33,7 +35,7 @@ def build() -> dict:
         "note": "verify-only; ML-DSA signatures are randomised. Experimental, not a stable contract.",
         "cryptosuite": PQ_SUITE,
         "keys": {"ed25519_did": ed.did, "mldsa44_did": pq.did, "mldsa44_seed_hex": pq.seed.hex(),
-                 "mldsa44_public_hex": pq.public_raw.hex()},
+                 "mldsa44_public_hex": pq.public_raw.hex(), "mldsa65_did": pq65.did, "mldsa87_did": pq87.did},
         "cases": [
             {"name": "hybrid-valid", "policy": "hybrid", "bindings": {ed.did: pq.did}, "document": hybrid, "valid": True},
             {"name": "hybrid-tampered", "policy": "hybrid", "bindings": {ed.did: pq.did}, "document": tampered, "valid": False},
@@ -41,6 +43,12 @@ def build() -> dict:
             {"name": "hybrid-unbound", "policy": "hybrid", "bindings": {}, "document": hybrid, "valid": False},
             {"name": "pq-only-valid", "policy": "pq", "bindings": {}, "document": add_pq_proof(doc, pq.signer, "assertionMethod", T), "valid": True},
             {"name": "classical-only-under-pq", "policy": "pq", "bindings": {}, "document": stripped, "valid": False},
+            {"name": "mldsa65-balanced", "policy": "pq", "bindings": {}, "min_category": 3,
+             "document": add_pq_proof(doc, pq65.signer, "assertionMethod", T), "valid": True},
+            {"name": "mldsa87-max-hybrid", "policy": "hybrid", "bindings": {ed.did: pq87.did}, "min_category": 5,
+             "document": add_hybrid_proofs(doc, ed.signer, pq87.signer, "assertionMethod", T), "valid": True},
+            {"name": "mldsa44-below-min-category", "policy": "pq", "bindings": {}, "min_category": 3,
+             "document": add_pq_proof(doc, pq.signer, "assertionMethod", T), "valid": False},
             {"name": "key-binding", "policy": "hybrid", "bindings": {ed.did: pq.did},
              "document": create_key_binding(ed.signer, pq.signer, T), "valid": True},
         ],

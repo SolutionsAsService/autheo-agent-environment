@@ -65,7 +65,8 @@ export function b58encode(bytes) {
 }
 
 export function b58decode(text) {
-  if (typeof text !== 'string' || text.length > 4096) throw new AutheoError('invalid_base58');
+  // 8192 fits ML-DSA-87 signatures (mirrors multibase.MAX_ENCODED).
+  if (typeof text !== 'string' || text.length > 8192) throw new AutheoError('invalid_base58');
   let number = 0n;
   for (const character of text) {
     const value = ALPHABET.indexOf(character);

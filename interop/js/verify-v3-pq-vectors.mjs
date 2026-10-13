@@ -11,7 +11,7 @@ const vectors = JSON.parse(readFileSync(path, 'utf8'));
 const failures = [];
 for (const c of vectors.cases) {
   let ok = true;
-  try { verifyProofs(c.document, 'assertionMethod', { policy: c.policy, bindings: c.bindings }); } catch { ok = false; }
+  try { verifyProofs(c.document, 'assertionMethod', { policy: c.policy, bindings: c.bindings, minCategory: c.min_category ?? 2 }); } catch { ok = false; }
   if (ok !== c.valid) failures.push(c.name);
 }
 if (failures.length) { console.error('PQ vector mismatches:', failures.join(', ')); process.exit(1); }

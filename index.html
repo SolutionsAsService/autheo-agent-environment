@@ -23,13 +23,13 @@ code{color:#c9b6ff}footer{color:var(--mut);font-size:13px;text-align:center;padd
 <body>
 <header>
   <h1>Autheo Agent Environment</h1>
-  <div class="sub">Reference trust layer for AI agents — signed identities (DIDs), scoped delegation, policy decisions, receipts. <b>v0.4.0</b> · local reference implementation, not a hosted service.</div>
+  <div class="sub">Reference trust layer for AI agents — signed identities (DIDs), scoped delegation, policy decisions, receipts. <b>v0.5.0</b> · local reference implementation, not a hosted service.</div>
   <p><span class="pill ok">implemented</span><span class="pill wip">experimental / in progress</span><span class="pill no">not started</span></p>
 </header>
 <main>
   <section class="grid">
     <div class="card kpi"><b>v2 DID</b><span>did:key + VC 2.0 delegation chains, offline verification</span></div>
-    <div class="card kpi"><b>Hybrid PQC</b><span>Ed25519 + ML-DSA-44 proof sets (experimental, 0.4)</span></div>
+    <div class="card kpi"><b>Tunable PQC</b><span>ML-DSA-44/65/87 + ML-KEM-768/1024 profiles: compact · balanced · max</span></div>
     <div class="card kpi"><b>Python + JS</b><span>cross-language vectors (v1, v2, v3-PQ)</span></div>
     <div class="card kpi"><b>0 hosted</b><span>no custody, payments, chain anchoring or production deployment yet</span></div>
   </section>
@@ -46,6 +46,10 @@ code{color:#c9b6ff}footer{color:var(--mut);font-size:13px;text-align:center;padd
       <tr><td>HTTP API, CLI, OpenAPI, web demo</td><td><span class="pill ok">done</span></td><td>Loopback only, bearer token</td></tr>
       <tr><td>ML-DSA-44 did:key + <code>mldsa44-jcs-2024</code> proofs</td><td><span class="pill wip">experimental</span></td><td>FIPS 204 via OpenSSL 3.5; Node 24 verifier; verify-only vectors</td></tr>
       <tr><td>Hybrid proof sets + key binding + verifier policy</td><td><span class="pill wip">experimental</span></td><td><code>classical</code> / <code>hybrid</code> / <code>pq</code>; not yet wired into delegation chains</td></tr>
+      <tr><td>Tunable strength: security profiles + minimum NIST category</td><td><span class="pill wip">experimental</span></td><td>compact (ML-DSA-44), balanced (65, default), max (87 + ML-KEM-1024)</td></tr>
+      <tr><td>Hybrid X25519 + ML-KEM sealed envelopes</td><td><span class="pill wip">experimental</span></td><td>Checkpoints / handoffs confidential against harvest-now-decrypt-later</td></tr>
+      <tr><td>PQ TLS (X25519MLKEM768; pure MLKEM1024 per draft-ietf-tls-mlkem)</td><td><span class="pill no">planned</span></td><td>Phase P2; pure ML-KEM only under the max profile</td></tr>
+      <tr><td>zkTLS data attestations (<code>AutheoTlsAttestation</code>)</td><td><span class="pill no">planned</span></td><td>Provenance of web data (balances, KYC status) for policy; not quantum-safe when SNARK-wrapped</td></tr>
       <tr><td>Hybrid delegation chains & receipts</td><td><span class="pill no">next</span></td><td>Phase P1</td></tr>
       <tr><td>ML-KEM key agreement / encrypted handoffs</td><td><span class="pill no">planned</span></td><td>Phase P2</td></tr>
       <tr><td>Production key custody (HSM/KMS/wallet), rotation</td><td><span class="pill no">planned</span></td><td>did:key cannot rotate → updatable DID for long-lived principals</td></tr>
@@ -59,8 +63,9 @@ code{color:#c9b6ff}footer{color:var(--mut);font-size:13px;text-align:center;padd
     <p class="sub">Rough engineering estimate, not a delivery promise.</p>
     <table>
       <tr><td style="width:40%">DID identity & delegation core</td><td><div class="bar"><i style="width:75%"></i></div></td></tr>
-      <tr><td>Post-quantum signatures (hybrid)</td><td><div class="bar"><i style="width:30%"></i></div></td></tr>
-      <tr><td>Post-quantum key exchange</td><td><div class="bar"><i style="width:5%"></i></div></td></tr>
+      <tr><td>Post-quantum signatures (hybrid, tunable)</td><td><div class="bar"><i style="width:40%"></i></div></td></tr>
+      <tr><td>Post-quantum key exchange</td><td><div class="bar"><i style="width:20%"></i></div></td></tr>
+      <tr><td>Verifiable web data (zkTLS)</td><td><div class="bar"><i style="width:3%"></i></div></td></tr>
       <tr><td>Custody, rotation, status at scale</td><td><div class="bar"><i style="width:10%"></i></div></td></tr>
       <tr><td>Enforcement in real runtimes (JARVIS / MCP / Paperclip)</td><td><div class="bar"><i style="width:15%"></i></div></td></tr>
     </table>
@@ -71,7 +76,7 @@ code{color:#c9b6ff}footer{color:var(--mut);font-size:13px;text-align:center;padd
     <ol class="phases">
       <li><span class="pill wip">P0 · agility</span><span>Suite registry, ML-DSA did:key, hybrid proof sets, key binding, verifier policy, Python == Node vectors. <b>Done in 0.4 (experimental).</b></span></li>
       <li><span class="pill no">P1 · hybrid chains</span><span>Delegations, invocations, revocations and receipts carry hybrid proofs; per-environment policy; <code>did bind</code> CLI/API; downgrade tests.</span></li>
-      <li><span class="pill no">P2 · PQ KEM</span><span>ML-KEM-768 + X25519 hybrid for keyAgreement and encrypted checkpoints; hybrid TLS groups.</span></li>
+      <li><span class="pill wip">P2 · PQ KEM</span><span>Hybrid X25519 + ML-KEM envelopes <b>done in 0.5</b>; next: hybrid TLS (X25519MLKEM768), pure MLKEM1024 under <code>max</code>, zkTLS attestations.</span></li>
       <li><span class="pill no">P3 · PQ default</span><span>Hybrid required for new evidence; SLH-DSA for long-lived roots and ledger anchors.</span></li>
       <li><span class="pill no">P4 · PQ-only</span><span>Policy <code>pq</code> for regulated tenants; external audit; CNSA 2.0 alignment.</span></li>
     </ol>

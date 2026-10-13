@@ -1,5 +1,15 @@
 # Delivery / claim ceiling
 
+## Experimental in 0.5 (tunable strength + hybrid KEM, tested, not a stable contract)
+
+- ML-DSA-44/65/87 (`mldsa{44,65,87}-jcs-2024`, multicodec 0x1210–0x1212, draft), verifier
+  `min_category` (downgrade protection), `profiles.py` presets compact / balanced (default) /
+  max + `AUTHEO_SECURITY_PROFILE` + validated custom profiles.
+- `kem.py`: hybrid X25519 + ML-KEM-768/1024 sealed envelopes (SHA3-256 combiner, HKDF,
+  AES-256-GCM, AAD-bound) for checkpoints and handoffs.
+- Base58 input bound raised 4096 → 8192 characters (Python and JS) to fit ML-DSA-87 proofs.
+- Plan for ML-KEM TLS (draft-ietf-tls-mlkem) and zkTLS attestations: [PQC-ROADMAP.md](PQC-ROADMAP.md).
+
 ## Experimental in 0.4 (post-quantum agility, tested, not a stable contract)
 
 - `pqc.py`: ML-DSA-44 (FIPS 204, via `cryptography`/OpenSSL 3.5) did:key
