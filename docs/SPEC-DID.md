@@ -87,6 +87,9 @@ example byte-for-byte (included in the vectors).
 
 * `environments`, `resources`, `tools` are grant patterns: an exact value, `prefix*` (every value
   starting with prefix) or `*`. `scopes` are the v1 scope names. Lists are unique.
+* `asset` (default `DEMO`) is the unit of every `*_minor` amount; a child keeps its parent's
+  asset and an invocation must use the leaf's (`asset_mismatch`). Trading venues use the `dex.*`
+  scopes and `chain:<id>:asset:<id>` resources of [SPEC-VENUE.md](SPEC-VENUE.md).
 * `approval_threshold_minor <= per_action_minor <= total_budget_minor `; amounts above the
   threshold escalate to human review; `max_delegation_depth` (0-8) is how many further levels
   of sub-delegation are allowed below this grant.
@@ -94,7 +97,7 @@ example byte-for-byte (included in the vectors).
 A child capability C is an **attenuation** of parent P iff:
 every pattern of C.environments/resources/tools is *covered* by a pattern of P's list
 (`*` covers all; `a*` covers `a...` and `a...*`; an exact value covers only itself);
-C.scopes ⊆ P.scopes; each of the three amounts of C <= P's; C.validFrom >= P.validFrom and
+C.scopes ⊆ P.scopes; C.asset = P.asset; each of the three amounts of C <= P's; C.validFrom >= P.validFrom and
 C.validUntil <= P.validUntil; P.max_delegation_depth >= 1 and C.max_delegation_depth <=
 P.max_delegation_depth - 1. Property tests check soundness (a covered pattern never matches a
 value its parent does not) and monotonicity (a request permitted by a child is permitted by its parent).

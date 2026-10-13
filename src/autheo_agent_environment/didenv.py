@@ -26,12 +26,19 @@ from contextlib import closing
 
 from .canonical import ZERO_HASH
 from .data_integrity import ProofError, add_proof
-from .delegation import document_digest, new_urn, pattern_matches, verify_invocation, verify_revocation
+from .delegation import (
+    InvocationResult,
+    document_digest,
+    new_urn,
+    pattern_matches,
+    verify_invocation,
+    verify_revocation,
+)
 from .did import DidKey, Resolver
 from .environment import Environment
 from .errors import ConflictError, NotFoundError
 from .models import Request
-from .policy import ChainBudget, ChainCheck, PriorEvent, evaluate
+from .policy import ChainBudget, ChainCheck, PolicyDocument, PriorEvent, evaluate
 from .verifier import v2_chain_hash, verify_receipt, verify_receipts
 
 V2_TABLES = """
@@ -60,6 +67,51 @@ class ChainRejected(ProofError):
         detail = "; ".join(f"link {e['index']}: {e['code']}" for e in errors[:5])
         super().__init__("chain_not_authentic", detail)
         self.errors = errors
+
+
+def decide_invocation(result: InvocationResult, invocation: dict, *, environment_id: str, policy: PolicyDocument,
+                      receipts: list[dict], at: int):
+    """Pure v2 decision for a verified invocation; receipts = this environment's earlier v2 receipts.
+
+    Raises ProofError for an invocation addressed elsewhere and ChainRejected for a chain that is not
+    authentic. interop/js/autheo-did.mjs decideInvocation() mirrors this for the mandate-only policy
+    (checked by tests/vectors/autheo-v2-venue-vectors.json).
+    """
+    chain, model = result.chain, result.invocation
+    if model.environment != environment_id:
+        raise ProofError("wrong_environment", f"invocation is addressed to {model.environment}")
+    if not chain.authentic:
+        raise ChainRejected([e.to_dict() for e in chain.errors])
+    capability = chain.capability
+    grouped: dict[tuple[int, str], list[str]] = {}
+    for error in chain.errors:  # one reason per (link, code), as in the offline verifier
+        grouped.setdefault((error.index, error.code), []).append(error.detail)
+    checks = [ChainCheck(f"chain.{code}", True, f"delegation_{code}:{index}", "; ".join(details))
+              for (index, code), details in grouped.items()]
+    if not checks:
+        checks.append(ChainCheck("chain.verified", False, "", f"{len(chain.links)} signed link(s) from root "
+                                 f"{chain.root} to the invoker; none expired or revoked"))
+    environment_ok = any(pattern_matches(p, environment_id) for p in capability.environments)
+    checks.append(ChainCheck("chain.environment", not environment_ok, "environment_denied",
+                             f"environment {environment_id} " + ("is delegated" if environment_ok else "is not delegated")))
+    checks.append(ChainCheck("chain.asset", model.asset != capability.asset, "asset_mismatch",
+                             f"amount is in {model.asset}, the grant is in {capability.asset}"))
+    leaf_id = chain.links[-1]["id"]
+    decisions = [r for r in receipts if r["kind"] == "decision"]
+    history = [PriorEvent(decision=r["decision"], amount_minor=r.get("amount_minor", 0), action=r.get("action"),
+                          tool=r.get("tool"), recorded_at=r["recorded_at"])
+               for r in decisions if r.get("chain") and r["chain"][-1]["id"] == leaf_id]
+    budgets = []
+    for link, raw in zip(chain.links[:-1], invocation["capability"][:-1], strict=True):
+        spent = sum(r.get("amount_minor", 0) for r in decisions if r["decision"] == "allow"
+                    and any(item["id"] == link["id"] for item in r.get("chain", [])))
+        limit = raw["credentialSubject"]["capability"]["total_budget_minor"]
+        budgets.append(ChainBudget(str(link["index"]), limit, spent))
+    request = Request(request_id=model.id, agent_id=model.invoker, environment=environment_id,
+                      mandate_id=leaf_id, action=model.action, resource=model.resource, tool=model.tool,
+                      amount_minor=model.amount_minor)
+    return evaluate(policy=policy, mandate=capability, mandate_id=leaf_id, request=request,
+                    revoked=False, history=history, now=at, chain_checks=checks, chain_budgets=budgets)
 
 
 def _public(receipt: dict) -> dict:
@@ -196,46 +248,20 @@ class DelegationLedger:
                 receipt = _public(existing)
                 return {"decision": None, "receipt": {**receipt, "replayed": True},
                         "bundle": self._bundle(receipt, invocation, revocations), "chain": chain.to_dict()}
-            decision = self._decide(chain, model, invocation, receipts, at)
+            decision = decide_invocation(result, invocation, environment_id=self.environment_id,
+                                         policy=self.environment.policy, receipts=receipts, at=at)
             receipt = self._append(db, receipts, {
                 "kind": "decision", "decision": decision.decision, "reasons": decision.reasons,
                 "document_digest": result.digest, "request_id": model.id, "invoker": model.invoker,
                 "root": chain.root,
                 "chain": [{k: link[k] for k in ("id", "digest", "issuer", "subject")} for link in chain.links],
                 "action": model.action, "resource": model.resource, "tool": model.tool,
-                "amount_minor": model.amount_minor, "policy_id": self.environment.policy.policy_id,
+                "amount_minor": model.amount_minor, "asset": model.asset,
+                "policy_id": self.environment.policy.policy_id,
                 "policy_digest": self.environment.policy.digest,
             })
             return {"decision": decision, "receipt": receipt, "bundle": self._bundle(receipt, invocation, revocations),
                     "chain": chain.to_dict()}
-
-    def _decide(self, chain, model, invocation: dict, receipts: list[dict], at: int):
-        capability = chain.capability
-        checks = [ChainCheck(f"chain.{e.code}", True, f"delegation_{e.code}:{e.index}", e.detail)
-                  for e in chain.errors]
-        if not checks:
-            checks.append(ChainCheck("chain.verified", False, "", f"{len(chain.links)} signed link(s) from root "
-                                     f"{chain.root} to the invoker; none expired or revoked"))
-        environment_ok = any(pattern_matches(p, self.environment_id) for p in capability.environments)
-        checks.append(ChainCheck("chain.environment", not environment_ok, "environment_denied",
-                                 f"environment {self.environment_id} "
-                                 + ("is delegated" if environment_ok else "is not delegated")))
-        leaf_id = chain.links[-1]["id"]
-        decisions = [r for r in receipts if r["kind"] == "decision"]
-        history = [PriorEvent(decision=r["decision"], amount_minor=r.get("amount_minor", 0), action=r.get("action"),
-                              tool=r.get("tool"), recorded_at=r["recorded_at"])
-                   for r in decisions if r.get("chain") and r["chain"][-1]["id"] == leaf_id]
-        budgets = []
-        for link, raw in zip(chain.links[:-1], invocation["capability"][:-1], strict=True):
-            spent = sum(r.get("amount_minor", 0) for r in decisions if r["decision"] == "allow"
-                        and any(item["id"] == link["id"] for item in r.get("chain", [])))
-            limit = raw["credentialSubject"]["capability"]["total_budget_minor"]
-            budgets.append(ChainBudget(str(link["index"]), limit, spent))
-        request = Request(request_id=model.id, agent_id=model.invoker, environment=self.environment_id,
-                          mandate_id=leaf_id, action=model.action, resource=model.resource, tool=model.tool,
-                          amount_minor=model.amount_minor)
-        return evaluate(policy=self.environment.policy, mandate=capability, mandate_id=leaf_id, request=request,
-                        revoked=False, history=history, now=at, chain_checks=checks, chain_budgets=budgets)
 
     @staticmethod
     def _bundle(receipt: dict, invocation: dict, revocations: list[dict]) -> dict:

@@ -31,6 +31,8 @@ DateTime = Annotated[str, StringConstraints(pattern=r"^[0-9]{4}-[0-9]{2}-[0-9]{2
                                             strict=True)]
 # Grant patterns: an exact value, "prefix*" (every value starting with prefix) or "*" (everything).
 GrantPattern = Annotated[str, StringConstraints(pattern=r"^(\*|[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}\*?)$", strict=True)]
+# Denomination of every *_minor amount: "DEMO" (default) or a venue asset id such as "erc20:0x...".
+AssetId = Annotated[str, StringConstraints(pattern=r"^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$", strict=True)]
 ProofValue = Annotated[str, StringConstraints(pattern=r"^z[1-9A-HJ-NP-Za-km-z]{80,96}$", strict=True)]
 ProofPurpose = Literal["assertionMethod", "authentication", "capabilityDelegation", "capabilityInvocation"]
 
@@ -65,7 +67,7 @@ class Capability(StrictModel):
     scopes: list[Scope] = Field(min_length=1, max_length=12)
     resources: list[GrantPattern] = Field(min_length=1, max_length=50)
     tools: list[GrantPattern] = Field(default_factory=list, max_length=100)
-    asset: Literal["DEMO"] = "DEMO"
+    asset: AssetId = "DEMO"
     per_action_minor: Minor
     total_budget_minor: Minor
     approval_threshold_minor: Minor
@@ -162,7 +164,7 @@ class Invocation(AliasModel):
     resource: Identifier
     tool: ToolName | None = None
     amount_minor: Minor = 0
-    asset: Literal["DEMO"] = "DEMO"
+    asset: AssetId = "DEMO"
     created: DateTime
     expires: DateTime
     capability: list[Delegation] = Field(min_length=1, max_length=MAX_CHAIN_LENGTH)
@@ -205,6 +207,7 @@ class ReceiptV2(AliasModel):
     resource: Identifier | None = None
     tool: ToolName | None = None
     amount_minor: Minor = 0
+    asset: AssetId | None = None
     policy_id: Identifier | None = None
     policy_digest: Hex64 | None = None
     reference: Urn | None = None

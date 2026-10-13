@@ -48,3 +48,22 @@ node interop/js/sign-v2-invocation.mjs     # JS-signed invocation; Python checks
 ```
 
 v1 (`autheo-verify.mjs`, `verify-vectors.mjs`) is unchanged.
+
+## Package `@autheo/did` (0.6) and trading venues
+
+`interop/js` is an npm-style package: `package.json` exports `autheo-did.mjs` with TypeScript
+declarations (`autheo-did.d.mts`); `npm pack` ships only those two files, README and package.json.
+It is not published to a registry. Consume it pinned to a commit, either
+
+* vendored: copy `autheo-did.mjs` + `autheo-did.d.mts` and record repo, commit and SHA-256 of each
+  file next to them (re-copy and update the record to upgrade), or
+* `npm pack` at a tagged commit and install the tarball.
+
+0.6 adds what an external venue (DEX, exchange) needs to act as a decision point for agents
+([SPEC-VENUE.md](../../docs/SPEC-VENUE.md)): `decideInvocation` (mandate-only policy, same
+outcomes and reasons as Python), `signDecisionReceipt` (venue-signed `autheo.receipt/v2`,
+byte-identical to Python's), the `dex.*` scopes and the `asset` budget unit.
+
+```sh
+cd interop/js && npm test     # v2 vectors + venue vectors, imported through the package name
+```

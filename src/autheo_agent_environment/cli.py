@@ -147,7 +147,8 @@ def build_parser() -> argparse.ArgumentParser:
     policy.add_parser("validate").add_argument("file", type=Path)
 
     for name, help_text in [("schema", "JSON Schemas"), ("vectors", "cross-language test vectors (v1)"),
-                            ("vectors-v2", "v2 DID/delegation test vectors"), ("openapi", "OpenAPI document")]:
+                            ("vectors-v2", "v2 DID/delegation test vectors"),
+                            ("vectors-venue", "v2 trading-venue (dex.*) decision vectors"), ("openapi", "OpenAPI document")]:
         group = commands.add_parser(name, help=help_text).add_subparsers(dest="action", required=True)
         group.add_parser("write" if name == "openapi" else ("export" if name == "schema" else "generate")
                          ).add_argument("path", type=Path)
@@ -189,7 +190,7 @@ def run(args) -> int:  # noqa: C901 - flat command dispatch is clearer than indi
         document = load_policy(args.file)
         _print({"valid": True, "policy_id": document.policy_id, "policy_digest": document.digest})
         return 0
-    if command in {"schema", "vectors", "vectors-v2", "openapi"}:
+    if command in {"schema", "vectors", "vectors-v2", "vectors-venue", "openapi"}:
         return _artifacts(command, action, args.path)
     if command == "demo":
         from .demo import run as run_demo

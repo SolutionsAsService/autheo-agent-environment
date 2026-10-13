@@ -34,6 +34,11 @@ All checks run (so explanations are complete); the outcome is
    and `escalations: [{id, amount_minor_gt?, actions?, tools?, resources?}]`
    (all given conditions must match) → `policy_escalation:<id>`.
 
+v2 decisions (delegation chains) first add one block reason per chain error
+(`delegation_<code>:<link>`), `environment_denied`, `asset_mismatch` (the invocation's budget
+asset differs from the capability's) and `chain_budget_limit:<link>` for ancestor budgets.
+Trading venues apply exactly this mandate-only evaluation ([SPEC-VENUE.md](SPEC-VENUE.md)).
+
 Allowed requests get the reason `within_demo_policy`. With the built-in
 `policy:mandate-only` policy, outcomes and reasons are identical to 0.1.
 

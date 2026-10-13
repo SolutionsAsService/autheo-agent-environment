@@ -1,0 +1,29 @@
+{
+  "name": "@autheo/did",
+  "version": "0.6.0",
+  "description": "Dependency-free, isomorphic Autheo v2 verifier: did:key, eddsa-jcs-2022, delegation chains, invocations, mandate-only decisions, receipts, bundles",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SolutionsAsService/autheo-agent-environment.git",
+    "directory": "interop/js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./autheo-did.d.mts",
+      "default": "./autheo-did.mjs"
+    }
+  },
+  "files": [
+    "autheo-did.mjs",
+    "autheo-did.d.mts",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node verify-v2-vectors.mjs && node verify-venue-vectors.mjs"
+  }
+}

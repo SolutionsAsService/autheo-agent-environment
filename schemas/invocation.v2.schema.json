@@ -11,8 +11,8 @@
           "type": "integer"
         },
         "asset": {
-          "const": "DEMO",
           "default": "DEMO",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$",
           "title": "Asset",
           "type": "string"
         },
@@ -69,7 +69,11 @@
               "file.write",
               "network.fetch",
               "message.send",
-              "task.checkpoint"
+              "task.checkpoint",
+              "dex.quote",
+              "dex.policy_check",
+              "dex.order.build",
+              "dex.order.sign"
             ],
             "type": "string"
           },
@@ -315,7 +319,11 @@
         "file.write",
         "network.fetch",
         "message.send",
-        "task.checkpoint"
+        "task.checkpoint",
+        "dex.quote",
+        "dex.policy_check",
+        "dex.order.build",
+        "dex.order.sign"
       ],
       "title": "Action",
       "type": "string"
@@ -328,8 +336,8 @@
       "type": "integer"
     },
     "asset": {
-      "const": "DEMO",
       "default": "DEMO",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$",
       "title": "Asset",
       "type": "string"
     },

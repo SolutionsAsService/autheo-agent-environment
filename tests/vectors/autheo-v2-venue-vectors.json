@@ -1,0 +1,3339 @@
+{
+  "bundle_cases": [
+    {
+      "bundle": {
+        "invocation": {
+          "action": "dex.order.build",
+          "amount_minor": 30000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "capability": [
+            {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "credentialSubject": {
+                "capability": {
+                  "approval_threshold_minor": 50000,
+                  "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                  "environments": [
+                    "venue:*"
+                  ],
+                  "max_delegation_depth": 1,
+                  "per_action_minor": 100000,
+                  "resources": [
+                    "chain:31337:asset:*"
+                  ],
+                  "schema_version": "autheo.capability/v2",
+                  "scopes": [
+                    "dex.quote",
+                    "dex.policy_check",
+                    "dex.order.build"
+                  ],
+                  "tools": [],
+                  "total_budget_minor": 150000
+                },
+                "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+                "schema_version": "autheo.delegation/v2"
+              },
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+              "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+              "proof": {
+                "@context": [
+                  "https://www.w3.org/ns/credentials/v2"
+                ],
+                "created": "2026-09-22T18:00:00Z",
+                "cryptosuite": "eddsa-jcs-2022",
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+                "type": "DataIntegrityProof",
+                "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+              },
+              "type": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "validFrom": "2026-09-22T18:00:00Z",
+              "validUntil": "2026-09-22T20:00:00Z"
+            },
+            {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "credentialSubject": {
+                "capability": {
+                  "approval_threshold_minor": 40000,
+                  "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                  "environments": [
+                    "venue:example-dex"
+                  ],
+                  "max_delegation_depth": 0,
+                  "per_action_minor": 60000,
+                  "resources": [
+                    "chain:31337:asset:RWA1"
+                  ],
+                  "schema_version": "autheo.capability/v2",
+                  "scopes": [
+                    "dex.quote",
+                    "dex.order.build"
+                  ],
+                  "tools": [],
+                  "total_budget_minor": 100000
+                },
+                "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+                "parent": {
+                  "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                  "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+                },
+                "schema_version": "autheo.delegation/v2"
+              },
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+              "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "proof": {
+                "@context": [
+                  "https://www.w3.org/ns/credentials/v2"
+                ],
+                "created": "2026-09-22T18:00:00Z",
+                "cryptosuite": "eddsa-jcs-2022",
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+                "type": "DataIntegrityProof",
+                "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+              },
+              "type": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "validFrom": "2026-09-22T18:00:00Z",
+              "validUntil": "2026-09-22T19:00:00Z"
+            }
+          ],
+          "created": "2026-09-22T18:00:10Z",
+          "environment": "venue:example-dex",
+          "expires": "2026-09-22T18:01:10Z",
+          "id": "req:venue-build-allow",
+          "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+          "proof": {
+            "created": "2026-09-22T18:00:10Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "capabilityInvocation",
+            "proofValue": "z2v6djuZRKZZp8mXLWyBLDEfRBqsxtwVB5QgBhCL9keXaaYjdQCxKtEb4yoG8cpZdTTzKNUULXVq4ur2HejVt3WcA",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+          },
+          "resource": "chain:31337:asset:RWA1",
+          "schema_version": "autheo.invocation/v2",
+          "type": "AutheoInvocation"
+        },
+        "receipt": {
+          "action": "dex.order.build",
+          "amount_minor": 30000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "chain": [
+            {
+              "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+              "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+              "subject": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            {
+              "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+              "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "subject": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+            }
+          ],
+          "decision": "allow",
+          "document_digest": "e860ec383ff5195e444611bfb1e9e379edaffa6919ebff97dc85fc1080f575d1",
+          "environment": "venue:example-dex",
+          "executed": false,
+          "id": "urn:uuid:00000000-0000-4000-8000-000000000501",
+          "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+          "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+          "kind": "decision",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "proof": {
+            "created": "2026-09-22T18:00:21Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "proofValue": "z3dekadGxA1ikJzxW1gWZh8Tvk53BpfCYTbhWm7xRWEEcXT7jquHDptxssRXuqCvZS2CLLfLY5K6yZzpWdUNcXsUX",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
+          },
+          "reasons": [
+            "within_demo_policy"
+          ],
+          "recorded_at": 1790100021,
+          "request_id": "req:venue-build-allow",
+          "resource": "chain:31337:asset:RWA1",
+          "root": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+          "schema_version": "autheo.receipt/v2",
+          "sequence": 1,
+          "simulation_only": true,
+          "type": "AutheoReceipt"
+        },
+        "revocations": [],
+        "schema_version": "autheo.bundle/v2"
+      },
+      "environment_did": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+      "expect_problems": [],
+      "expect_valid": true,
+      "expect_verdict": "allow_verified",
+      "name": "allow_verified",
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "bundle": {
+        "invocation": {
+          "action": "dex.order.build",
+          "amount_minor": 50000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "capability": [
+            {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "credentialSubject": {
+                "capability": {
+                  "approval_threshold_minor": 50000,
+                  "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                  "environments": [
+                    "venue:*"
+                  ],
+                  "max_delegation_depth": 1,
+                  "per_action_minor": 100000,
+                  "resources": [
+                    "chain:31337:asset:*"
+                  ],
+                  "schema_version": "autheo.capability/v2",
+                  "scopes": [
+                    "dex.quote",
+                    "dex.policy_check",
+                    "dex.order.build"
+                  ],
+                  "tools": [],
+                  "total_budget_minor": 150000
+                },
+                "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+                "schema_version": "autheo.delegation/v2"
+              },
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+              "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+              "proof": {
+                "@context": [
+                  "https://www.w3.org/ns/credentials/v2"
+                ],
+                "created": "2026-09-22T18:00:00Z",
+                "cryptosuite": "eddsa-jcs-2022",
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+                "type": "DataIntegrityProof",
+                "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+              },
+              "type": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "validFrom": "2026-09-22T18:00:00Z",
+              "validUntil": "2026-09-22T20:00:00Z"
+            },
+            {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "credentialSubject": {
+                "capability": {
+                  "approval_threshold_minor": 40000,
+                  "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                  "environments": [
+                    "venue:example-dex"
+                  ],
+                  "max_delegation_depth": 0,
+                  "per_action_minor": 60000,
+                  "resources": [
+                    "chain:31337:asset:RWA1"
+                  ],
+                  "schema_version": "autheo.capability/v2",
+                  "scopes": [
+                    "dex.quote",
+                    "dex.order.build"
+                  ],
+                  "tools": [],
+                  "total_budget_minor": 100000
+                },
+                "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+                "parent": {
+                  "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                  "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+                },
+                "schema_version": "autheo.delegation/v2"
+              },
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+              "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "proof": {
+                "@context": [
+                  "https://www.w3.org/ns/credentials/v2"
+                ],
+                "created": "2026-09-22T18:00:00Z",
+                "cryptosuite": "eddsa-jcs-2022",
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+                "type": "DataIntegrityProof",
+                "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+              },
+              "type": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "validFrom": "2026-09-22T18:00:00Z",
+              "validUntil": "2026-09-22T19:00:00Z"
+            }
+          ],
+          "created": "2026-09-22T18:00:10Z",
+          "environment": "venue:example-dex",
+          "expires": "2026-09-22T18:01:10Z",
+          "id": "req:venue-build-escalate",
+          "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+          "proof": {
+            "created": "2026-09-22T18:00:10Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "capabilityInvocation",
+            "proofValue": "z2brXMNoX4dyHEqzLQj7PdZiqsk5kTuzTK1xc7ZLJN7cDUNhj5ZB4zcnSEMPot7NpGD7yczjFRVwuVSgjLvefdbFu",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+          },
+          "resource": "chain:31337:asset:RWA1",
+          "schema_version": "autheo.invocation/v2",
+          "type": "AutheoInvocation"
+        },
+        "receipt": {
+          "action": "dex.order.build",
+          "amount_minor": 50000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "chain": [
+            {
+              "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+              "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+              "subject": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            {
+              "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+              "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "subject": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+            }
+          ],
+          "decision": "escalate",
+          "document_digest": "569fac99e64029a7b2f9a2550bf11c926c030f9af659ba3d57470a091a09995c",
+          "environment": "venue:example-dex",
+          "executed": false,
+          "id": "urn:uuid:00000000-0000-4000-8000-000000000502",
+          "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+          "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+          "kind": "decision",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "028f89caafdced2370fb30215fbd1dfbc3b4c52322465d33362083fff7a9c866",
+          "proof": {
+            "created": "2026-09-22T18:00:22Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "proofValue": "z2jrCiYTK2fbTecDgsBDfSSfZneKKFvaYaQ8FLG7mu1xHh3FFcGK4ADf8rVpX3Ri2aTN18nSufL7tBJfXJwjmEZCA",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
+          },
+          "reasons": [
+            "human_review_required"
+          ],
+          "recorded_at": 1790100022,
+          "request_id": "req:venue-build-escalate",
+          "resource": "chain:31337:asset:RWA1",
+          "root": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+          "schema_version": "autheo.receipt/v2",
+          "sequence": 2,
+          "simulation_only": true,
+          "type": "AutheoReceipt"
+        },
+        "revocations": [],
+        "schema_version": "autheo.bundle/v2"
+      },
+      "environment_did": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+      "expect_problems": [],
+      "expect_valid": true,
+      "expect_verdict": "escalate_verified",
+      "name": "escalate_verified",
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "bundle": {
+        "invocation": {
+          "action": "dex.order.sign",
+          "amount_minor": 30000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "capability": [
+            {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "credentialSubject": {
+                "capability": {
+                  "approval_threshold_minor": 50000,
+                  "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                  "environments": [
+                    "venue:*"
+                  ],
+                  "max_delegation_depth": 1,
+                  "per_action_minor": 100000,
+                  "resources": [
+                    "chain:31337:asset:*"
+                  ],
+                  "schema_version": "autheo.capability/v2",
+                  "scopes": [
+                    "dex.quote",
+                    "dex.policy_check",
+                    "dex.order.build"
+                  ],
+                  "tools": [],
+                  "total_budget_minor": 150000
+                },
+                "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+                "schema_version": "autheo.delegation/v2"
+              },
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+              "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+              "proof": {
+                "@context": [
+                  "https://www.w3.org/ns/credentials/v2"
+                ],
+                "created": "2026-09-22T18:00:00Z",
+                "cryptosuite": "eddsa-jcs-2022",
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+                "type": "DataIntegrityProof",
+                "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+              },
+              "type": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "validFrom": "2026-09-22T18:00:00Z",
+              "validUntil": "2026-09-22T20:00:00Z"
+            },
+            {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "credentialSubject": {
+                "capability": {
+                  "approval_threshold_minor": 40000,
+                  "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                  "environments": [
+                    "venue:example-dex"
+                  ],
+                  "max_delegation_depth": 0,
+                  "per_action_minor": 60000,
+                  "resources": [
+                    "chain:31337:asset:RWA1"
+                  ],
+                  "schema_version": "autheo.capability/v2",
+                  "scopes": [
+                    "dex.quote",
+                    "dex.order.build"
+                  ],
+                  "tools": [],
+                  "total_budget_minor": 100000
+                },
+                "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+                "parent": {
+                  "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                  "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+                },
+                "schema_version": "autheo.delegation/v2"
+              },
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+              "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "proof": {
+                "@context": [
+                  "https://www.w3.org/ns/credentials/v2"
+                ],
+                "created": "2026-09-22T18:00:00Z",
+                "cryptosuite": "eddsa-jcs-2022",
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+                "type": "DataIntegrityProof",
+                "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+              },
+              "type": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "validFrom": "2026-09-22T18:00:00Z",
+              "validUntil": "2026-09-22T19:00:00Z"
+            }
+          ],
+          "created": "2026-09-22T18:00:10Z",
+          "environment": "venue:example-dex",
+          "expires": "2026-09-22T18:01:10Z",
+          "id": "req:venue-sign",
+          "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+          "proof": {
+            "created": "2026-09-22T18:00:10Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "capabilityInvocation",
+            "proofValue": "z4PveQjQHW64LqswGfvw3epShfN8icKXog75p8FobHVyPSJwohECVNRuxjosKJTDwsw5AsT31ggigxN4uLLQ2hk1C",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+          },
+          "resource": "chain:31337:asset:RWA1",
+          "schema_version": "autheo.invocation/v2",
+          "type": "AutheoInvocation"
+        },
+        "receipt": {
+          "action": "dex.order.sign",
+          "amount_minor": 30000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "chain": [
+            {
+              "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+              "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+              "subject": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            {
+              "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+              "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "subject": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+            }
+          ],
+          "decision": "block",
+          "document_digest": "d8e7113823770cec7570853c4061f8def73d7ed56dc8837adeceb7513772839f",
+          "environment": "venue:example-dex",
+          "executed": false,
+          "id": "urn:uuid:00000000-0000-4000-8000-000000000503",
+          "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+          "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+          "kind": "decision",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "193e16ac0de7a7cdb5d37a1f38e316d75fd544d4e4724dc979c1eac7420962d5",
+          "proof": {
+            "created": "2026-09-22T18:00:23Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "proofValue": "z4w5VRkP1QhW3bFEzZBtQJRZav6bLB8tCkWN1d834VYn7C51PeUCMLmKwdKzWphrHWw2Gc9DHpM2aRyt87VjTgmHz",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
+          },
+          "reasons": [
+            "scope_denied"
+          ],
+          "recorded_at": 1790100023,
+          "request_id": "req:venue-sign",
+          "resource": "chain:31337:asset:RWA1",
+          "root": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+          "schema_version": "autheo.receipt/v2",
+          "sequence": 3,
+          "simulation_only": true,
+          "type": "AutheoReceipt"
+        },
+        "revocations": [],
+        "schema_version": "autheo.bundle/v2"
+      },
+      "environment_did": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+      "expect_problems": [],
+      "expect_valid": true,
+      "expect_verdict": "block_verified",
+      "name": "block_verified",
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "bundle": {
+        "invocation": {
+          "action": "dex.order.build",
+          "amount_minor": 50000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "capability": [
+            {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "credentialSubject": {
+                "capability": {
+                  "approval_threshold_minor": 50000,
+                  "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                  "environments": [
+                    "venue:*"
+                  ],
+                  "max_delegation_depth": 1,
+                  "per_action_minor": 100000,
+                  "resources": [
+                    "chain:31337:asset:*"
+                  ],
+                  "schema_version": "autheo.capability/v2",
+                  "scopes": [
+                    "dex.quote",
+                    "dex.policy_check",
+                    "dex.order.build"
+                  ],
+                  "tools": [],
+                  "total_budget_minor": 150000
+                },
+                "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+                "schema_version": "autheo.delegation/v2"
+              },
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+              "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+              "proof": {
+                "@context": [
+                  "https://www.w3.org/ns/credentials/v2"
+                ],
+                "created": "2026-09-22T18:00:00Z",
+                "cryptosuite": "eddsa-jcs-2022",
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+                "type": "DataIntegrityProof",
+                "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+              },
+              "type": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "validFrom": "2026-09-22T18:00:00Z",
+              "validUntil": "2026-09-22T20:00:00Z"
+            },
+            {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "credentialSubject": {
+                "capability": {
+                  "approval_threshold_minor": 40000,
+                  "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                  "environments": [
+                    "venue:example-dex"
+                  ],
+                  "max_delegation_depth": 0,
+                  "per_action_minor": 60000,
+                  "resources": [
+                    "chain:31337:asset:RWA1"
+                  ],
+                  "schema_version": "autheo.capability/v2",
+                  "scopes": [
+                    "dex.quote",
+                    "dex.order.build"
+                  ],
+                  "tools": [],
+                  "total_budget_minor": 100000
+                },
+                "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+                "parent": {
+                  "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                  "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+                },
+                "schema_version": "autheo.delegation/v2"
+              },
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+              "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "proof": {
+                "@context": [
+                  "https://www.w3.org/ns/credentials/v2"
+                ],
+                "created": "2026-09-22T18:00:00Z",
+                "cryptosuite": "eddsa-jcs-2022",
+                "proofPurpose": "capabilityDelegation",
+                "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+                "type": "DataIntegrityProof",
+                "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+              },
+              "type": [
+                "VerifiableCredential",
+                "AutheoDelegation"
+              ],
+              "validFrom": "2026-09-22T18:00:00Z",
+              "validUntil": "2026-09-22T19:00:00Z"
+            }
+          ],
+          "created": "2026-09-22T18:00:10Z",
+          "environment": "venue:example-dex",
+          "expires": "2026-09-22T18:01:10Z",
+          "id": "req:venue-build-escalate",
+          "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+          "proof": {
+            "created": "2026-09-22T18:00:10Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "capabilityInvocation",
+            "proofValue": "z2brXMNoX4dyHEqzLQj7PdZiqsk5kTuzTK1xc7ZLJN7cDUNhj5ZB4zcnSEMPot7NpGD7yczjFRVwuVSgjLvefdbFu",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+          },
+          "resource": "chain:31337:asset:RWA1",
+          "schema_version": "autheo.invocation/v2",
+          "type": "AutheoInvocation"
+        },
+        "receipt": {
+          "action": "dex.order.build",
+          "amount_minor": 50000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "chain": [
+            {
+              "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+              "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+              "subject": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            {
+              "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+              "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "subject": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+            }
+          ],
+          "decision": "allow",
+          "document_digest": "569fac99e64029a7b2f9a2550bf11c926c030f9af659ba3d57470a091a09995c",
+          "environment": "venue:example-dex",
+          "executed": false,
+          "id": "urn:uuid:00000000-0000-4000-8000-000000000502",
+          "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+          "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+          "kind": "decision",
+          "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+          "policy_id": "policy:mandate-only",
+          "previous_hash": "028f89caafdced2370fb30215fbd1dfbc3b4c52322465d33362083fff7a9c866",
+          "proof": {
+            "created": "2026-09-22T18:00:22Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "proofValue": "z2jrCiYTK2fbTecDgsBDfSSfZneKKFvaYaQ8FLG7mu1xHh3FFcGK4ADf8rVpX3Ri2aTN18nSufL7tBJfXJwjmEZCA",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
+          },
+          "reasons": [
+            "human_review_required"
+          ],
+          "recorded_at": 1790100022,
+          "request_id": "req:venue-build-escalate",
+          "resource": "chain:31337:asset:RWA1",
+          "root": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+          "schema_version": "autheo.receipt/v2",
+          "sequence": 2,
+          "simulation_only": true,
+          "type": "AutheoReceipt"
+        },
+        "revocations": [],
+        "schema_version": "autheo.bundle/v2"
+      },
+      "environment_did": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+      "expect_problems": [
+        "receipt_invalid:bad_signature"
+      ],
+      "expect_valid": false,
+      "expect_verdict": null,
+      "name": "edited_decision",
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    }
+  ],
+  "decision_cases": [
+    {
+      "at": 1790100020,
+      "expect_decision": "allow",
+      "expect_digest": "9b89d1a3caacd37312698d58dd0361209329d78249b41a85e04ef171a1464c73",
+      "expect_error": null,
+      "expect_reasons": [
+        "within_demo_policy"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.quote",
+        "amount_minor": 0,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-quote",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z3PpMs65pF5FqKsiNhnNdPX88K8GD8RJC9qHXg2aqhVoW1xtBUpwRwQnLpkk9wb3NrJnCd946C278yCQhMeoYCswb",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "quote_allow",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "allow",
+      "expect_digest": "e860ec383ff5195e444611bfb1e9e379edaffa6919ebff97dc85fc1080f575d1",
+      "expect_error": null,
+      "expect_reasons": [
+        "within_demo_policy"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.order.build",
+        "amount_minor": 30000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-build-allow",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z2v6djuZRKZZp8mXLWyBLDEfRBqsxtwVB5QgBhCL9keXaaYjdQCxKtEb4yoG8cpZdTTzKNUULXVq4ur2HejVt3WcA",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "order_build_allow",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "escalate",
+      "expect_digest": "569fac99e64029a7b2f9a2550bf11c926c030f9af659ba3d57470a091a09995c",
+      "expect_error": null,
+      "expect_reasons": [
+        "human_review_required"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.order.build",
+        "amount_minor": 50000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-build-escalate",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z2brXMNoX4dyHEqzLQj7PdZiqsk5kTuzTK1xc7ZLJN7cDUNhj5ZB4zcnSEMPot7NpGD7yczjFRVwuVSgjLvefdbFu",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "order_build_escalate",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "4a64b43cbaa20e2c3dd16a09b466879270a01281b8efef6c1eff707d7f79be3b",
+      "expect_error": null,
+      "expect_reasons": [
+        "per_action_limit"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.order.build",
+        "amount_minor": 70000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-build-per-action",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z2WxiE7H2iAnrzDXAs2EUnLME6bZAUjPudKnsaT8wNfiv6TYeC1MSzWnm2xA5f4doEy5Lo6NES9RFQjvAwUsRExHY",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "order_build_over_per_action",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "8a95927a9cc5148142debbf6ee7fa71ae18ca6bc061688788a14432f5c27f97b",
+      "expect_error": null,
+      "expect_reasons": [
+        "total_budget_limit"
+      ],
+      "history": [
+        {
+          "action": "dex.order.build",
+          "amount_minor": 60000,
+          "chain": [
+            {
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+            },
+            {
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000402"
+            }
+          ],
+          "decision": "allow",
+          "kind": "decision",
+          "recorded_at": 1790100001,
+          "tool": null
+        }
+      ],
+      "invocation": {
+        "action": "dex.order.build",
+        "amount_minor": 50000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-build-total",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z63LSEC3k8pyjKX9NAFmZJVgCP8bUf3RogwxG1jpVFUVRbjVqE4WqRFRjyczDK2R7Ucg8D6dY5DpE34hxSzaBZ119",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "order_build_over_total_budget",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "2e6795c1b1f727eb982e73edbd287cbc4664cc9e6792696adef3f40e7ab53e96",
+      "expect_error": null,
+      "expect_reasons": [
+        "chain_budget_limit:0"
+      ],
+      "history": [
+        {
+          "action": "dex.order.build",
+          "amount_minor": 140000,
+          "chain": [
+            {
+              "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+            }
+          ],
+          "decision": "allow",
+          "kind": "decision",
+          "recorded_at": 1790100001,
+          "tool": null
+        }
+      ],
+      "invocation": {
+        "action": "dex.order.build",
+        "amount_minor": 20000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-build-ancestor",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z341J7QBJegjE9kzoeSondhqDX9d1KCnd6RNM6botciYHHuBtus7GQRmY7RYDX3AhdK1ZqJe8mY3iuBnYLrczKrhE",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "order_build_over_ancestor_budget",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "d8e7113823770cec7570853c4061f8def73d7ed56dc8837adeceb7513772839f",
+      "expect_error": null,
+      "expect_reasons": [
+        "scope_denied"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.order.sign",
+        "amount_minor": 30000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-sign",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z4PveQjQHW64LqswGfvw3epShfN8icKXog75p8FobHVyPSJwohECVNRuxjosKJTDwsw5AsT31ggigxN4uLLQ2hk1C",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "order_sign_not_delegated",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "5fb7484ff8e255d403c2ebec641bf6b1c693a1985956c86c1be440ecbde2a77a",
+      "expect_error": null,
+      "expect_reasons": [
+        "resource_denied"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.quote",
+        "amount_minor": 0,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-other-asset",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "zZnXqs4XTBdGFuiJJCBSFatUz8BCCqPvYsBqdR9V644wp5dmipayJJDc3E8wUQVojzYZcQ2kpbxCRP5y3FVWiJnw",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA2",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "other_asset",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "eb6eb3d4a913a2a3c076f5423ba40891016e7dd4f9ed624bc019f1a7f2a18eea",
+      "expect_error": null,
+      "expect_reasons": [
+        "resource_denied"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.quote",
+        "amount_minor": 0,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-other-chain",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "zb3yfqUiVus1uXtnsDavd7y2JbCNLXErYh6dCLz1kn48iTDdEJ7puFMa4buaH5BgEXDRUjyjj2qwVXiRv1xaJK55",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:1:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "other_chain",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "060d5c02bf1d865b89163054c9b746584ba674c1bc911d02017efbde0297832b",
+      "expect_error": null,
+      "expect_reasons": [
+        "asset_mismatch"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.order.build",
+        "amount_minor": 30000,
+        "asset": "erc20:0x00000000000000000000000000000000000000d1",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-asset",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z5wawfaQxFpbs9svaJJPwTtx7GgdfPUfhLkVP57XJ6Lbsprwy8u97PkPyQpbnFwfu3PkTKh7PPLm5qReUZddbKWGd",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "budget_asset_mismatch",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "cfda2117b74d63ab02033e56aac64e090f760b44aa98e2dcf79a26f59395ed09",
+      "expect_error": null,
+      "expect_reasons": [
+        "delegation_attenuation_violation:1"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.order.sign",
+        "amount_minor": 30000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build",
+                  "dex.order.sign"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000421",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z39CUFxymUXvp47nXufiizdbNe6zy7cNQjpaFHCWppxJW4EvoGBPDFm3myq5nRizkxRBS9ypQ2pYAtsMbNPxsY2z",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-widened",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "zMy6F3cxeKwATq1xQSQzdBpy3fJtUDrAboUADLt6QWF3TNvXhs8NAhPHgTZz3bi6FWDZYRXWnWdXz2YRv5BqdN47",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "widened_chain",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "247c8e3447193a7863af7f0094ee3c091de6a0263c0e331d32351b115ca9631d",
+      "expect_error": null,
+      "expect_reasons": [
+        "delegation_revoked:1"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.order.build",
+        "amount_minor": 30000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-revoked",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z5np9X1y8BpdHSxaASFKfGHcvDP8mWfXkhGc597tXYChTidiesFEuQyV3ZLgApc8kZxxTFJTFofUmaM3CHsLK9vXA",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "revoked_chain",
+      "revocations": [
+        {
+          "id": "urn:uuid:00000000-0000-4000-8000-000000000411",
+          "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+          "proof": {
+            "created": "2026-09-22T18:00:05Z",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "proofValue": "z5So8nATns6SMNujDKcJEbndb1rLbajSGKwJUybNY1hMPfbmZHz4P8LkRVCx5Z3aXdF7WnRGTAUcf3iqEP5yqnhwk",
+            "type": "DataIntegrityProof",
+            "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+          },
+          "reason": "revoked",
+          "revoked_at": "2026-09-22T18:00:05Z",
+          "schema_version": "autheo.revocation/v2",
+          "target": {
+            "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402"
+          },
+          "type": "AutheoRevocation"
+        }
+      ],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_decision": "block",
+      "expect_digest": "bca59c8040f09ddcd25c2dfdabae1d48cc93b8afe40fbde91aeb42e95eb8e3e1",
+      "expect_error": null,
+      "expect_reasons": [
+        "delegation_untrusted_root:0"
+      ],
+      "history": [],
+      "invocation": {
+        "action": "dex.quote",
+        "amount_minor": 0,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-untrusted",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "zEjY2t5bq4KLyXrA5SwUwZfjdYnjwrdiAEcPHuyLH1yEcchHTyQeQtSG4eqknrRYtJUf3X7CDqfFh7ECFjkeAF9m",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "untrusted_root",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfPgBwwem9KsuiudrS87kzNcjNXSCSmLUYQsDWm79tDRs"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_error": "wrong_environment",
+      "history": [],
+      "invocation": {
+        "action": "dex.quote",
+        "amount_minor": 0,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:other",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-wrong-venue",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z26b81kJfi5iMqHVpwjGgCfUajQbwjoE2hCT696XGbopjXLSKY55jcfH3ns4bJEQQd9FW1aiwjyR5S8suvCNtfwJF",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "wrong_venue",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_error": "bad_signature",
+      "history": [],
+      "invocation": {
+        "action": "dex.order.build",
+        "amount_minor": 3000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-tampered",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z5RivJdAUC4gRnzfwUPojAc7zvqWN4njMMuGZNwN3Xyz3pFi4QryWpxLSVooZqwUBidsxsHhHF9ucd63ThdYeSvqM",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "tampered_invocation",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    },
+    {
+      "at": 1790100020,
+      "expect_error": "chain_not_authentic",
+      "history": [],
+      "invocation": {
+        "action": "dex.quote",
+        "amount_minor": 0,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "capability": [
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 50000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:*"
+                ],
+                "max_delegation_depth": 1,
+                "per_action_minor": 100000,
+                "resources": [
+                  "chain:31337:asset:*"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.policy_check",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 150000
+              },
+              "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T20:00:00Z"
+          },
+          {
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2"
+            ],
+            "credentialSubject": {
+              "capability": {
+                "approval_threshold_minor": 40000,
+                "asset": "erc20:0x00000000000000000000000000000000000000c5",
+                "environments": [
+                  "venue:example-dex"
+                ],
+                "max_delegation_depth": 0,
+                "per_action_minor": 60000,
+                "resources": [
+                  "chain:31337:asset:RWA1"
+                ],
+                "schema_version": "autheo.capability/v2",
+                "scopes": [
+                  "dex.quote",
+                  "dex.order.build"
+                ],
+                "tools": [],
+                "total_budget_minor": 100000
+              },
+              "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+              "parent": {
+                "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+                "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+              },
+              "schema_version": "autheo.delegation/v2"
+            },
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000422",
+            "issuer": "did:key:z6MkfPgBwwem9KsuiudrS87kzNcjNXSCSmLUYQsDWm79tDRs",
+            "proof": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2"
+              ],
+              "created": "2026-09-22T18:00:00Z",
+              "cryptosuite": "eddsa-jcs-2022",
+              "proofPurpose": "capabilityDelegation",
+              "proofValue": "z5EKsBxp6TVeZpaddKnYwBMByKPK51Y2STSkw4j7tXrJ8ZLGcoQWVLHHK1cXBFQFQAcRvBTFy12uaw1W5VXb5FYsi",
+              "type": "DataIntegrityProof",
+              "verificationMethod": "did:key:z6MkfPgBwwem9KsuiudrS87kzNcjNXSCSmLUYQsDWm79tDRs#z6MkfPgBwwem9KsuiudrS87kzNcjNXSCSmLUYQsDWm79tDRs"
+            },
+            "type": [
+              "VerifiableCredential",
+              "AutheoDelegation"
+            ],
+            "validFrom": "2026-09-22T18:00:00Z",
+            "validUntil": "2026-09-22T19:00:00Z"
+          }
+        ],
+        "created": "2026-09-22T18:00:10Z",
+        "environment": "venue:example-dex",
+        "expires": "2026-09-22T18:01:10Z",
+        "id": "req:venue-forged",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "proof": {
+          "created": "2026-09-22T18:00:10Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z215fkGLD6Fba7YGxNtEwvCh94jPP1TAR35guj8veTGeMPCzDA6ZrYWQ8tpXm2DPL9zs7BwziccHb6BN6YA7CHDtY",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX#z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+        },
+        "resource": "chain:31337:asset:RWA1",
+        "schema_version": "autheo.invocation/v2",
+        "type": "AutheoInvocation"
+      },
+      "name": "forged_chain",
+      "revocations": [],
+      "trusted_roots": [
+        "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      ]
+    }
+  ],
+  "delegations": {
+    "agent_to_subagent": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2"
+      ],
+      "credentialSubject": {
+        "capability": {
+          "approval_threshold_minor": 40000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "environments": [
+            "venue:example-dex"
+          ],
+          "max_delegation_depth": 0,
+          "per_action_minor": 60000,
+          "resources": [
+            "chain:31337:asset:RWA1"
+          ],
+          "schema_version": "autheo.capability/v2",
+          "scopes": [
+            "dex.quote",
+            "dex.order.build"
+          ],
+          "tools": [],
+          "total_budget_minor": 100000
+        },
+        "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "parent": {
+          "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+          "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+        },
+        "schema_version": "autheo.delegation/v2"
+      },
+      "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+      "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2"
+        ],
+        "created": "2026-09-22T18:00:00Z",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "capabilityDelegation",
+        "proofValue": "zC6BjpX1G2ryesegTseRtEBxM2eyqbq6ZchZhE75wWhUsW6ADGqkhaTxjRN1dyZiXiYSXgRctvWjj71CU8v5S3rW",
+        "type": "DataIntegrityProof",
+        "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+      },
+      "type": [
+        "VerifiableCredential",
+        "AutheoDelegation"
+      ],
+      "validFrom": "2026-09-22T18:00:00Z",
+      "validUntil": "2026-09-22T19:00:00Z"
+    },
+    "principal_to_agent": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2"
+      ],
+      "credentialSubject": {
+        "capability": {
+          "approval_threshold_minor": 50000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "environments": [
+            "venue:*"
+          ],
+          "max_delegation_depth": 1,
+          "per_action_minor": 100000,
+          "resources": [
+            "chain:31337:asset:*"
+          ],
+          "schema_version": "autheo.capability/v2",
+          "scopes": [
+            "dex.quote",
+            "dex.policy_check",
+            "dex.order.build"
+          ],
+          "tools": [],
+          "total_budget_minor": 150000
+        },
+        "id": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+        "schema_version": "autheo.delegation/v2"
+      },
+      "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+      "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2"
+        ],
+        "created": "2026-09-22T18:00:00Z",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "capabilityDelegation",
+        "proofValue": "z4qGFHkNoyCsyLrDtFo6h8fjSPYZe2SQyFPxU6eEa1eiHEGkNC1gEkcRmEJyxdqj32rCYat263fq6V3Tei9huWxJg",
+        "type": "DataIntegrityProof",
+        "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      },
+      "type": [
+        "VerifiableCredential",
+        "AutheoDelegation"
+      ],
+      "validFrom": "2026-09-22T18:00:00Z",
+      "validUntil": "2026-09-22T20:00:00Z"
+    },
+    "widened": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2"
+      ],
+      "credentialSubject": {
+        "capability": {
+          "approval_threshold_minor": 40000,
+          "asset": "erc20:0x00000000000000000000000000000000000000c5",
+          "environments": [
+            "venue:example-dex"
+          ],
+          "max_delegation_depth": 0,
+          "per_action_minor": 60000,
+          "resources": [
+            "chain:*"
+          ],
+          "schema_version": "autheo.capability/v2",
+          "scopes": [
+            "dex.quote",
+            "dex.order.build",
+            "dex.order.sign"
+          ],
+          "tools": [],
+          "total_budget_minor": 100000
+        },
+        "id": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "parent": {
+          "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+          "id": "urn:uuid:00000000-0000-4000-8000-000000000401"
+        },
+        "schema_version": "autheo.delegation/v2"
+      },
+      "id": "urn:uuid:00000000-0000-4000-8000-000000000421",
+      "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+      "proof": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2"
+        ],
+        "created": "2026-09-22T18:00:00Z",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "capabilityDelegation",
+        "proofValue": "z39CUFxymUXvp47nXufiizdbNe6zy7cNQjpaFHCWppxJW4EvoGBPDFm3myq5nRizkxRBS9ypQ2pYAtsMbNPxsY2z",
+        "type": "DataIntegrityProof",
+        "verificationMethod": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy#z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+      },
+      "type": [
+        "VerifiableCredential",
+        "AutheoDelegation"
+      ],
+      "validFrom": "2026-09-22T18:00:00Z",
+      "validUntil": "2026-09-22T19:00:00Z"
+    }
+  },
+  "keys": {
+    "agent": {
+      "TEST_ONLY_seed_hex": "55bbe61ecef3963c526ac4bbeebacb94a02480e2c0f436c06af462df55dc5ccd",
+      "did": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+    },
+    "principal": {
+      "TEST_ONLY_seed_hex": "ce369a0c50995041a98ea96f615ea281b7b916ba350e2d5b3a0823cf9fecb7f8",
+      "did": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+    },
+    "stranger": {
+      "TEST_ONLY_seed_hex": "4c20377250d330976da46480b33bb1dd6b062c4a8dd0d5209e280fc742a7d70d",
+      "did": "did:key:z6MkfPgBwwem9KsuiudrS87kzNcjNXSCSmLUYQsDWm79tDRs"
+    },
+    "subagent": {
+      "TEST_ONLY_seed_hex": "5d282114eb722c3dd0e2a643b0afc1ac47518dc95187731e2972c45a00cbff88",
+      "did": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+    },
+    "venue": {
+      "TEST_ONLY_seed_hex": "0ebc4277be7fe64de7a0edcf94fff851531cc3a7260ee815c236b9151bdf16d3",
+      "did": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
+    }
+  },
+  "ledger": {
+    "environment": "venue:example-dex",
+    "head": "1ee23b52b8b0bb935dcac22117dcfe6c6657264b12f1770081fcad9976baf160",
+    "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+    "receipts": [
+      {
+        "action": "dex.order.build",
+        "amount_minor": 30000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "chain": [
+          {
+            "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "subject": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+          },
+          {
+            "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "subject": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+          }
+        ],
+        "decision": "allow",
+        "document_digest": "e860ec383ff5195e444611bfb1e9e379edaffa6919ebff97dc85fc1080f575d1",
+        "environment": "venue:example-dex",
+        "executed": false,
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000501",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+        "kind": "decision",
+        "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+        "policy_id": "policy:mandate-only",
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "proof": {
+          "created": "2026-09-22T18:00:21Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z3dekadGxA1ikJzxW1gWZh8Tvk53BpfCYTbhWm7xRWEEcXT7jquHDptxssRXuqCvZS2CLLfLY5K6yZzpWdUNcXsUX",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
+        },
+        "reasons": [
+          "within_demo_policy"
+        ],
+        "recorded_at": 1790100021,
+        "request_id": "req:venue-build-allow",
+        "resource": "chain:31337:asset:RWA1",
+        "root": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+        "schema_version": "autheo.receipt/v2",
+        "sequence": 1,
+        "simulation_only": true,
+        "type": "AutheoReceipt"
+      },
+      {
+        "action": "dex.order.build",
+        "amount_minor": 50000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "chain": [
+          {
+            "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "subject": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+          },
+          {
+            "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "subject": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+          }
+        ],
+        "decision": "escalate",
+        "document_digest": "569fac99e64029a7b2f9a2550bf11c926c030f9af659ba3d57470a091a09995c",
+        "environment": "venue:example-dex",
+        "executed": false,
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000502",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+        "kind": "decision",
+        "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+        "policy_id": "policy:mandate-only",
+        "previous_hash": "028f89caafdced2370fb30215fbd1dfbc3b4c52322465d33362083fff7a9c866",
+        "proof": {
+          "created": "2026-09-22T18:00:22Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z2jrCiYTK2fbTecDgsBDfSSfZneKKFvaYaQ8FLG7mu1xHh3FFcGK4ADf8rVpX3Ri2aTN18nSufL7tBJfXJwjmEZCA",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
+        },
+        "reasons": [
+          "human_review_required"
+        ],
+        "recorded_at": 1790100022,
+        "request_id": "req:venue-build-escalate",
+        "resource": "chain:31337:asset:RWA1",
+        "root": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+        "schema_version": "autheo.receipt/v2",
+        "sequence": 2,
+        "simulation_only": true,
+        "type": "AutheoReceipt"
+      },
+      {
+        "action": "dex.order.sign",
+        "amount_minor": 30000,
+        "asset": "erc20:0x00000000000000000000000000000000000000c5",
+        "chain": [
+          {
+            "digest": "52d6f96ee132ec2255833289bfc6570d19224977009c436595f1cad208b6a91d",
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000401",
+            "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+            "subject": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy"
+          },
+          {
+            "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+            "id": "urn:uuid:00000000-0000-4000-8000-000000000402",
+            "issuer": "did:key:z6MktgDNd6AbNSr3HsrwzeTmtkBaY8WrXxKvcJ37rfhQ7MTy",
+            "subject": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX"
+          }
+        ],
+        "decision": "block",
+        "document_digest": "d8e7113823770cec7570853c4061f8def73d7ed56dc8837adeceb7513772839f",
+        "environment": "venue:example-dex",
+        "executed": false,
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000503",
+        "invoker": "did:key:z6MkpvJLHu1Enbi93De46Px4hjRLKjLknGFAVfSzmuPtyMbX",
+        "issuer": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj",
+        "kind": "decision",
+        "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+        "policy_id": "policy:mandate-only",
+        "previous_hash": "193e16ac0de7a7cdb5d37a1f38e316d75fd544d4e4724dc979c1eac7420962d5",
+        "proof": {
+          "created": "2026-09-22T18:00:23Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z4w5VRkP1QhW3bFEzZBtQJRZav6bLB8tCkWN1d834VYn7C51PeUCMLmKwdKzWphrHWw2Gc9DHpM2aRyt87VjTgmHz",
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:key:z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj#z6MkuvmLqdL41v8rkf5Q4RRbaDVsLjE1tB7sReio2Givosbj"
+        },
+        "reasons": [
+          "scope_denied"
+        ],
+        "recorded_at": 1790100023,
+        "request_id": "req:venue-sign",
+        "resource": "chain:31337:asset:RWA1",
+        "root": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+        "schema_version": "autheo.receipt/v2",
+        "sequence": 3,
+        "simulation_only": true,
+        "type": "AutheoReceipt"
+      }
+    ],
+    "schema_version": "autheo.ledger-export/v2"
+  },
+  "now": 1790100000,
+  "policy": {
+    "policy_digest": "c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4",
+    "policy_id": "policy:mandate-only"
+  },
+  "revocations": {
+    "principal_revokes_agent_to_subagent": {
+      "id": "urn:uuid:00000000-0000-4000-8000-000000000411",
+      "issuer": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5",
+      "proof": {
+        "created": "2026-09-22T18:00:05Z",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "z5So8nATns6SMNujDKcJEbndb1rLbajSGKwJUybNY1hMPfbmZHz4P8LkRVCx5Z3aXdF7WnRGTAUcf3iqEP5yqnhwk",
+        "type": "DataIntegrityProof",
+        "verificationMethod": "did:key:z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5#z6MkfEFCA4uS4Nn7mmbySfEZoe4Gbd7gQM8HihT6hTveyTA5"
+      },
+      "reason": "revoked",
+      "revoked_at": "2026-09-22T18:00:05Z",
+      "schema_version": "autheo.revocation/v2",
+      "target": {
+        "digest": "78e18eb102880b6f9a85fbb1f27146b5fbd041f18617c8b8459b4eba91843914",
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000402"
+      },
+      "type": "AutheoRevocation"
+    }
+  },
+  "spec": "docs/SPEC-VENUE.md",
+  "venue": "venue:example-dex",
+  "version": "autheo-test-vectors/v2-venue",
+  "warning": "TEST_ONLY seeds are public; never use them for real keys."
+}

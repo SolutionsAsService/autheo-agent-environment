@@ -18,7 +18,11 @@ export const MAX_DELEGATION_SECONDS = 30 * 86400;
 export const MAX_INVOCATION_SECONDS = 300;
 export const ZERO_HASH = '0'.repeat(64);
 export const SCOPES = ['marketplace.read', 'devhub.read', 'chain.read', 'compute.simulate', 'environment.handoff',
-  'tool.invoke', 'model.invoke', 'file.read', 'file.write', 'network.fetch', 'message.send', 'task.checkpoint'];
+  'tool.invoke', 'model.invoke', 'file.read', 'file.write', 'network.fetch', 'message.send', 'task.checkpoint',
+  'dex.quote', 'dex.policy_check', 'dex.order.build', 'dex.order.sign'];
+// The built-in policy (autheo.policy/v1 "policy:mandate-only"); decideInvocation implements exactly this one.
+export const MANDATE_ONLY_POLICY = { policy_id: 'policy:mandate-only',
+  policy_digest: 'c1d174b4667b64276d85da3bf911416d1125032f942746c55c97922dcfcafcb4' };
 export const AUTHENTICITY_ERRORS = new Set(['malformed', 'bad_signature', 'broken_link', 'chain_too_long',
   'invoker_mismatch']);
 const RELATIONSHIPS = ['authentication', 'assertionMethod', 'capabilityDelegation', 'capabilityInvocation'];
@@ -27,6 +31,7 @@ const PROOF_MEMBERS = new Set(['type', 'cryptosuite', 'created', 'verificationMe
 
 export const PATTERNS = {
   identifier: /^[A-Za-z0-9][A-Za-z0-9:._-]{0,95}$/,
+  asset: /^[A-Za-z0-9][A-Za-z0-9:._-]{0,63}$/,
   tool: /^[A-Za-z0-9][A-Za-z0-9:._/-]{0,127}$/,
   reason: /^[a-z][a-z0-9_]*(:[A-Za-z0-9:._-]{1,96})?$/,
   hex64: /^[0-9a-f]{64}$/,
@@ -317,7 +322,7 @@ export function checkCapability(cap, where = 'capability') {
     'total_budget_minor', 'approval_threshold_minor', 'max_delegation_depth'],
   ['environments', 'scopes', 'resources', 'per_action_minor', 'total_budget_minor', 'approval_threshold_minor'], where);
   if ('schema_version' in cap) literal(cap.schema_version, 'autheo.capability/v2', where + '.schema_version');
-  if ('asset' in cap) literal(cap.asset, 'DEMO', where + '.asset');
+  if ('asset' in cap) str(cap.asset, PATTERNS.asset, where + '.asset');
   const grants = (v, w) => str(v, PATTERNS.grant, w);
   list(cap.environments, 1, 20, grants, where + '.environments');
   list(cap.scopes, 1, 12, (v, w) => { if (!SCOPES.includes(v)) throw new AutheoError('malformed', w); },
@@ -338,7 +343,7 @@ export function checkCapability(cap, where = 'capability') {
   }
 }
 
-export const capabilityOf = (cap) => ({ tools: [], max_delegation_depth: 0, ...cap });
+export const capabilityOf = (cap) => ({ tools: [], max_delegation_depth: 0, asset: 'DEMO', ...cap });
 
 export function checkDelegation(doc, where = 'delegation') {
   fields(doc, ['@context', 'type', 'id', 'issuer', 'validFrom', 'validUntil', 'credentialSubject', 'proof'],
@@ -386,7 +391,7 @@ export function checkInvocation(doc, where = 'invocation') {
   ['type', 'id', 'invoker', 'environment', 'action', 'resource', 'created', 'expires', 'capability', 'proof'], where);
   literal(doc.type, 'AutheoInvocation', where + '.type');
   if ('schema_version' in doc) literal(doc.schema_version, 'autheo.invocation/v2', where + '.schema_version');
-  if ('asset' in doc) literal(doc.asset, 'DEMO', where + '.asset');
+  if ('asset' in doc) str(doc.asset, PATTERNS.asset, where + '.asset');
   str(doc.id, PATTERNS.identifier, where + '.id');
   str(doc.invoker, PATTERNS.did, where + '.invoker');
   str(doc.environment, PATTERNS.identifier, where + '.environment');
@@ -402,7 +407,7 @@ export function checkInvocation(doc, where = 'invocation') {
 
 const RECEIPT_FIELDS = ['type', 'schema_version', 'id', 'issuer', 'environment', 'sequence', 'previous_hash',
   'recorded_at', 'kind', 'decision', 'reasons', 'document_digest', 'request_id', 'invoker', 'root', 'chain', 'action',
-  'resource', 'tool', 'amount_minor', 'policy_id', 'policy_digest', 'reference', 'executed', 'simulation_only', 'proof'];
+  'resource', 'tool', 'amount_minor', 'asset', 'policy_id', 'policy_digest', 'reference', 'executed', 'simulation_only', 'proof'];
 
 export function checkReceipt(doc, where = 'receipt') {
   fields(doc, RECEIPT_FIELDS, ['type', 'id', 'issuer', 'environment', 'sequence', 'previous_hash', 'recorded_at', 'kind',
@@ -420,7 +425,7 @@ export function checkReceipt(doc, where = 'receipt') {
   list(doc.reasons, 0, 64, (v, w) => str(v, PATTERNS.reason, w), where + '.reasons');
   str(doc.document_digest, PATTERNS.hex64, where + '.document_digest');
   const optional = { request_id: PATTERNS.identifier, invoker: PATTERNS.did, root: PATTERNS.did,
-    resource: PATTERNS.identifier, tool: PATTERNS.tool, policy_id: PATTERNS.identifier, policy_digest: PATTERNS.hex64,
+    resource: PATTERNS.identifier, tool: PATTERNS.tool, asset: PATTERNS.asset, policy_id: PATTERNS.identifier, policy_digest: PATTERNS.hex64,
     reference: PATTERNS.urn };
   for (const [name, pattern] of Object.entries(optional)) {
     if (doc[name] !== undefined && doc[name] !== null) str(doc[name], pattern, where + '.' + name);
@@ -544,6 +549,7 @@ export function attenuationProblems(parent, child) {
     for (const pattern of c[name]) if (!patternCovers(p[name], pattern)) problems.push(name + ': ' + pattern);
   }
   for (const scope of c.scopes) if (!p.scopes.includes(scope)) problems.push('scopes: ' + scope);
+  if (c.asset !== p.asset) problems.push('asset: ' + c.asset);
   for (const name of ['per_action_minor', 'total_budget_minor', 'approval_threshold_minor']) {
     if (c[name] > p[name]) problems.push(name);
   }
@@ -559,8 +565,64 @@ export function capabilityProblems(capability, request) {
   if (!cap.resources.some((p) => patternMatches(p, request.resource))) problems.push('resource_denied');
   if (request.action === 'tool.invoke' && tool === null) problems.push('tool_required');
   else if (tool !== null && !cap.tools.some((p) => patternMatches(p, tool))) problems.push('tool_denied');
+  if ((request.asset || 'DEMO') !== cap.asset) problems.push('asset_mismatch');
   if ((request.amount_minor || 0) > cap.per_action_minor) problems.push('per_action_limit');
   return problems;
+}
+
+// Outcome of the mandate-only policy for a verified invocation (result = verifyInvocation(...)), mirroring
+// Python didenv.decide_invocation; checked by verify-venue-vectors.mjs. options: { environment (required: the
+// deciding environment / venue id), history (this decider's earlier decision receipts, for budgets) }.
+// Throws AutheoError wrong_environment / chain_not_authentic: reject, do not record. Declarative
+// autheo.policy/v1 rules are NOT implemented here; deciders that need them use the Python service.
+export function decideInvocation(result, options = {}) {
+  const { invocation, chain } = result;
+  if (invocation.environment !== options.environment) throw new AutheoError('wrong_environment', invocation.environment);
+  if (!chain.authentic) throw new AutheoError('chain_not_authentic');
+  const cap = chain.capability;
+  const amount = invocation.amount_minor || 0;
+  const tool = invocation.tool === undefined ? null : invocation.tool;
+  const decisions = (options.history || []).filter((r) => r.kind === 'decision');
+  const spentUnder = (id, leafOnly) => decisions.filter((r) => r.decision === 'allow' && Array.isArray(r.chain)
+    && r.chain.length && (leafOnly ? r.chain[r.chain.length - 1].id === id : r.chain.some((l) => l.id === id)))
+    .reduce((sum, r) => sum + (r.amount_minor || 0), 0);
+  const blocks = [];
+  const block = (reason) => { if (!blocks.includes(reason)) blocks.push(reason); };
+  for (const e of chain.errors) block('delegation_' + e.code + ':' + e.index);
+  if (!cap.environments.some((p) => patternMatches(p, options.environment))) block('environment_denied');
+  if ((invocation.asset || 'DEMO') !== cap.asset) block('asset_mismatch');
+  if (!cap.scopes.includes(invocation.action)) block('scope_denied');
+  if (!cap.resources.some((p) => patternMatches(p, invocation.resource))) block('resource_denied');
+  if (amount > cap.per_action_minor) block('per_action_limit');
+  const leaf = chain.links[chain.links.length - 1];
+  if (spentUnder(leaf.id, true) + amount > cap.total_budget_minor) block('total_budget_limit');
+  chain.links.slice(0, -1).forEach((link, i) => {
+    const limit = invocation.capability[i].credentialSubject.capability.total_budget_minor;
+    if (spentUnder(link.id, false) + amount > limit) block('chain_budget_limit:' + link.index);
+  });
+  if (invocation.action === 'tool.invoke' && tool === null) block('tool_required');
+  else if (tool !== null && !cap.tools.some((p) => patternMatches(p, tool))) block('tool_denied');
+  const policy = MANDATE_ONLY_POLICY;
+  if (blocks.length) return { decision: 'block', reasons: blocks, ...policy };
+  if (amount > cap.approval_threshold_minor) return { decision: 'escalate', reasons: ['human_review_required'], ...policy };
+  return { decision: 'allow', reasons: ['within_demo_policy'], ...policy };
+}
+
+// Sign the decision receipt for a verified invocation (autheo.receipt/v2, assertionMethod). The issuer is the
+// did:key of seed; the receipt verifies with verifyReceipt/verifyBundle like an environment's own.
+// at: { id (urn:uuid), sequence, previousHash, recordedAt (epoch seconds) }.
+export async function signDecisionReceipt(result, decision, seed, environment, at) {
+  const { invocation, chain } = result;
+  const body = { type: 'AutheoReceipt', schema_version: 'autheo.receipt/v2', id: at.id, issuer: await didFromSeed(seed),
+    environment, sequence: at.sequence, previous_hash: at.previousHash, recorded_at: at.recordedAt, kind: 'decision',
+    decision: decision.decision, reasons: decision.reasons, document_digest: result.digest, request_id: invocation.id,
+    invoker: invocation.invoker, root: chain.root,
+    chain: chain.links.map((l) => ({ id: l.id, digest: l.digest, issuer: l.issuer, subject: l.subject })),
+    action: invocation.action, resource: invocation.resource, amount_minor: invocation.amount_minor || 0,
+    asset: invocation.asset || 'DEMO', policy_id: decision.policy_id, policy_digest: decision.policy_digest,
+    executed: false, simulation_only: true };
+  if (invocation.tool !== undefined && invocation.tool !== null) body.tool = invocation.tool;
+  return signDocument(body, seed, 'assertionMethod', at.recordedAt);
 }
 
 // ------------------------------------------------------------------ revocations and chains
@@ -749,6 +811,7 @@ export async function verifyBundle(bundle, options = {}) {
     environment: [receipt.environment, invocation.environment], action: [receipt.action, invocation.action],
     resource: [receipt.resource, invocation.resource], tool: [value(receipt.tool), value(invocation.tool)],
     amount_minor: [value(receipt.amount_minor) ?? 0, value(invocation.amount_minor) ?? 0],
+    asset: [receipt.asset || 'DEMO', invocation.asset || 'DEMO'],
     root: [receipt.root, chain.root],
     chain: [jcs(receipt.chain || []), jcs(chain.links.map((l) => ({ id: l.id, digest: l.digest, issuer: l.issuer,
       subject: l.subject })))],
